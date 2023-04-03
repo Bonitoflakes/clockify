@@ -54,12 +54,18 @@ generateSidebarLinks(sidebarLinkData).map((element) => {
 const sidebarLinksText = document.querySelectorAll<HTMLSpanElement>(".sidebar__link-text");
 const sidebarLinks = document.querySelectorAll<HTMLSpanElement>(".sidebar__link");
 
-hamburgerMenu.addEventListener("click", () => {
-  sidebarContainer.classList.toggle("closed");
-  sidebarLinksText.forEach((element) => element.classList.toggle("closed"));
-});
+let isOpen = true;
 
-// TODO: 
+const toggleSidebar = () => {
+  sidebarContainer.classList.toggle("open");
+  sidebarLinksText.forEach((element) => element.classList.toggle("open"));
+};
+
+isOpen ? toggleSidebar() : null;
+
+hamburgerMenu.addEventListener("click", () => toggleSidebar());
+
+// TODO:
 sidebarLinks.forEach((element) =>
   element.addEventListener("click", (e) => {
     RemoveOldActiveState();
