@@ -4,6 +4,10 @@ import timetracker from "../../assets/time-tracker.svg";
 import projects from "../../assets/projects.svg";
 import reports from "../../assets/reports.svg";
 import calendar from "../../assets/calendar.svg";
+import teams from "../../assets/teams.svg";
+import clients from "../../assets/clients.svg";
+import tags from "../../assets/tags.svg";
+import settings from "../../assets/settings.svg";
 
 export const sidebarLinkData: ISidebarLinks[] = [
   {
@@ -11,7 +15,7 @@ export const sidebarLinkData: ISidebarLinks[] = [
     img: timesheet,
   },
   {
-    name: "timetracker",
+    name: "time tracker",
     img: timetracker,
   },
   {
@@ -21,6 +25,7 @@ export const sidebarLinkData: ISidebarLinks[] = [
   {
     name: "dashboard",
     img: dashboard,
+    title: "analyze",
   },
   {
     name: "reports",
@@ -29,29 +34,26 @@ export const sidebarLinkData: ISidebarLinks[] = [
   {
     name: "projects",
     img: projects,
+    title: "manage",
   },
   {
-    name: "timesheet",
-    img: timesheet,
+    name: "team",
+    img: teams,
   },
   {
-    name: "timetracker",
-    img: timetracker,
+    name: "clients",
+    img: clients,
   },
   {
     name: "calendar",
     img: calendar,
   },
   {
-    name: "dashboard",
-    img: dashboard,
+    name: "tags",
+    img: tags,
   },
   {
-    name: "reports",
-    img: reports,
-  },
-  {
-    name: "projects",
-    img: projects,
+    name: "settings",
+    img: settings,
   },
 ];
