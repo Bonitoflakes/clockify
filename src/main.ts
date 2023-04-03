@@ -37,6 +37,30 @@ createElement(
 
 const generateSidebarLinks = (linkData: ISidebarLinks[]) => {
   return linkData.map((link) => {
+    if (link.name === "dashboard" || link.name === "projects") {
+      return `
+      <div class='sidebar__link-title'>${link.title}</div>
+      <a href="#" class="sidebar__link">
+      <img src='${link.img}' alt='${link.name}' class="sidebar__link-img" />
+      <span class="sidebar__link-text">${link.name}</span>
+    </a>`;
+    }
+
+    // if (link.name === "reports") {
+    //   return `<a href="#" class="sidebar__link" id="${link.name}">
+    //   <img src="${link.img}" alt="${link.name}" class="sidebar__link-img" />
+    
+    //   <div class="sidebar__link-additional">
+    //     <span class="sidebar__link-text open">${link.name}</span>
+    //     <img src="/assets/chevron-down.svg" class="sidebar__link-additional-chevron" />
+    //   </div>
+    
+
+    // </a>
+    
+    // `;
+    // }
+
     return `<a href="#" class="sidebar__link">
   <img src='${link.img}' alt='${link.name}' class="sidebar__link-img" />
   <span class="sidebar__link-text">${link.name}</span>
@@ -52,13 +76,15 @@ generateSidebarLinks(sidebarLinkData).map((element) => {
 });
 
 const sidebarLinksText = document.querySelectorAll<HTMLSpanElement>(".sidebar__link-text");
-const sidebarLinks = document.querySelectorAll<HTMLSpanElement>(".sidebar__link");
+const sidebarLinksTitle = document.querySelectorAll<HTMLDivElement>(".sidebar__link-title");
+const sidebarLinks = document.querySelectorAll<HTMLAnchorElement>(".sidebar__link");
 
 let isOpen = true;
 
 const toggleSidebar = () => {
   sidebarContainer.classList.toggle("open");
   sidebarLinksText.forEach((element) => element.classList.toggle("open"));
+  sidebarLinksTitle.forEach((element) => element.classList.toggle("open"));
 };
 
 isOpen ? toggleSidebar() : null;
