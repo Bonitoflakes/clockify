@@ -1,51 +1,57 @@
+import dashboard from "../../assets/dashboard.svg";
+import timesheet from "../../assets/timesheet.svg";
+import timetracker from "../../assets/time-tracker.svg";
+import projects from "../../assets/projects.svg";
+import reports from "../../assets/reports.svg";
+import calendar from "../../assets/calendar.svg";
+
 export const sidebarLinkData: ISidebarLinks[] = [
   {
     name: "timesheet",
-    img: "/assets/timesheet.svg",
+    img: timesheet,
   },
   {
     name: "timetracker",
-    img: "/assets/time-tracker.svg",
+    img: timetracker,
   },
   {
     name: "calendar",
-    img: "/assets/calendar.svg",
+    img: calendar,
   },
   {
     name: "dashboard",
-    img: "/assets/dashboard.svg",
+    img: dashboard,
   },
   {
     name: "reports",
-    img: "/assets/reports.svg",
+    img: reports,
   },
   {
     name: "projects",
-    img: "/assets/projects.svg",
+    img: projects,
   },
   {
-    name: "team",
-    img: "/assets/clients.svg",
+    name: "timesheet",
+    img: timesheet,
   },
-  { name: "timetracker", img: "/assets/time-tracker.svg" },
+  {
+    name: "timetracker",
+    img: timetracker,
+  },
   {
     name: "calendar",
-    img: "/assets/calendar.svg",
+    img: calendar,
   },
   {
     name: "dashboard",
-    img: "/assets/dashboard.svg",
+    img: dashboard,
   },
   {
     name: "reports",
-    img: "/assets/reports.svg",
+    img: reports,
   },
   {
     name: "projects",
-    img: "/assets/projects.svg",
-  },
-  {
-    name: "team",
-    img: "/assets/clients.svg",
+    img: projects,
   },
 ];
