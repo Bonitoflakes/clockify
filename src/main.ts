@@ -46,20 +46,35 @@ const generateSidebarLinks = (linkData: ISidebarLinks[]) => {
     </a>`;
     }
 
-    // if (link.name === "reports") {
-    //   return `<a href="#" class="sidebar__link" id="${link.name}">
-    //   <img src="${link.img}" alt="${link.name}" class="sidebar__link-img" />
-    
-    //   <div class="sidebar__link-additional">
-    //     <span class="sidebar__link-text open">${link.name}</span>
-    //     <img src="/assets/chevron-down.svg" class="sidebar__link-additional-chevron" />
-    //   </div>
-    
+    if (link.name === "reports") {
+      return `
+      <a href="#" class="sidebar__link" id="reports">
+      <img src="${link.img}" alt="reports" class="sidebar__link-img" />
 
-    // </a>
-    
-    // `;
-    // }
+      <div class="sidebar__link-additional">
+        <span class="sidebar__link-text open">reports</span>
+        <img
+          src="/assets/chevron-down.svg"
+          class="sidebar__link-additional-chevron"
+        />
+      </div>
+
+      <div class="sidebar__link-additional-options">
+        <div class="additional-options__chevron">
+          <h1 class="dropdown-title">TIME</h1>
+          <p class="dropdown-link">Summary</p>
+          <p class="dropdown-link">Detailed</p>
+          <p class="dropdown-link">Weekly</p>
+          <p class="dropdown-link">Shared</p>
+          <h1 class="dropdown-title">TEAM</h1>
+          <p class="dropdown-link">Assignments</p>
+          <h1 class="dropdown-title">EXPENSE</h1>
+          <p class="dropdown-link">Detailed</p>
+        </div>
+      </div>
+    </a>
+    `;
+    }
 
     return `<a href="#" class="sidebar__link">
   <img src='${link.img}' alt='${link.name}' class="sidebar__link-img" />
@@ -92,15 +107,15 @@ isOpen ? toggleSidebar() : null;
 hamburgerMenu.addEventListener("click", () => toggleSidebar());
 
 // TODO:
-sidebarLinks.forEach((element) =>
-  element.addEventListener("click", (e) => {
-    RemoveOldActiveState();
-    const target = e.target as Element;
-    console.log(target);
-    target.classList.add("active");
-  })
-);
+// sidebarLinks.forEach((element) =>
+//   element.addEventListener("click", (e) => {
+//     RemoveOldActiveState();
+//     const target = e.target as Element;
+//     console.log(target);
+//     target.classList.add("active");
+//   })
+// );
 
-function RemoveOldActiveState() {
-  sidebarLinks.forEach((element) => element.classList.remove("active"));
-}
+// function RemoveOldActiveState() {
+//   sidebarLinks.forEach((element) => element.classList.remove("active"));
+// }
