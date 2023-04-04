@@ -4,36 +4,6 @@ import "./styles/sidebar.css";
 
 import { sidebarLinkData } from "./utils/fakeSidebar";
 
-/**
-createElement(
-  "div",
-  {
-    id: "divone",
-    click: function () {
-      alert("hello");
-    },
-  },
-  "Hello World!!",
-  document.querySelector<HTMLDivElement>("#app")!
-);
-createElement(
-  "img",
-  { class: "logo vanilla", src: `${typescriptLogo}` },
-  null,
-  document.querySelector<HTMLDivElement>("#app")!
-);
-createElement(
-  "div",
-  {
-    id: "divone",
-    click: function () {
-      alert("hello");
-    },
-  },
-  null,
-  document.querySelector<HTMLDivElement>("#app")!
-);
- */
 
 const generateSidebarLinks = (linkData: ISidebarLinks[]) => {
   return linkData.map((link) => {
@@ -83,39 +53,37 @@ const generateSidebarLinks = (linkData: ISidebarLinks[]) => {
   });
 };
 
-const hamburgerMenu = document.querySelector<HTMLButtonElement>(".nav__hamburger-link")!;
+const hamburgerMenu = document.querySelector(".nav__hamburger-link")!;
 const sidebarContainer = document.querySelector(".sidebar")!;
 
-generateSidebarLinks(sidebarLinkData).map((element) => {
-  sidebarContainer.innerHTML += element;
-});
+// generateSidebarLinks(sidebarLinkData).map((element) => {
+//   sidebarContainer.innerHTML += element;
+// });
 
-const sidebarLinksText = document.querySelectorAll<HTMLSpanElement>(".sidebar__link-text");
-const sidebarLinksTitle = document.querySelectorAll<HTMLDivElement>(".sidebar__link-title");
-const sidebarLinks = document.querySelectorAll<HTMLAnchorElement>(".sidebar__link");
+const sidebarLinksText = document.querySelectorAll(".sidebar__link-text");
+const sidebarLinksTitle = document.querySelectorAll(".sidebar__link-title");
+const sidebarLinks = document.querySelectorAll(".sidebar__link");
+const reportChevron = document.querySelector(".sidebar__link-additional-chevron");
+const reportsLink = document.querySelector("#reports")!;
+const additionalOptions = reportsLink.querySelector(".sidebar__link-additional-options") as HTMLElement;
 
 let isOpen = true;
 
 const toggleSidebar = () => {
+  isOpen = !isOpen;
   sidebarContainer.classList.toggle("open");
   sidebarLinksText.forEach((element) => element.classList.toggle("open"));
   sidebarLinksTitle.forEach((element) => element.classList.toggle("open"));
+  reportChevron?.classList.toggle("open");
 };
 
-isOpen ? toggleSidebar() : null;
 
 hamburgerMenu.addEventListener("click", () => toggleSidebar());
 
-// TODO:
-// sidebarLinks.forEach((element) =>
-//   element.addEventListener("click", (e) => {
-//     RemoveOldActiveState();
-//     const target = e.target as Element;
-//     console.log(target);
-//     target.classList.add("active");
-//   })
-// );
+reportsLink.addEventListener("mouseover", () => {
+  additionalOptions.style.width = isOpen ? "80%" : "250%";
+});
 
-// function RemoveOldActiveState() {
-//   sidebarLinks.forEach((element) => element.classList.remove("active"));
-// }
+reportsLink.addEventListener("mouseout", () => {
+  additionalOptions.style.width = "0";
+});

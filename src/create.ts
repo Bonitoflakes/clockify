@@ -3,14 +3,11 @@ interface HTMLAttributes {
   id?: string;
   src?: string;
   click?: () => void;
+  href?: string;
+  alt?: string;
 }
 
-export function createElement(
-  tag: string,
-  attributes: HTMLAttributes,
-  text: string | null,
-  parent?: HTMLElement
-) {
+export function createElement(tag: string, attributes: HTMLAttributes, text: string | null) {
   let x = document.createElement(tag);
   if (text) x.innerText = text;
   for (const [key, value] of Object.entries(attributes)) {
@@ -20,5 +17,9 @@ export function createElement(
     }
     x.setAttribute(key, value);
   }
-  parent?.append(x);
+  return x;
+}
+
+export function appendElement(child: HTMLElement, parent: HTMLElement) {
+  parent.append(child);
 }
