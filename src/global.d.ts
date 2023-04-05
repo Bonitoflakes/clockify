@@ -3,3 +3,7 @@ interface ISidebarLinks {
   img: string;
   title?: string;
 }
+
+interface ISidebar {
+  value: boolean;
+}

@@ -1,67 +1,44 @@
-console.clear();
+type Subscriber = () => void;
 
-let state = {
-  count: 1,
-  message: "Hello",
-  gibberish: false
-};
-
-const stateHandler = {
-  // get(target, props) {
-  //   console.log(`called get method: props: ${props}`);
-  //   return target[props];
-  // },
-
-  get: function (target, prop, receiver) {
-    // console.log(`GET ${prop}`);
-    return Reflect.get(target, prop, receiver);
-  },
-  // set(target, targetProps, newValue) {
-  //   console.log(`called set method: targetProps: ${targetProps}`);
-  //   // console.table(arguments);
-  //   console.log("==============================");
-  //   console.log("new", newValue);
-  //   return (target[targetProps] = newValue);
-  // }
-  set(target, prop, val, receiver) {
-    // console.table(arguments);
-    console.log(`SET ${prop}=${val}`);
-    // console.table(arguments);
-    return Reflect.set(target, prop, val, receiver);
-    // return Reflect.set(...arguments);
+export const useState = <T extends object | any[]>(initialState: T) => {
+  // Typeof state should always be an object or an array
+  if (!(typeof initialState === "object" && initialState !== null) && !Array.isArray(initialState)) {
+    throw new Error("initialState must be an object or an array");
   }
+
+  // Define the initalState
+  let state: T = initialState;
+  const subscribers = new Set<Subscriber>();
+
+  //   Create a new Proxy
+  const stateProxy = new Proxy(state, {
+    // Set Trap: sets the newly received value and updates the UI via Callback.
+    set(target, prop, val) {
+      // console.table(arguments);
+      console.log(`SET ${String(prop)}=${val}`);
+      // @ts-ignore
+      target[prop] = val;
+      subscribers.forEach((subscriber) => subscriber());
+      return true;
+    },
+  });
+
+  const subscribe = (subscriber: Subscriber) => {
+    subscribers.add(subscriber);
+    return () => subscribers.delete(subscriber);
+  };
+
+  //   Getter function for the state
+  const getState = () => stateProxy;
+
+  //   Setter function for the state
+  const setState = (newState: any) => {
+    console.log(newState);
+    for (const [key, value] of Object.entries(newState)) {
+      // @ts-ignore
+      stateProxy[key] = value;
+    }
+  };
+
+  return [getState(), setState, subscribe];
 };
-
-const getState = () => stateProxy;
-
-const setState = (a) => {
-  console.log(a);
-  for (const [key, value] of Object.entries(a)) {
-    // console.log(key, value);
-    // stateProxy.message = "bye";
-    stateProxy[key] = value;
-  }
-};
-
-const stateProxy = new Proxy(state, stateHandler);
-
-console.log(stateProxy.count);
-console.log(stateProxy.count);
-console.log(stateProxy.message);
-console.log(stateProxy.gibberish);
-stateProxy.count = 2;
-console.log(stateProxy.count);
-console.log(stateProxy.message);
-console.log(stateProxy.gibberish);
-
-const useState1 = () => [getState(), setState];
-
-const [customState, customSet] = useState1();
-console.log("==============================");
-
-console.log(customState.count);
-
-customSet({ gibberish: true, count: 1000 });
-console.log("==============================");
-
-console.log(customState);
