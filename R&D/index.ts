@@ -33,7 +33,6 @@ export const useState = <T extends object | any[]>(initialState: T) => {
 
   //   Setter function for the state
   const setState = (newState: any) => {
-    console.log(newState);
     for (const [key, value] of Object.entries(newState)) {
       // @ts-ignore
       stateProxy[key] = value;

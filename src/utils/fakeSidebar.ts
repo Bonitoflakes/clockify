@@ -8,6 +8,8 @@ import teams from "../../assets/teams.svg";
 import clients from "../../assets/clients.svg";
 import tags from "../../assets/tags.svg";
 import settings from "../../assets/settings.svg";
+import chevron from "../../assets/chevron-down.svg";
+
 
 export const sidebarLinkData: ISidebarLinks[] = [
   {
@@ -30,6 +32,14 @@ export const sidebarLinkData: ISidebarLinks[] = [
   {
     name: "reports",
     img: reports,
+    subLinks: {
+      img: chevron,
+      categories: [
+        { title: "TIME", links: ["Summary", "Detailed", "Weekly", "Shared"] },
+        { title: "TEAM", links: ["Assignments"] },
+        { title: "EXPENSE", links: ["Detailed"] },
+      ],
+    },
   },
   {
     name: "projects",
