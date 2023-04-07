@@ -1,8 +1,10 @@
+import { customLog } from "../src/utils/proxyLogger";
+
 type Subscriber = () => void;
 
-export const useState = <T extends object | any[]>(initialState: T) => {
+export const useState = <T extends object>(initialState: T) => {
   // Typeof state should always be an object or an array
-  if (!(typeof initialState === "object" && initialState !== null) && !Array.isArray(initialState)) {
+  if (!(typeof initialState === "object" && initialState !== null) && Array.isArray(initialState)) {
     throw new Error("initialState must be an object or an array");
   }
 
@@ -15,9 +17,9 @@ export const useState = <T extends object | any[]>(initialState: T) => {
     // Set Trap: sets the newly received value and updates the UI via Callback.
     set(target, prop, val) {
       // console.table(arguments);
-      console.log(`SET ${String(prop)}=${val}`);
+      customLog(target, prop, val);
       // @ts-ignore
-      target[prop] = val;
+      Reflect.set(target, prop, val);
       subscribers.forEach((subscriber) => subscriber());
       return true;
     },
@@ -29,7 +31,10 @@ export const useState = <T extends object | any[]>(initialState: T) => {
   };
 
   //   Getter function for the state
-  const getState = () => stateProxy;
+  const getState = () => {
+    console.log(state);
+    return state;
+  };
 
   //   Setter function for the state
   const setState = (newState: any) => {
