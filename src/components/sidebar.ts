@@ -34,7 +34,6 @@ export const generateSidebar = (data: ISidebarLinks[]) => {
     if (title) {
       const sidebarlinkTitle = generateTitle(title);
       sidebar.appendChild(sidebarlinkTitle);
-      return;
     }
 
     if (subLinks) {
@@ -84,45 +83,6 @@ export const generateSidebar = (data: ISidebarLinks[]) => {
   });
   return Promise.resolve();
 };
-
-// Attach event listeners and subscribe to state.
-// export const initializeSidebar = () => {
-//   const hamburgerMenu = $("nav__hamburger-link")!;
-//   const sidebarContainer = $("sidebar")!;
-//   const sidebarLinksText = $$("sidebar__link-text");
-//   const sidebarLinksTitle = $$("sidebar__link-title");
-//   const reportChevron = $("sidebar__link-additional-chevron")!;
-//   const reportsLink = document.querySelector("#reports")!;
-//   const additionalOptions = $("sidebar__link-additional-options");
-
-//   const [isOpenState, setIsOpenState, subscribe] = useState<ISidebar>({ value: true });
-
-//   const toggleSidebar = () => {
-//     sidebarContainer.classList.toggle("open");
-//     sidebarLinksText.forEach((element) => element.classList.toggle("open"));
-//     sidebarLinksTitle.forEach((element) => element.classList.toggle("open"));
-//     reportChevron.classList.toggle("open");
-//   };
-
-//   // @ts-ignore
-//   subscribe(toggleSidebar);
-
-//   // @ts-ignore
-//   hamburgerMenu.addEventListener("click", () => setIsOpenState({ value: !isOpenState.value }));
-
-//   reportsLink.addEventListener("mouseover", () => {
-//     // @ts-ignore
-//     additionalOptions.style.width = isOpenState.value ? "80%" : "250%";
-//     // @ts-ignore
-//     // console.log(isOpenState.value ? "80%" : "250%");
-//     // @ts-ignore
-//     // console.log("isOpenState:", isOpenState.value);
-//   });
-
-//   reportsLink.addEventListener("mouseout", () => {
-//     additionalOptions.style.width = "0";
-//   });
-// };
 
 export const initializeSidebar = () => {
   const hamburgerMenu = $("nav__hamburger-link")!;
