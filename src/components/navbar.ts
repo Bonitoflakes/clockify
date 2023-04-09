@@ -1,4 +1,4 @@
-import { createElement } from "../create";
+import { createElement } from "../utils/create";
 import hamburger from "../../assets/hamburger.svg";
 import logo from "../../assets/logo.svg";
 import clients from "../../assets/clients.svg";

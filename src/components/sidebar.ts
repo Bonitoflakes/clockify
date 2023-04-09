@@ -1,5 +1,5 @@
 import { proxy, subscribe } from "../../R&D/proxy";
-import { createElement } from "../create";
+import { createElement } from "../utils/create";
 import { $, $$ } from "../utils/query";
 
 interface ISidebar {

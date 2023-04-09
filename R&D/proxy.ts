@@ -41,7 +41,7 @@ export function proxy(initialState) {
         // console.log("after:", value);
       }
 
-      Reflect.set(...arguments);
+      Reflect.set(target, property, value);
       subscribers.forEach((subscriber) => subscriber());
       return true;
     },
@@ -62,8 +62,6 @@ export function proxy(initialState) {
 
   initialised = true;
 
-  // proxySubscribersMap.set(proxiedObject, subscribers);
-
   return proxiedObject;
 }
 
@@ -72,53 +70,3 @@ export function subscribe(store, cb) {
   return () => store[SUBSCRIBE_METHOD].delete(cb);
 }
 
-// CUSTOM TESTS
-() => {
-  const fetchPokemon = async () => {
-    const data = await fetch("https://pokeapi.co/api/v2/pokemon/ditto");
-    const { abilities, moves } = await data.json();
-    return { ...abilities, ...moves };
-  };
-
-  const Person = proxy({
-    name: "Rishab",
-    age: 40,
-    others: { a: 1 },
-    arr: [1, 2, 4],
-    superNested: [
-      {
-        color: "purple",
-        type: "minivan",
-        registration: "Wed Feb 01 2017 00:00:00 GMT+0100 (GMT+01:00)",
-        capacity: 7,
-      },
-      {
-        color: "red",
-        type: "station wagon",
-        registration: "Sat Mar 03 2018 01:00:00 GMT+0100 (GMT+01:00)",
-        capacity: 5,
-      },
-    ],
-  });
-
-  // subscribe(Person, () => alert("Something changed"));
-  // subscribe(Person.others, () => alert("Something changed in the nested child"));
-  // subscribe(Person.arr, () => alert("Something changed in the nested child"));
-  subscribe(Person, () => alert("Something changed"));
-
-  // Person.name = "Rishab";
-  // Person.name = "Rishab";
-  async function name() {
-    const ditto = await fetchPokemon();
-    Person.ditto = ditto;
-    console.table(Person.ditto);
-  }
-  name();
-
-  // Person.others.a = 10;
-  // Person.others.a = 10;
-  // Person.others.a = 100;
-  // Person.others.a = 100;
-  // Person.arr[1] = 0;
-  // Person.arr[1] = 0;
-};
