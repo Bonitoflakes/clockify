@@ -5,6 +5,8 @@ interface HTMLAttributes {
   click?: () => void;
   href?: string;
   alt?: string;
+  type?: "text" | "number";
+  placeholder?: string;
 }
 
 export function createElement(tag: string, attributes: HTMLAttributes, text?: string) {
@@ -21,4 +23,3 @@ export function createElement(tag: string, attributes: HTMLAttributes, text?: st
   }
   return element;
 }
-
