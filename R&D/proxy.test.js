@@ -1,7 +1,28 @@
-import { proxy, subscribe } from "./proxy";
+import { createProxy as proxy, subscribe, subscribePrimitive } from "./proxy2";
 import { describe, expect, it, vi } from "vitest";
 
 describe("subscribe", () => {
+  it("should call subscription on primitive values", () => {
+    const Person = proxy({
+      name: "Rishab",
+      age: 40,
+      others: { a: 1, b: [1, 2] },
+      arr: [1, 2, 4],
+    });
+
+    const parent = vi.fn();
+    const child1 = vi.fn();
+    const child2 = vi.fn();
+
+    subscribePrimitive("name", child2);
+    subscribePrimitive("name", child2);
+    Person.name = "name";
+    Person.name = "name";
+    Person.name = "name";
+
+    expect(child2).toBeCalledTimes(1);
+  });
+
   it("should call subscription on differnt levels of nesting", () => {
     const Person = proxy({
       name: "Rishab",
