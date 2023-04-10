@@ -1,10 +1,19 @@
 import "./styles/index.css";
 import "./styles/nav.css";
 import "./styles/sidebar.css";
+import "./styles/timetracker-recorder.css";
 
-import { generateSidebar, initializeSidebar } from "./components/sidebar";
+import {
+  generateNavbar,
+  generateSidebar,
+  generateTimer,
+  initializeSidebar,
+  initializeTimer,
+} from "./components";
+
 import { sidebarLinkData } from "./utils/fakeSidebar";
-import { generateNavbar } from "./components/navbar";
 
 generateNavbar();
 generateSidebar(sidebarLinkData).then(() => initializeSidebar());
+generateTimer();
+initializeTimer();

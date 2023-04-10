@@ -1,4 +1,5 @@
-import { proxy, subscribe } from "../../R&D/proxy";
+import { createProxy as proxy, subscribe, subscribePrimitive } from "../../R&D/proxy2";
+import { Store } from "../globalStore";
 import { createElement } from "../utils/create";
 import { $, $$ } from "../utils/query";
 
@@ -93,22 +94,20 @@ export const initializeSidebar = () => {
   const reportsLink = document.querySelector("#reports")!;
   const additionalOptions = $("sidebar__link-additional-options");
 
-  const Store = proxy({ isSideBarOpen: true });
-
-  const renderSidebar = () => {
+  const toggleSidebar = () => {
     sidebarContainer.classList.toggle("open");
     sidebarLinksText.forEach((element) => element.classList.toggle("open"));
     sidebarLinksTitle.forEach((element) => element.classList.toggle("open"));
     reportChevron.classList.toggle("open");
   };
 
-  subscribe(Store, renderSidebar);
+  subscribePrimitive("isSidebarOpen", toggleSidebar);
+  subscribePrimitive("isSidebarOpen", () => console.log("subbbb"));
 
-  hamburgerMenu.addEventListener("click", () => (Store.isSideBarOpen = !Store.isSideBarOpen));
+  hamburgerMenu.addEventListener("click", () => (Store.isSidebarOpen = !Store.isSidebarOpen));
 
   reportsLink.addEventListener("mouseover", () => {
-    additionalOptions.style.width = Store.isSideBarOpen ? "80%" : "250%";
-    // console.log(Store.isSideBarOpen ? "80%" : "250%");
+    additionalOptions.style.width = Store.isSidebarOpen ? "80%" : "250%";
   });
 
   reportsLink.addEventListener("mouseout", () => {
