@@ -94,11 +94,6 @@ export const initializeTimer = () => {
   const priceButton = $("timetracker-recorder__price-button");
   const timerUI = $("timetracker-recorder__timer");
 
-  const toggleTimeTracker = () => {
-    timeTracker?.classList.toggle("open");
-  };
-  subscribePrimitive("isSidebarOpen", toggleTimeTracker);
-
   const timer = [0, 0, 0];
   let hrs;
   let mins;
@@ -106,33 +101,64 @@ export const initializeTimer = () => {
   let isStarted = false;
   let timerID: any;
 
+  const toggleTimeTracker = () => {
+    timeTracker?.classList.toggle("open");
+  };
+
   const incrementTimer = () => {
     timer[2]++;
-    if (timer[2] > 60) {
+
+    if (timer[2] >= 60) {
       timer[1]++;
       timer[2] = 0;
     }
-    if (timer[1] > 60) {
+
+    if (timer[1] >= 60) {
       timer[0]++;
       timer[1] = 0;
     }
 
-    timer[0].toString().length === 1 ? (hrs = `0${timer[0]}`) : (hrs = timer[0]);
-    timer[1].toString().length === 1 ? (mins = `0${timer[1]}`) : (mins = timer[1]);
-    timer[2].toString().length === 1 ? (secs = `0${timer[2]}`) : (secs = timer[2]);
+    hrs = timer[0].toString().padStart(2, "0");
+    mins = timer[1].toString().padStart(2, "0");
+    secs = timer[2].toString().padStart(2, "0");
 
-    timerUI.innerText = `${hrs}:${mins}:${secs}`;
-
-    return incrementTimer;
+    timerUI.textContent = `${hrs}:${mins}:${secs}`;
   };
 
+  const calculateTime = (start: number) => {
+    const BASE_INTERVAL = 1000;
+
+    const current = performance.now();
+    const elapsed = current - start;
+    const drift = elapsed % BASE_INTERVAL;
+    const nextTick = BASE_INTERVAL - drift;
+
+    console.log("drift", drift);
+    console.log("nextTick", nextTick);
+
+    incrementTimer();
+
+    timerID = setTimeout(() => calculateTime(start), nextTick);
+  };
+
+  // SUBSCRIPTIONS
+  subscribePrimitive("isSidebarOpen", toggleTimeTracker);
+
+  // EVENT LISTENERS
   startButton.addEventListener("click", () => {
-    isStarted ? clearInterval(timerID) : (timerID = setInterval(incrementTimer(), 1000));
+ 
+    const start = performance.now();
     isStarted = !isStarted;
-    isStarted ? (startButton.innerText = "STOP") : (startButton.innerText = "START");
-    isStarted
-      ? (startButton.style.background = "red")
-      : (startButton.style.background = "var(--primary-color)");
+
+    if (isStarted) {
+      calculateTime(start);
+      startButton.textContent = "STOP";
+      startButton.style.background = "red";
+    } else {
+      clearTimeout(timerID);
+      startButton.textContent = "START";
+      startButton.style.background = "var(--primary-color)";
+    }
   });
 
   priceButton.addEventListener("click", () => priceButton.classList.toggle("active"));
