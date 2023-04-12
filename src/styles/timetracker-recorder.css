@@ -1,0 +1,107 @@
+.line {
+  min-height: 4rem;
+  background-color: rgb(225, 225, 225);
+  width: 1px;
+}
+
+.timetracker-recorder {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgb(198, 210, 217);
+  border-radius: 2px;
+  padding: 1rem;
+  background: white;
+  margin: 2rem;
+  box-shadow: 0 0 20px #0000001a;
+  margin-left: 9rem;
+  transition: 0.3s margin ease-in-out;
+}
+
+.timetracker-recorder.open {
+  margin: 2rem;
+  margin-left: 22rem;
+}
+
+.timetracker-recorder__input {
+  border: 1px solid transparent;
+  outline: none;
+  flex: 1;
+  padding: 1rem;
+  font-size: 1.4rem;
+  color: rgb(51, 51, 51);
+  transition: border-color 0.3s ease-in-out;
+}
+
+.timetracker-recorder__input::placeholder {
+  color: rgb(146, 155, 161);
+  font-size: 1.4rem;
+}
+
+.timetracker-recorder:hover .timetracker-recorder__input,
+.timetracker-recorder__input:active {
+  border: 1px solid rgb(198, 210, 217);
+}
+
+.timetracker-recorder__newproject-button {
+  display: flex;
+  align-items: center;
+  color: var(--primary-color);
+  padding: 0 4rem 0 1rem;
+}
+
+.timetracker-recorder__newproject-button:hover {
+  text-decoration: underline;
+}
+
+.newproject-button__img {
+  width: 2rem;
+  height: 2rem;
+  margin-right: 1rem;
+}
+
+.timetracker-recorder__price-button {
+  padding: 0 2rem;
+  font-size: 2.4rem;
+  color: #999;
+  cursor: pointer;
+}
+
+.timetracker-recorder__price-button span {
+  font-weight: 100 !important;
+}
+
+.timetracker-recorder__price-button.active {
+  padding: 0 2rem;
+  font-size: 2.4rem;
+  font-weight: 400;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.timetracker-recorder__start-button {
+  background: var(--primary-color);
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  color: white;
+  padding: 1.2rem 1.05rem;
+  min-width: 10rem;
+}
+
+.timetracker-recorder__tags-button {
+  padding: 0 2rem;
+}
+
+.timetracker-recorder__timer {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #333333;
+  padding: 0 2rem;
+}
+
+.timetracker-recorder__togglemode {
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  color: var(--primary-color);
+}

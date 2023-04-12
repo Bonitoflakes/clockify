@@ -1,4 +1,5 @@
-import { proxy, subscribe } from "../../R&D/proxy";
+import { createProxy as proxy, subscribe, subscribePrimitive } from "../../R&D/proxy2";
+import { Store } from "../globalStore";
 import { createElement } from "../utils/create";
 import { $, $$ } from "../utils/query";
 
@@ -34,7 +35,6 @@ export const generateSidebar = (data: ISidebarLinks[]) => {
     if (title) {
       const sidebarlinkTitle = generateTitle(title);
       sidebar.appendChild(sidebarlinkTitle);
-      return;
     }
 
     if (subLinks) {
@@ -85,45 +85,6 @@ export const generateSidebar = (data: ISidebarLinks[]) => {
   return Promise.resolve();
 };
 
-// Attach event listeners and subscribe to state.
-// export const initializeSidebar = () => {
-//   const hamburgerMenu = $("nav__hamburger-link")!;
-//   const sidebarContainer = $("sidebar")!;
-//   const sidebarLinksText = $$("sidebar__link-text");
-//   const sidebarLinksTitle = $$("sidebar__link-title");
-//   const reportChevron = $("sidebar__link-additional-chevron")!;
-//   const reportsLink = document.querySelector("#reports")!;
-//   const additionalOptions = $("sidebar__link-additional-options");
-
-//   const [isOpenState, setIsOpenState, subscribe] = useState<ISidebar>({ value: true });
-
-//   const toggleSidebar = () => {
-//     sidebarContainer.classList.toggle("open");
-//     sidebarLinksText.forEach((element) => element.classList.toggle("open"));
-//     sidebarLinksTitle.forEach((element) => element.classList.toggle("open"));
-//     reportChevron.classList.toggle("open");
-//   };
-
-//   // @ts-ignore
-//   subscribe(toggleSidebar);
-
-//   // @ts-ignore
-//   hamburgerMenu.addEventListener("click", () => setIsOpenState({ value: !isOpenState.value }));
-
-//   reportsLink.addEventListener("mouseover", () => {
-//     // @ts-ignore
-//     additionalOptions.style.width = isOpenState.value ? "80%" : "250%";
-//     // @ts-ignore
-//     // console.log(isOpenState.value ? "80%" : "250%");
-//     // @ts-ignore
-//     // console.log("isOpenState:", isOpenState.value);
-//   });
-
-//   reportsLink.addEventListener("mouseout", () => {
-//     additionalOptions.style.width = "0";
-//   });
-// };
-
 export const initializeSidebar = () => {
   const hamburgerMenu = $("nav__hamburger-link")!;
   const sidebarContainer = $("sidebar")!;
@@ -133,22 +94,20 @@ export const initializeSidebar = () => {
   const reportsLink = document.querySelector("#reports")!;
   const additionalOptions = $("sidebar__link-additional-options");
 
-  const Store = proxy({ isSideBarOpen: true });
-
-  const renderSidebar = () => {
+  const toggleSidebar = () => {
     sidebarContainer.classList.toggle("open");
     sidebarLinksText.forEach((element) => element.classList.toggle("open"));
     sidebarLinksTitle.forEach((element) => element.classList.toggle("open"));
     reportChevron.classList.toggle("open");
   };
 
-  subscribe(Store, renderSidebar);
+  subscribePrimitive("isSidebarOpen", toggleSidebar);
+  subscribePrimitive("isSidebarOpen", () => console.log("subbbb"));
 
-  hamburgerMenu.addEventListener("click", () => (Store.isSideBarOpen = !Store.isSideBarOpen));
+  hamburgerMenu.addEventListener("click", () => (Store.isSidebarOpen = !Store.isSidebarOpen));
 
   reportsLink.addEventListener("mouseover", () => {
-    additionalOptions.style.width = Store.isSideBarOpen ? "80%" : "250%";
-    // console.log(Store.isSideBarOpen ? "80%" : "250%");
+    additionalOptions.style.width = Store.isSidebarOpen ? "80%" : "250%";
   });
 
   reportsLink.addEventListener("mouseout", () => {

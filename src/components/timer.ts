@@ -1,61 +1,99 @@
+import plusBlueReq from "../../assets/plus-blue-req.svg";
+import clockIcon from "../../assets/clock-blue.svg";
+import listIcon from "../../assets/list-blue.svg";
+import tagGray from "../../assets/tag-gray.svg";
+
 import { createElement } from "../utils/create";
+import { $ } from "../utils/query";
+import { subscribePrimitive } from "../../R&D/proxy2";
 
-let timer = [0, 0, 0, 0];
+export const generateTimer = () => {
+  const timerTracker = createElement("div", { class: ["timetracker-recorder", "open"] });
 
-function generateTimer() {
-  const a = createElement(
-    "p",
-    { id: "timer" },
-    `day: ${timer[0]} hrs: ${timer[1]} mins: 0${timer[2]} secs: 0${timer[3]}`
+  const input = createElement("input", {
+    type: "text",
+    class: ["timetracker-recorder__input"],
+    placeholder: "What are you working on?",
+  });
+  //
+  //
+  //
+  const plusImg = createElement("img", { src: plusBlueReq, alt: "" });
+  const plusSpan = createElement("span", { class: ["newproject-button__img"] });
+  plusSpan.appendChild(plusImg);
+  //
+  //
+  //
+  const projectBtn = createElement(
+    "button",
+    { class: ["timetracker-recorder__newproject-button"] },
+    "Project"
   );
-  document.getElementById("app")?.append(a);
-}
+  projectBtn.insertBefore(plusSpan, projectBtn.firstChild);
+  //
+  //
+  //
+  const line1 = createElement("div", { class: ["line"] });
+  const line2 = createElement("div", { class: ["line"] });
+  //
+  //
+  //
 
-const incrementTimer = () => {
-  timer[3]++;
-  if (timer[3] > 60) {
-    timer[2]++;
-    timer[3] = 0;
-  }
-  if (timer[2] > 60) {
-    timer[1]++;
-    timer[2] = 0;
-  }
-  if (timer[1] >= 24) {
-    timer[0]++;
-    timer[1] = 0;
-  }
+  const tagImg = createElement("img", { src: tagGray, alt: "" });
+  const tagBtn = createElement("button", { class: ["timetracker-recorder__tags-button"] });
+  tagBtn.appendChild(tagImg);
+  //
+  //
+  //
+  const billableSpan = createElement("span", {}, " $ ");
+  const billableBtn = createElement("button", { class: ["timetracker-recorder__price-button"] });
+  billableBtn.appendChild(billableSpan);
 
-  let hrs;
-  if (timer[1].toString().length === 1) {
-    hrs = `0${timer[1]}`;
-  } else {
-    hrs = `${timer[1]}`;
-  }
+  //
+  //
+  //
 
-  let mins;
-  if (timer[2].toString().length === 1) {
-    mins = `0${timer[2]}`;
-  } else {
-    mins = `${timer[2]}`;
-  }
+  const stopwatch = createElement("div", { class: ["timetracker-recorder__timer"] }, "00:00:00");
 
-  let secs;
-  if (timer[3].toString().length === 1) {
-    secs = `0${timer[3]}`;
-  } else {
-    secs = `${timer[3]}`;
-  }
+  const startBtn = createElement("button", { class: ["timetracker-recorder__start-button"] }, "start");
 
-  document.getElementById("timer")!.innerText = `day: ${timer[0]} hrs: ${hrs} mins: ${mins} secs: ${secs}`;
-  console.log(timer);
+  //
+  //
+  //
+  const clockImg = createElement("img", { src: clockIcon, alt: "" });
+  const clockLink = createElement("a", { href: "" });
+
+  const listImg = createElement("img", { src: listIcon, alt: "", class: ["active-mode"] });
+  const listLink = createElement("a", { href: "", class: ["active-mode"] });
+
+  const toggleMode = createElement("div", { class: ["timetracker-recorder__togglemode"] });
+
+  clockLink.appendChild(clockImg);
+  listLink.appendChild(listImg);
+  toggleMode.append(clockLink, listLink);
+
+  timerTracker.append(
+    input,
+    projectBtn,
+    line1,
+    tagBtn,
+    line1,
+    billableBtn,
+    line1,
+    stopwatch,
+    startBtn,
+    toggleMode
+  );
+
+  document.getElementById("app")!.append(timerTracker);
 };
 
-let isStarted = false;
-let timerID: any;
-document.querySelector("#timer-btn")!.addEventListener("click", () => {
-  isStarted ? clearInterval(timerID) : (timerID = setInterval(incrementTimer, 1000));
-  isStarted = !isStarted;
-});
+export const initializeTimer = () => {
+  const timeTracker = $("timetracker-recorder");
 
-export { timer, incrementTimer, generateTimer };
+  const toggleTimeTracker = () => {
+    timeTracker?.classList.toggle("open");
+  };
+
+  subscribePrimitive("isSidebarOpen", toggleTimeTracker);
+};
