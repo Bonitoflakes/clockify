@@ -85,6 +85,7 @@
   color: white;
   padding: 1.2rem 1.05rem;
   min-width: 10rem;
+  transition: all 0.3s ease;
 }
 
 .timetracker-recorder__tags-button {
@@ -95,7 +96,8 @@
   font-size: 1.8rem;
   font-weight: 500;
   color: #333333;
-  padding: 0 2rem;
+  margin: 0 2rem;
+  min-width: 8rem;
 }
 
 .timetracker-recorder__togglemode {

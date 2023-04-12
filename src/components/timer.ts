@@ -4,7 +4,7 @@ import listIcon from "../../assets/list-blue.svg";
 import tagGray from "../../assets/tag-gray.svg";
 
 import { createElement } from "../utils/create";
-import { $ } from "../utils/query";
+import { $, $$ } from "../utils/query";
 import { subscribePrimitive } from "../../R&D/proxy2";
 
 export const generateTimer = () => {
@@ -90,10 +90,50 @@ export const generateTimer = () => {
 
 export const initializeTimer = () => {
   const timeTracker = $("timetracker-recorder");
+  const startButton = $("timetracker-recorder__start-button");
+  const priceButton = $("timetracker-recorder__price-button");
+  const timerUI = $("timetracker-recorder__timer");
 
   const toggleTimeTracker = () => {
     timeTracker?.classList.toggle("open");
   };
-
   subscribePrimitive("isSidebarOpen", toggleTimeTracker);
+
+  const timer = [0, 0, 0];
+  let hrs;
+  let mins;
+  let secs;
+  let isStarted = false;
+  let timerID: any;
+
+  const incrementTimer = () => {
+    timer[2]++;
+    if (timer[2] > 60) {
+      timer[1]++;
+      timer[2] = 0;
+    }
+    if (timer[1] > 60) {
+      timer[0]++;
+      timer[1] = 0;
+    }
+
+    timer[0].toString().length === 1 ? (hrs = `0${timer[0]}`) : (hrs = timer[0]);
+    timer[1].toString().length === 1 ? (mins = `0${timer[1]}`) : (mins = timer[1]);
+    timer[2].toString().length === 1 ? (secs = `0${timer[2]}`) : (secs = timer[2]);
+
+    timerUI.innerText = `${hrs}:${mins}:${secs}`;
+
+    return incrementTimer;
+  };
+
+  startButton.addEventListener("click", () => {
+    isStarted ? clearInterval(timerID) : (timerID = setInterval(incrementTimer(), 1000));
+    isStarted = !isStarted;
+    isStarted ? (startButton.innerText = "STOP") : (startButton.innerText = "START");
+    isStarted
+      ? (startButton.style.background = "red")
+      : (startButton.style.background = "var(--primary-color)");
+  });
+
+  priceButton.addEventListener("click", () => priceButton.classList.toggle("active"));
 };
