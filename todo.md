@@ -1,2 +1,3 @@
-[ ] - Sidebar icons are not centered. They do not align with the hamburger menu. Text width is zero.
-[ ] - Toggle Active state in sidebar.
+- [x] Sidebar icons are not centered. They do not align with the hamburger menu. Text width is zero.
+- [x] Toggle Active state in sidebar.
+- [ ] Picker is firing click of the document upon resizing, leading to premature-closing.

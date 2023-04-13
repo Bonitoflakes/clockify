@@ -1,12 +1,10 @@
-import plusBlueReq from "../../assets/plus-blue-req.svg";
-import clockIcon from "../../assets/clock-blue.svg";
-import listIcon from "../../assets/list-blue.svg";
-import tagGray from "../../assets/tag-gray.svg";
+import plusBlueReq from "@assets/plus-blue-req.svg";
+import clockIcon from "@assets/clock-blue.svg";
+import listIcon from "@assets/list-blue.svg";
+import tagGray from "@assets/tag-gray.svg";
 
-import { createElement } from "../utils/create";
-import { $ } from "../utils/query";
-
-import { Store, subscribe } from "../globalStore";
+import { Store, subscribe, subscribePrimitive } from "@store";
+import { createElement, $, clickOutsideToCloseElement, stopPropagation, stopSpacePropagation } from "@utils";
 
 export const generateTimer = () => {
   const timerTracker = createElement("div", { class: ["timetracker-recorder", "open"] });
@@ -18,11 +16,9 @@ export const generateTimer = () => {
   });
   //
   //
-  //
   const plusImg = createElement("img", { src: plusBlueReq, alt: "" });
   const plusSpan = createElement("span", { class: ["newproject-button__img"] });
   plusSpan.appendChild(plusImg);
-  //
   //
   //
   const projectBtn = createElement(
@@ -33,40 +29,34 @@ export const generateTimer = () => {
   projectBtn.insertBefore(plusSpan, projectBtn.firstChild);
   //
   //
-  //
   const line1 = createElement("div", { class: ["line"] });
   const line2 = createElement("div", { class: ["line"] });
+  const line3 = createElement("div", { class: ["line"] });
   //
   //
-  //
-
   const tagImg = createElement("img", { src: tagGray, alt: "" });
   const tagBtn = createElement("button", { class: ["timetracker-recorder__tags-button"] });
   tagBtn.appendChild(tagImg);
   //
   //
-  //
   const billableSpan = createElement("span", {}, " $ ");
   const billableBtn = createElement("button", { class: ["timetracker-recorder__price-button"] });
   billableBtn.appendChild(billableSpan);
-
   //
   //
-  //
-
   const stopwatch = createElement("div", { class: ["timetracker-recorder__timer"] }, "00:00:00");
 
   const startBtn = createElement("button", { class: ["timetracker-recorder__start-button"] }, "start");
-
-  //
   //
   //
   const clockImg = createElement("img", { src: clockIcon, alt: "" });
   const clockLink = createElement("a", { href: "" });
-
+  //
+  //
   const listImg = createElement("img", { src: listIcon, alt: "", class: ["active-mode"] });
   const listLink = createElement("a", { href: "", class: ["active-mode"] });
-
+  //
+  //
   const toggleMode = createElement("div", { class: ["timetracker-recorder__togglemode"] });
 
   clockLink.appendChild(clockImg);
@@ -78,15 +68,16 @@ export const generateTimer = () => {
     projectBtn,
     line1,
     tagBtn,
-    line1,
+    line2,
     billableBtn,
-    line1,
+    line3,
     stopwatch,
     startBtn,
     toggleMode
   );
 
   document.getElementById("app")!.append(timerTracker);
+  return Promise.resolve();
 };
 
 let timerID: NodeJS.Timeout;
@@ -94,9 +85,16 @@ let timerID: NodeJS.Timeout;
 export const initializeTimer = () => {
   const startButton = $("timetracker-recorder__start-button");
   const priceButton = $("timetracker-recorder__price-button");
+  const projectButton = $("timetracker-recorder__newproject-button");
+  const timeTracker = $("timetracker-recorder");
+
+  const toggleTimeTracker = () => {
+    timeTracker?.classList.toggle("open");
+  };
 
   // SUBSCRIPTIONS
   subscribe(Store.timer, updateTimerUI);
+  subscribePrimitive("isSidebarOpen", toggleTimeTracker);
 
   // EVENT LISTENERS
   startButton.addEventListener("click", () => {
@@ -112,6 +110,24 @@ export const initializeTimer = () => {
       startButton.textContent = "START";
       startButton.style.background = "var(--primary-color)";
     }
+  });
+
+  const closePicker = (e: MouseEvent) => {
+    const picker = $("picker");
+    clickOutsideToCloseElement(e, picker, projectButton, closePicker);
+  };
+
+  projectButton.addEventListener("click", () => {
+    const picker = $("picker");
+
+    picker.addEventListener("click", stopPropagation);
+    picker.addEventListener("keyup", stopSpacePropagation);
+
+    picker.classList.toggle("active");
+    picker.style.height = "auto";
+
+    // close on click outside the picker
+    document.addEventListener("click", closePicker);
   });
 
   priceButton.addEventListener("click", () => priceButton.classList.toggle("active"));

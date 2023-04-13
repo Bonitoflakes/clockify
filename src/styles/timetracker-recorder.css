@@ -47,6 +47,7 @@
   align-items: center;
   color: var(--primary-color);
   padding: 0 4rem 0 1rem;
+  position: relative;
 }
 
 .timetracker-recorder__newproject-button:hover {
