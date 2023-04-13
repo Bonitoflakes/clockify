@@ -3,10 +3,6 @@ import { Store } from "../globalStore";
 import { createElement } from "../utils/create";
 import { $, $$ } from "../utils/query";
 
-interface ISidebar {
-  value: boolean;
-}
-
 // Helper functions
 const generateLink = (id?: string) => {
   if (id) {
@@ -101,8 +97,10 @@ export const initializeSidebar = () => {
     reportChevron.classList.toggle("open");
   };
 
+  // SUBSCRIPTIONS
   subscribePrimitive("isSidebarOpen", toggleSidebar);
-  subscribePrimitive("isSidebarOpen", () => console.log("subbbb"));
+
+  // EVENTS
 
   hamburgerMenu.addEventListener("click", () => (Store.isSidebarOpen = !Store.isSidebarOpen));
 

@@ -13,5 +13,8 @@
     "typescript": "^4.6.4",
     "vite": "^3.2.3",
     "vitest": "^0.29.8"
+  },
+  "dependencies": {
+    "logrocket": "^4.0.0"
   }
 }

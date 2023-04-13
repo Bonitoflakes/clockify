@@ -13,6 +13,10 @@ import {
 
 import { sidebarLinkData } from "./utils/fakeSidebar";
 
+import LogRocket from "logrocket";
+
+ LogRocket.init("kaaavr/clockify");
+
 generateNavbar();
 generateSidebar(sidebarLinkData).then(() => initializeSidebar());
 generateTimer();

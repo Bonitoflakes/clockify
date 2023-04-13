@@ -4,8 +4,9 @@ import listIcon from "../../assets/list-blue.svg";
 import tagGray from "../../assets/tag-gray.svg";
 
 import { createElement } from "../utils/create";
-import { $, $$ } from "../utils/query";
-import { subscribePrimitive } from "../../R&D/proxy2";
+import { $ } from "../utils/query";
+
+import { Store, subscribe } from "../globalStore";
 
 export const generateTimer = () => {
   const timerTracker = createElement("div", { class: ["timetracker-recorder", "open"] });
@@ -88,69 +89,21 @@ export const generateTimer = () => {
   document.getElementById("app")!.append(timerTracker);
 };
 
+let timerID: NodeJS.Timeout;
+
 export const initializeTimer = () => {
-  const timeTracker = $("timetracker-recorder");
   const startButton = $("timetracker-recorder__start-button");
   const priceButton = $("timetracker-recorder__price-button");
-  const timerUI = $("timetracker-recorder__timer");
-
-  const timer = [0, 0, 0];
-  let hrs;
-  let mins;
-  let secs;
-  let isStarted = false;
-  let timerID: any;
-
-  const toggleTimeTracker = () => {
-    timeTracker?.classList.toggle("open");
-  };
-
-  const incrementTimer = () => {
-    timer[2]++;
-
-    if (timer[2] >= 60) {
-      timer[1]++;
-      timer[2] = 0;
-    }
-
-    if (timer[1] >= 60) {
-      timer[0]++;
-      timer[1] = 0;
-    }
-
-    hrs = timer[0].toString().padStart(2, "0");
-    mins = timer[1].toString().padStart(2, "0");
-    secs = timer[2].toString().padStart(2, "0");
-
-    timerUI.textContent = `${hrs}:${mins}:${secs}`;
-  };
-
-  const calculateTime = (start: number) => {
-    const BASE_INTERVAL = 1000;
-
-    const current = performance.now();
-    const elapsed = current - start;
-    const drift = elapsed % BASE_INTERVAL;
-    const nextTick = BASE_INTERVAL - drift;
-
-    console.log("drift", drift);
-    console.log("nextTick", nextTick);
-
-    incrementTimer();
-
-    timerID = setTimeout(() => calculateTime(start), nextTick);
-  };
 
   // SUBSCRIPTIONS
-  subscribePrimitive("isSidebarOpen", toggleTimeTracker);
+  subscribe(Store.timer, updateTimerUI);
 
   // EVENT LISTENERS
   startButton.addEventListener("click", () => {
- 
     const start = performance.now();
-    isStarted = !isStarted;
+    Store.isTimerStarted = !Store.isTimerStarted;
 
-    if (isStarted) {
+    if (Store.isTimerStarted) {
       calculateTime(start);
       startButton.textContent = "STOP";
       startButton.style.background = "red";
@@ -162,4 +115,45 @@ export const initializeTimer = () => {
   });
 
   priceButton.addEventListener("click", () => priceButton.classList.toggle("active"));
+};
+
+const incrementTimer = () => {
+  Store.timer[2]++;
+
+  if (Store.timer[2] >= 60) {
+    Store.timer[1]++;
+    Store.timer[2] = 0;
+  }
+
+  if (Store.timer[1] >= 60) {
+    Store.timer[0]++;
+    Store.timer[1] = 0;
+  }
+};
+
+const calculateTime = (start: number) => {
+  const BASE_INTERVAL = 1000;
+
+  const current = performance.now();
+  const elapsed = current - start;
+  const drift = elapsed % BASE_INTERVAL;
+  const nextTick = BASE_INTERVAL - drift;
+
+  // console.log("drift", drift);
+  // console.log("nextTick", nextTick);
+
+  incrementTimer();
+
+  timerID = setTimeout(() => calculateTime(start), nextTick);
+};
+
+const updateTimerUI = () => {
+  const timerUI = $("timetracker-recorder__timer");
+
+  const hrs = Store.timer[0].toString().padStart(2, "0");
+  const mins = Store.timer[1].toString().padStart(2, "0");
+  const secs = Store.timer[2].toString().padStart(2, "0");
+
+  timerUI.textContent = `${hrs}:${mins}:${secs}`;
+  document.title = `${hrs}:${mins}:${secs} - Clockify`;
 };
