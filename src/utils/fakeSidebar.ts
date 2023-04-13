@@ -1,15 +1,14 @@
-import dashboard from "../../assets/dashboard.svg";
-import timesheet from "../../assets/timesheet.svg";
-import timetracker from "../../assets/time-tracker.svg";
-import projects from "../../assets/projects.svg";
-import reports from "../../assets/reports.svg";
-import calendar from "../../assets/calendar.svg";
-import teams from "../../assets/teams.svg";
-import clients from "../../assets/clients.svg";
-import tags from "../../assets/tags.svg";
-import settings from "../../assets/settings.svg";
-import chevron from "../../assets/chevron-down.svg";
-
+import dashboard from "@assets/dashboard.svg";
+import timesheet from "@assets/timesheet.svg";
+import timetracker from "@assets/time-tracker.svg";
+import projects from "@assets/projects.svg";
+import reports from "@assets/reports.svg";
+import calendar from "@assets/calendar.svg";
+import teams from "@assets/teams.svg";
+import clients from "@assets/clients.svg";
+import tags from "@assets/tags.svg";
+import settings from "@assets/settings.svg";
+import chevron from "@assets/chevron-down.svg";
 
 export const sidebarLinkData: ISidebarLinks[] = [
   {

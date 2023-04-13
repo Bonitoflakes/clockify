@@ -1,9 +1,9 @@
-import { createElement } from "../utils/create";
-import hamburger from "../../assets/hamburger.svg";
-import logo from "../../assets/logo.svg";
-import clients from "../../assets/clients.svg";
-import help from "../../assets/help.svg";
-import notifications from "../../assets/notification.svg";
+import { createElement } from "@utils";
+import hamburger from "@assets/hamburger.svg";
+import logo from "@assets/logo.svg";
+import clients from "@assets/clients.svg";
+import help from "@assets/help.svg";
+import notifications from "@assets/notification.svg";
 
 export const generateNavbar = () => {
   const nav = createElement("nav", { class: ["nav"] });

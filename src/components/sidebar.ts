@@ -1,7 +1,5 @@
-import { createProxy as proxy, subscribe, subscribePrimitive } from "../../R&D/proxy2";
-import { Store } from "../globalStore";
-import { createElement } from "../utils/create";
-import { $, $$ } from "../utils/query";
+import { subscribePrimitive, Store } from "@store";
+import { createElement, $, $$ } from "@utils";
 
 // Helper functions
 const generateLink = (id?: string) => {
