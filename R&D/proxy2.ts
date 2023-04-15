@@ -32,7 +32,7 @@ export const createProxy = (initState) => {
       // initialised ?? customLog(target, property, value);
       customLog(target, property, value);
 
-      if (typeof value === "object") {
+      if (typeof value === "object" && value !== null) {
         value = createProxy(value);
         // This flag is used to prevent primitive sub callbacks being called if the nested object also has the same key and it's modified. Check test 4.
         value._nested = true;
@@ -56,7 +56,8 @@ export const createProxy = (initState) => {
    *  Creates a new Proxy on an Empty Object.
    *  @returns Proxy Object
    */
-  const proxyObj = new Proxy({}, handler);
+  const proxyType = Array.isArray(initState) ? [] : {};
+  const proxyObj = new Proxy(proxyType, handler);
 
   /**
    * We need to loop the state manually inorder to convert the deeply nested
