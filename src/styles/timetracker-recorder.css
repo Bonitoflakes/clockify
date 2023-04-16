@@ -61,22 +61,21 @@
 }
 
 .timetracker-recorder__price-button {
+  visibility: hidden;
+  width: 0;
+}
+
+.timetracker-recorder__price-label {
   padding: 0 2rem;
   font-size: 2.4rem;
-  color: #999;
+  font-weight: 100;
   cursor: pointer;
+  user-select: none;
 }
 
-.timetracker-recorder__price-button span {
-  font-weight: 100 !important;
-}
-
-.timetracker-recorder__price-button.active {
-  padding: 0 2rem;
-  font-size: 2.4rem;
+.timetracker-recorder__price-button:checked + .timetracker-recorder__price-label {
   font-weight: 400;
   color: var(--primary-color);
-  cursor: pointer;
 }
 
 .timetracker-recorder__start-button {
@@ -89,8 +88,13 @@
   transition: all 0.3s ease;
 }
 
+.timetracker-recorder__start-button:hover {
+  background: #0194d8;
+}
+
 .timetracker-recorder__tags-button {
   padding: 0 2rem;
+  padding-top: 5px;
 }
 
 .timetracker-recorder__timer {
