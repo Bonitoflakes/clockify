@@ -1,6 +1,21 @@
 import { generateNavbar } from "./navbar";
 import { generateSidebar, initializeSidebar } from "./sidebar";
-import { generateTimer, initializeTimer } from "./timer";
-import { generatePicker } from "./projectPicker";
+import { generateTimeTrackerRecorder, initializeTimeTrackerRecorder } from "./timer";
+import {
+  generateProjectPicker,
+  initializeProjectPicker,
+  initializeProjectFilter,
+  renderProjectList,
+} from "./projectPicker";
 
-export { generateNavbar, generateSidebar, generateTimer, initializeSidebar, initializeTimer, generatePicker };
+export {
+  generateNavbar,
+  generateSidebar,
+  generateTimeTrackerRecorder,
+  generateProjectPicker,
+  initializeSidebar,
+  initializeTimeTrackerRecorder,
+  initializeProjectPicker,
+  initializeProjectFilter,
+  renderProjectList,
+};

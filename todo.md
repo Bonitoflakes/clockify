@@ -1,3 +1,6 @@
 - [x] Sidebar icons are not centered. They do not align with the hamburger menu. Text width is zero.
 - [x] Toggle Active state in sidebar.
 - [ ] Picker is firing click of the document upon resizing, leading to premature-closing.
+- [ ] Navbar hover on closed State.
+- [ ] Billabe line-height issues. Probable solution: Capsizecss
+- [ ] documentFragment for better perf???

@@ -6,7 +6,7 @@ import tagGray from "@assets/tag-gray.svg";
 import { Store, subscribe, subscribePrimitive } from "@store";
 import { createElement, $, clickOutsideToCloseElement, stopPropagation, stopSpacePropagation } from "@utils";
 
-export const generateTimer = () => {
+export const generateTimeTrackerRecorder = () => {
   const timerTracker = createElement("div", { class: ["timetracker-recorder", "open"] });
 
   const input = createElement("input", {
@@ -21,12 +21,11 @@ export const generateTimer = () => {
   plusSpan.appendChild(plusImg);
   //
   //
-  const projectBtn = createElement(
-    "button",
-    { class: ["timetracker-recorder__newproject-button"] },
-    "Project"
-  );
+  const projectBtn = createElement("button", { class: ["timetracker-recorder__newproject-button"] });
+
+  const projectBtnText = createElement("span", { class: ["newproject-button-text"] }, "Projects");
   projectBtn.insertBefore(plusSpan, projectBtn.firstChild);
+  projectBtn.insertBefore(projectBtnText, projectBtn.nextSibling);
   //
   //
   const line1 = createElement("div", { class: ["line"] });
@@ -39,9 +38,17 @@ export const generateTimer = () => {
   tagBtn.appendChild(tagImg);
   //
   //
-  const billableSpan = createElement("span", {}, " $ ");
-  const billableBtn = createElement("button", { class: ["timetracker-recorder__price-button"] });
-  billableBtn.appendChild(billableSpan);
+  const billableLabel = createElement(
+    "label",
+    { for: "billable", class: ["timetracker-recorder__price-label"] },
+    "$"
+  );
+  const billableBtn = createElement("input", {
+    class: ["timetracker-recorder__price-button"],
+    id: "billable",
+    type: "checkbox",
+  });
+  // billableBtn.appendChild(billableSpan);
   //
   //
   const stopwatch = createElement("div", { class: ["timetracker-recorder__timer"] }, "00:00:00");
@@ -70,6 +77,7 @@ export const generateTimer = () => {
     tagBtn,
     line2,
     billableBtn,
+    billableLabel,
     line3,
     stopwatch,
     startBtn,
@@ -82,9 +90,8 @@ export const generateTimer = () => {
 
 let timerID: NodeJS.Timeout;
 
-export const initializeTimer = () => {
+export const initializeTimeTrackerRecorder = () => {
   const startButton = $("timetracker-recorder__start-button");
-  const priceButton = $("timetracker-recorder__price-button");
   const projectButton = $("timetracker-recorder__newproject-button");
   const timeTracker = $("timetracker-recorder");
 
@@ -92,8 +99,14 @@ export const initializeTimer = () => {
     timeTracker?.classList.toggle("open");
   };
 
+  const closePicker = (e: MouseEvent) => {
+    const picker = $("picker");
+    clickOutsideToCloseElement(e, picker, projectButton, closePicker);
+  };
+
   // SUBSCRIPTIONS
-  subscribe(Store.timer, updateTimerUI);
+  subscribe(Store.timer, updateStopwatchUI);
+  subscribePrimitive("timer", updateStopwatchUI);
   subscribePrimitive("isSidebarOpen", toggleTimeTracker);
 
   // EVENT LISTENERS
@@ -107,15 +120,11 @@ export const initializeTimer = () => {
       startButton.style.background = "red";
     } else {
       clearTimeout(timerID);
+      save();
       startButton.textContent = "START";
       startButton.style.background = "var(--primary-color)";
     }
   });
-
-  const closePicker = (e: MouseEvent) => {
-    const picker = $("picker");
-    clickOutsideToCloseElement(e, picker, projectButton, closePicker);
-  };
 
   projectButton.addEventListener("click", () => {
     const picker = $("picker");
@@ -129,8 +138,31 @@ export const initializeTimer = () => {
     // close on click outside the picker
     document.addEventListener("click", closePicker);
   });
+};
 
-  priceButton.addEventListener("click", () => priceButton.classList.toggle("active"));
+const save = () => {
+  const workData = $("timetracker-recorder__input") as HTMLInputElement;
+  const billable = $("timetracker-recorder__price-button") as HTMLInputElement;
+  const projectName = $("newproject-button-text") as HTMLElement;
+
+  // if (Store.activeProject === "") return "project name is empty";
+
+  Store.meow.push({
+    description: workData.value,
+    actualEffort: Array.from(Store.timer),
+    billable: billable.checked,
+    projectName: Store.activeProject,
+    tags: ["1", "2"],
+  });
+
+  workData.value = "";
+  billable.checked = false;
+  for (const key of Store.timer.keys()) {
+    Store.timer[key] = 0;
+  }
+  projectName.textContent = "Projects";
+
+  console.log(Store);
 };
 
 const incrementTimer = () => {
@@ -163,7 +195,7 @@ const calculateTime = (start: number) => {
   timerID = setTimeout(() => calculateTime(start), nextTick);
 };
 
-const updateTimerUI = () => {
+const updateStopwatchUI = () => {
   const timerUI = $("timetracker-recorder__timer");
 
   const hrs = Store.timer[0].toString().padStart(2, "0");

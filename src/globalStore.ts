@@ -4,7 +4,7 @@ const Store = createProxy({
   isSidebarOpen: true,
   timer: [0, 0, 0],
   isTimerStarted: false,
-  allProjects: [],
+  allProjects: ["apple", "banana"],
   activeProject: "",
   filter: "",
   meow: [],

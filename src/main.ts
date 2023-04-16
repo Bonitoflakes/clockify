@@ -7,10 +7,13 @@ import "./styles/projectPicker.css";
 import {
   generateNavbar,
   generateSidebar,
-  generatePicker,
-  generateTimer,
+  generateProjectPicker,
+  generateTimeTrackerRecorder,
   initializeSidebar,
-  initializeTimer,
+  initializeTimeTrackerRecorder,
+  initializeProjectPicker,
+  initializeProjectFilter,
+  renderProjectList,
 } from "@components";
 
 import { sidebarLinkData } from "@utils";
@@ -19,6 +22,12 @@ import LogRocket from "logrocket";
 LogRocket.init("kaaavr/clockify");
 
 generateNavbar();
+
 generateSidebar(sidebarLinkData).then(() => initializeSidebar());
-generateTimer().then(() => initializeTimer());
-generatePicker();
+
+generateTimeTrackerRecorder().then(() => initializeTimeTrackerRecorder());
+
+generateProjectPicker()
+  .then(() => initializeProjectPicker())
+  .then(() => initializeProjectFilter())
+  .then(() => renderProjectList());

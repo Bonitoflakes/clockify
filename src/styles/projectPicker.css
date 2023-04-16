@@ -1,7 +1,7 @@
 .picker {
   background-color: white;
   min-width: 36rem;
-  min-height: 15.5rem;
+  /* min-height: 15.5rem; */
   max-width: 48rem;
   max-height: 60rem;
   display: inline-block;
@@ -29,13 +29,15 @@
 .inputWrapper {
   width: 100%;
   padding: 1rem;
+  padding-bottom: 0.5rem;
 }
 
 .picker__list {
   font-size: 1.4rem;
-  padding: 1rem 2rem;
+  /* padding: 1rem 2rem; */
   color: rgb(1, 1, 1);
   margin-top: 0.5rem;
+  width: 100%;
   flex: 1;
 }
 
@@ -45,6 +47,7 @@
   width: 100%;
   transition: border-color 0.1s ease-in-out;
   color: rgb(51, 51, 51);
+  border-radius: 2px;
   outline: none;
 }
 
@@ -66,8 +69,11 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  border-top: 1px solid rgb(198, 210, 217);
+  border-top: 1px solid rgb(228, 235, 240);
   align-self: flex-end;
+  position: sticky;
+  background-color: white;
+  bottom: 0;
 }
 
 .picker__newproject-btn:hover {
@@ -77,4 +83,58 @@
 .plusIconSpan {
   width: 2rem;
   height: 2rem;
+}
+
+.projects_link {
+  padding: 1rem 2rem;
+  width: 100%;
+  list-style: none;
+  text-align: start;
+}
+
+.projects_link:hover {
+  background-color: rgb(228, 234, 238);
+}
+
+.newproject-button-text {
+  max-width: 10rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.circle-red {
+  background: var(--project-color);
+  border-radius: 1000px;
+  width: 6px;
+  height: 6px;
+}
+
+.projects_link_default {
+  padding: 1rem 2rem;
+  width: 100%;
+  list-style: none;
+  text-align: start;
+  cursor: default;
+}
+
+.projects_link_default-msg {
+  font-size: 1.4rem;
+  color: rgb(51, 51, 51);
+  font-weight: 400;
+}
+
+.projects_link_default-span {
+  font-size: 1.2rem;
+  color: rgb(153, 153, 153);
+}
+
+.projects_link_default-span-link {
+  color: var(--primary-color);
+}
+
+.projects_link_default-span-link:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
