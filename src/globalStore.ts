@@ -1,6 +1,6 @@
-import { createProxy, subscribe, subscribePrimitive } from "../R&D/proxy2";
+import { createProxy, subscribe, subscribePrimitive } from "../R&D/proxy";
 
-const Store = createProxy({
+const Store: IStore = createProxy({
   isSidebarOpen: true,
   timer: [0, 0, 0],
   isTimerStarted: false,

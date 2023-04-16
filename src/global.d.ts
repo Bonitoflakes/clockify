@@ -10,3 +10,19 @@ interface ISidebarLinks {
     }[];
   };
 }
+
+interface IStore {
+  isSidebarOpen: boolean;
+  timer: number[];
+  isTimerStarted: boolean;
+  allProjects: string[];
+  activeProject: string;
+  filter: string;
+  meow: {
+    description: string;
+    actualEffort: number[];
+    billable: boolean;
+    projectName: string;
+    tags: string[];
+  }[];
+}

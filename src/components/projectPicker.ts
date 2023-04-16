@@ -136,7 +136,7 @@ export const renderProjectList = () => {
 
     allLinks.forEach((link) => {
       link.addEventListener("click", () => {
-        Store.activeProject = link.textContent;
+        Store.activeProject = link.textContent ?? "";
         currentProjectText.textContent = Store.activeProject;
 
         currentProjectText.style.color = "var(--project-color)";
@@ -152,6 +152,5 @@ export const renderProjectList = () => {
 };
 
 // Re-render the project list whenever filter value is changed or the active project is changed.
-debugger;
 subscribePrimitive("filter", renderProjectList);
 subscribePrimitive("activeProject", renderProjectList);
