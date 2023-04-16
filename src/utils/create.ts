@@ -5,8 +5,9 @@ interface HTMLAttributes {
   click?: () => void;
   href?: string;
   alt?: string;
-  type?: "text" | "number";
+  type?: "text" | "number" | "checkbox";
   placeholder?: string;
+  for?: string;
 }
 
 export function createElement(tag: string, attributes: HTMLAttributes, text?: string) {
