@@ -104,7 +104,7 @@
   white-space: nowrap;
 }
 
-.circle-red {
+.circle--red {
   background: var(--project-color);
   border-radius: 1000px;
   width: 6px;

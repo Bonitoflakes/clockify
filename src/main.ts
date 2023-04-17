@@ -3,12 +3,14 @@ import "./styles/nav.css";
 import "./styles/sidebar.css";
 import "./styles/timetracker-recorder.css";
 import "./styles/projectPicker.css";
+import "./styles/trackerEntry.css";
 
 import {
   generateNavbar,
   generateSidebar,
   generateProjectPicker,
   generateTimeTrackerRecorder,
+  generateTrackerEntry,
   initializeSidebar,
   initializeTimeTrackerRecorder,
   initializeProjectPicker,
@@ -31,3 +33,5 @@ generateProjectPicker()
   .then(() => initializeProjectPicker())
   .then(() => initializeProjectFilter())
   .then(() => renderProjectList());
+
+generateTrackerEntry();

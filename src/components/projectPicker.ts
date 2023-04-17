@@ -44,7 +44,7 @@ export const initializeProjectPicker = () => {
     projectBtn.style.color = "var(--project-color)";
     Store.activeProject = projectInput.value;
     projectText.textContent = Store.activeProject;
-    projectImg.innerHTML = `<div class='circle-red'></div>`;
+    projectImg.innerHTML = `<div class='circle--red'></div>`;
     projectImg.style.width = "auto";
     projectImg.style.height = "auto";
 
@@ -73,7 +73,7 @@ export const initializeProjectFilter = () => {
       projectBtn.style.color = "var(--project-color)";
       projectText.textContent = Store.activeProject;
 
-      projectImg.innerHTML = `<div class='circle-red'></div>`;
+      projectImg.innerHTML = `<div class='circle--red'></div>`;
       projectImg.style.width = "auto";
       projectImg.style.height = "auto";
 
@@ -142,7 +142,7 @@ export const renderProjectList = () => {
         currentProjectText.style.color = "var(--project-color)";
         projectBtn.style.color = "var(--project-color)";
 
-        projectImg.innerHTML = `<div class='circle-red'></div>`;
+        projectImg.innerHTML = `<div class='circle--red'></div>`;
         projectImg.style.width = "auto";
         projectImg.style.height = "auto";
         picker.classList.remove("active");

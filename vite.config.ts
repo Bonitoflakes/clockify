@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         "@assets": path.resolve(__dirname, "./assets"),
-        "@src": path.resolve(__dirname, "./src"),
+        // "@src": path.resolve(__dirname, "./src"),
         "@components": path.resolve(__dirname, "./src/components/index"),
         "@utils": path.resolve(__dirname, "./src/utils/index"),
         "@store": path.resolve(__dirname, "./src/globalStore.ts"),

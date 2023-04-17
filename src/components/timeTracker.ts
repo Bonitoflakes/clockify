@@ -147,7 +147,7 @@ const save = () => {
 
   // if (Store.activeProject === "") return "project name is empty";
 
-  Store.meow.push({
+  Store.entries.push({
     description: workData.value,
     actualEffort: Array.from(Store.timer),
     billable: billable.checked,

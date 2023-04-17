@@ -8,6 +8,7 @@ interface HTMLAttributes {
   type?: "text" | "number" | "checkbox";
   placeholder?: string;
   for?: string;
+  pattern?: string;
 }
 
 export function createElement(tag: string, attributes: HTMLAttributes, text?: string) {

@@ -18,7 +18,8 @@ interface IStore {
   allProjects: string[];
   activeProject: string;
   filter: string;
-  meow: {
+  entries: {
+    id: number;
     description: string;
     actualEffort: number[];
     billable: boolean;
