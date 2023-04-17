@@ -21,15 +21,23 @@
   transition: 0.3s margin ease-in-out;
 }
 
+[contenteditable="true"]:empty:before {
+  content: attr(placeholder);
+  display: block;
+  color: rgb(174, 184, 190);
+}
+
 .input-wrapper {
   min-width: 20rem;
   max-width: 100%;
 }
 
 .tracker-entry__input {
+  display: inline-block;
   border: 1px solid transparent;
   outline: none;
   width: 100%;
+  max-width: 65rem;
   padding: 1rem;
   font-size: 1.4rem;
   color: rgb(51, 51, 51);

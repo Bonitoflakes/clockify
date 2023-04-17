@@ -8,9 +8,11 @@ import { $, createElement } from "@utils";
 
 const generateInput = (description: string) => {
   const div = createElement("div", { class: ["input-wrapper"] });
-  const input = createElement("input", {
-    type: "text",
+
+  const input = createElement("span", {
+    // type: "text",
     class: ["tracker-entry__input"],
+    contenteditable: true,
     placeholder: "Add Description",
   }) as HTMLInputElement;
 
