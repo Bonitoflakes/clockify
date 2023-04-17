@@ -65,9 +65,9 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   text-align: left;
-  min-width: 4rem;
+  min-width: 10rem;
   max-width: 20rem;
-  flex: 1;
+  /* flex: 1; */
 }
 
 .tracker-entry__project-button:hover {

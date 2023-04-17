@@ -15,10 +15,12 @@ const generateInput = (description: string) => {
   }) as HTMLInputElement;
 
   input.value = description;
-  // input.style.width = input.value.length - 5 + "ch";
+  // input.style.width = input.value.length + "ch";
 
   // input.addEventListener("input", () => {
-  //   input.style.width = input.value.length + "ch";
+  //   console.log(input.style.width.slice(0, 2));
+
+  //   input.style.width = Number(input.style.width.slice(0, 2)) + 1 + "ch";
   // });
 
   div.appendChild(input);
@@ -247,5 +249,5 @@ export const generateTrackerEntry = () => {
 const root = document.querySelector(":root") as HTMLElement;
 
 subscribePrimitive("isSidebarOpen", () => {
-  root.style.setProperty("--tracker-margin-left", Store.isSidebarOpen ? "9rem" : "22rem");
+  root.style.setProperty("--tracker-margin-left", Store.isSidebarOpen ? "22rem" : "9rem");
 });
