@@ -3,7 +3,7 @@ import calendarGray from "@assets/calendar-gray.svg";
 import playButton from "@assets/play.svg";
 import menuDots from "@assets/menu-dots-vertical.svg";
 
-import { Store } from "@store";
+import { Store, subscribePrimitive } from "@store";
 import { $, createElement } from "@utils";
 
 const generateInput = (description: string) => {
@@ -245,3 +245,9 @@ export const generateTrackerEntry = () => {
     });
   });
 };
+
+const root = document.querySelector(":root") as HTMLElement;
+
+subscribePrimitive("isSidebarOpen", () => {
+  root.style.setProperty("--tracker-margin-left", Store.isSidebarOpen ? "9rem" : "22rem");
+});

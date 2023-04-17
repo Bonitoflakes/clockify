@@ -145,9 +145,10 @@ const save = () => {
   const billable = $("timetracker-recorder__price-button") as HTMLInputElement;
   const projectName = $("newproject-button-text") as HTMLElement;
 
-  // if (Store.activeProject === "") return "project name is empty";
+  if (Store.activeProject === "") return "project name is empty";
 
   Store.entries.push({
+    id: 3,
     description: workData.value,
     actualEffort: Array.from(Store.timer),
     billable: billable.checked,
@@ -163,6 +164,7 @@ const save = () => {
   projectName.textContent = "Projects";
 
   console.log(Store);
+  return true;
 };
 
 const incrementTimer = () => {

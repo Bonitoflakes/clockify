@@ -1,7 +1,7 @@
 import { createProxy, subscribe, subscribePrimitive } from "../R&D/proxy";
 
 const Store: IStore = createProxy({
-  isSidebarOpen: true,
+  isSidebarOpen: false,
   timer: [0, 0, 0],
   isTimerStarted: false,
   allProjects: ["apple", "banana"],
@@ -22,8 +22,15 @@ const Store: IStore = createProxy({
       description: "",
       actualEffort: [180, 5, 58],
       billable: false,
-      projectName:
-        "rrr",
+      projectName: "rrr",
+      tags: ["tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2"],
+    },
+    {
+      id: 3,
+      description: "Mere samne wale kidhi me kabhi pyaaj milta he",
+      actualEffort: [180, 5, 58],
+      billable: false,
+      projectName: "rrr",
       tags: ["tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2"],
     },
   ],
