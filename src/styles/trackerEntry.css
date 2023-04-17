@@ -21,7 +21,6 @@
   transition: 0.3s margin ease-in-out;
 }
 
-
 .input-wrapper {
   min-width: 20rem;
   max-width: 100%;
@@ -153,4 +152,15 @@
 .timetracker-recorder__date-button {
   padding-top: 5px;
   padding-left: 2rem;
+}
+
+.div1 {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.div2 {
+  display: flex;
+  align-items: center;
 }

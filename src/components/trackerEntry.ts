@@ -12,8 +12,15 @@ const generateInput = (description: string) => {
     type: "text",
     class: ["tracker-entry__input"],
     placeholder: "Add Description",
-  });
-  (input as HTMLInputElement).value = description;
+  }) as HTMLInputElement;
+
+  input.value = description;
+  // input.style.width = input.value.length - 5 + "ch";
+
+  // input.addEventListener("input", () => {
+  //   input.style.width = input.value.length + "ch";
+  // });
+
   div.appendChild(input);
   return div;
 };
@@ -136,21 +143,12 @@ export const generateTrackerEntry = () => {
     const _play = generatePlayButton();
     const _menu = generateMenuDots();
 
-    projectEntry.append(
-      _input,
-      _projects,
-      _tags,
-      line1,
-      _bill,
-      line2,
-      _date,
-      line3,
-      _stopwatch,
-      line4,
-      _play,
-      line5,
-      _menu
-    );
+    const div1 = createElement("div", { class: ["div1"] });
+    const div2 = createElement("div", { class: ["div2"] });
+    div1.append(_input, _projects);
+    div2.append(_tags, line1, _bill, line2, _date, line3, _stopwatch, line4, _play, line5, _menu);
+
+    projectEntry.append(div1, div2);
     document.getElementById("app")!.append(projectEntry);
 
     const startTime = $("start-time") as HTMLInputElement;
