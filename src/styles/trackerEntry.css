@@ -1,5 +1,6 @@
 :root {
   --tracker-margin-left: 22rem;
+  --input-width: 35rem;
 }
 
 .line {
@@ -28,7 +29,6 @@
 }
 
 .input-wrapper {
-  min-width: 20rem;
   max-width: 100%;
 }
 
@@ -36,7 +36,6 @@
   display: inline-block;
   border: 1px solid transparent;
   outline: none;
-  max-width: 35rem;
   padding: 1rem;
   font-size: 1.4rem;
   color: rgb(51, 51, 51);
@@ -44,10 +43,15 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  flex: 1;
+  transition: width 0.3s ease-out;
+
+  /* FIX */
+  min-width: 20rem;
+  max-width: var(--input-width);
+  /* font-family: "Roboto Mono"; */
 }
 
-.tracker-entry__input:focus{
+.tracker-entry__input:focus {
   text-overflow: initial;
 }
 
@@ -57,7 +61,8 @@
 }
 
 .tracker-entry:hover .tracker-entry__input,
-.tracker-entry__input:active {
+.tracker-entry__input:active,
+.tracker-entry__input:focus {
   border: 1px solid rgb(198, 210, 217);
 }
 
@@ -165,12 +170,16 @@
 }
 
 .div1 {
-  display: flex;
-  align-items: center;
   flex: 1;
 }
 
+.div1,
 .div2 {
+  height: 4.3rem;
   display: flex;
   align-items: center;
+}
+
+.div2 {
+  width: 72rem;
 }

@@ -16,17 +16,14 @@ const generateInput = (description: string) => {
     placeholder: "Add Description",
   }) as HTMLInputElement;
 
-  input.value = description;
-  // input.style.width = input.value.length + "ch";
+  input.textContent = description;
 
-  // input.addEventListener("input", () => {
-  //   console.log(input.style.width.slice(0, 2));
-
-  //   input.style.width = Number(input.style.width.slice(0, 2)) + 1 + "ch";
-  // });
+  input.addEventListener("blur", () => {
+    input.scrollLeft = 0;
+  });
 
   div.appendChild(input);
-  return div;
+  return input;
 };
 
 const generateProjectPicker = (projectName: string) => {
@@ -252,4 +249,6 @@ const root = document.querySelector(":root") as HTMLElement;
 
 subscribePrimitive("isSidebarOpen", () => {
   root.style.setProperty("--tracker-margin-left", Store.isSidebarOpen ? "22rem" : "9rem");
+
+  root.style.setProperty("--input-width", Store.isSidebarOpen ? "35rem" : "45rem");
 });
