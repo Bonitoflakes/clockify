@@ -31,5 +31,8 @@ interface IStore {
     billable: boolean;
     projectName: string;
     tags: string[];
+    startTime: string;
+    endTime: string;
+    date: string;
   }[];
 }

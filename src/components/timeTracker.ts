@@ -160,33 +160,6 @@ export const initializeTimeTrackerRecorder = () => {
   });
 };
 
-const save = () => {
-  const workData = $("timetracker-recorder__input") as HTMLInputElement;
-  const billable = $("timetracker-recorder__price-button") as HTMLInputElement;
-  const projectName = $("newproject-button-text") as HTMLElement;
-
-  if (Store.activeProject === "") return "project name is empty";
-
-  Store.entries.push({
-    id: 1,
-    description: workData.value,
-    actualEffort: Array.from(Store.timer),
-    billable: billable.checked,
-    projectName: Store.activeProject,
-    tags: [...Store.activeTags],
-  });
-
-  workData.value = "";
-  billable.checked = false;
-  for (const key of Store.timer.keys()) {
-    Store.timer[key] = 0;
-  }
-  projectName.textContent = "Projects";
-
-  console.log(Store);
-  return true;
-};
-
 const incrementTimer = () => {
   Store.timer[2]++;
 
@@ -226,4 +199,42 @@ const updateStopwatchUI = () => {
 
   timerUI.textContent = `${hrs}:${mins}:${secs}`;
   document.title = `${hrs}:${mins}:${secs} - Clockify`;
+};
+
+const save = () => {
+  const workData = $("timetracker-recorder__input") as HTMLInputElement;
+  const billable = $("timetracker-recorder__price-button") as HTMLInputElement;
+  const projectName = $("newproject-button-text") as HTMLElement;
+  const now = Date.now();
+
+  if (Store.activeProject === "") return "project name is empty";
+
+  const findStartTime = () => {
+    const a = Store.timer[0];
+    const b = Store.timer[1];
+    const c = Store.timer[2];
+    return a * 60 * 60 + b * 60 + c * 1000;
+  };
+
+  Store.entries.push({
+    id: 1,
+    description: workData.value,
+    actualEffort: Array.from(Store.timer),
+    billable: billable.checked,
+    projectName: Store.activeProject,
+    tags: [...Store.activeTags],
+    startTime: new Date(now - findStartTime()).toLocaleTimeString().slice(0, 5),
+    endTime: new Date(now).toLocaleTimeString().slice(0, 5),
+    date: new Date().toLocaleDateString(),
+  });
+
+  workData.value = "";
+  billable.checked = false;
+  for (const key of Store.timer.keys()) {
+    Store.timer[key] = 0;
+  }
+  projectName.textContent = "Projects";
+
+  console.log(Store.entries);
+  return true;
 };
