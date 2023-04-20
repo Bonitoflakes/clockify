@@ -5,6 +5,7 @@ import tagGray from "@assets/tag-gray.svg";
 
 import { Store, subscribe, subscribePrimitive } from "@store";
 import { createElement, $, clickOutsideToCloseElement, stopPropagation, stopSpacePropagation } from "@utils";
+import { renderTag } from "./tagPicker";
 
 export const generateTimeTrackerRecorder = () => {
   const timerTracker = createElement("div", { class: ["timetracker-recorder", "open"] });
@@ -94,6 +95,7 @@ export const initializeTimeTrackerRecorder = () => {
   const startButton = $("timetracker-recorder__start-button");
   const projectButton = $("timetracker-recorder__newproject-button");
   const timeTracker = $("timetracker-recorder");
+  const tagButton = $("timetracker-recorder__tags-button");
 
   const toggleTimeTracker = () => {
     timeTracker?.classList.toggle("open");
@@ -102,6 +104,12 @@ export const initializeTimeTrackerRecorder = () => {
   const closePicker = (e: MouseEvent) => {
     const picker = $("picker");
     clickOutsideToCloseElement(e, picker, projectButton, closePicker);
+  };
+
+  const closeTagPicker = (e: MouseEvent) => {
+    const picker = $("tag__picker");
+    const isClosed = clickOutsideToCloseElement(e, picker, tagButton, closeTagPicker);
+    isClosed && renderTag();
   };
 
   // SUBSCRIPTIONS
@@ -138,6 +146,18 @@ export const initializeTimeTrackerRecorder = () => {
     // close on click outside the picker
     document.addEventListener("click", closePicker);
   });
+
+  tagButton.addEventListener("click", () => {
+    const tagPicker = $("tag__picker");
+
+    tagPicker.addEventListener("click", stopPropagation);
+    tagPicker.addEventListener("keyup", stopSpacePropagation);
+
+    tagPicker.classList.toggle("active");
+
+    // close on click outside the picker
+    document.addEventListener("click", closeTagPicker);
+  });
 };
 
 const save = () => {
@@ -148,12 +168,12 @@ const save = () => {
   if (Store.activeProject === "") return "project name is empty";
 
   Store.entries.push({
-    id: 3,
+    id: 1,
     description: workData.value,
     actualEffort: Array.from(Store.timer),
     billable: billable.checked,
     projectName: Store.activeProject,
-    tags: ["1", "2"],
+    tags: [...Store.activeTags],
   });
 
   workData.value = "";

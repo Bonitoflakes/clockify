@@ -3,6 +3,7 @@ import "./styles/nav.css";
 import "./styles/sidebar.css";
 import "./styles/timetracker-recorder.css";
 import "./styles/projectPicker.css";
+import "./styles/tagPicker.css";
 import "./styles/trackerEntry.css";
 
 import {
@@ -16,6 +17,9 @@ import {
   initializeProjectPicker,
   initializeProjectFilter,
   renderProjectList,
+  generateTagPicker,
+  renderTagList,
+  initTagFilter,
 } from "@components";
 
 import { sidebarLinkData } from "@utils";
@@ -33,5 +37,9 @@ generateProjectPicker()
   .then(() => initializeProjectPicker())
   .then(() => initializeProjectFilter())
   .then(() => renderProjectList());
+
+generateTagPicker();
+initTagFilter();
+renderTagList();
 
 generateTrackerEntry();

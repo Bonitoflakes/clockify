@@ -101,32 +101,31 @@ export const renderProjectList = () => {
 
   projectList.innerHTML = "";
 
-  if (Store.allProjects.length === 0) {
+  if (Store.allProjects.length === 0 && !Store.filter) {
     projectList.append(createElement("li", { class: ["projects_link_default"] }, "No projects yet..."));
-  } else {
-    //
-    const filteredProjects = Store.allProjects.filter((el: string) =>
-      el === Store.activeProject ? false : el.includes(Store.filter)
+  }
+
+  const filteredProjects = Store.allProjects.filter((el: string) =>
+    el === Store.activeProject ? false : el.includes(Store.filter)
+  );
+
+  if (filteredProjects.length === 0 && Store.filter) {
+    const defaultList = createElement("li", { class: ["projects_link_default"] });
+    const defaultMsg = createElement("p", { class: ["projects_link_default-msg"] }, "No matching projects");
+    const defaultSpan = createElement(
+      "span",
+      { class: ["projects_link_default-span"] },
+      `Press Ctrl+Enter to quickly `
     );
-
-    if (filteredProjects.length === 0 && Store.filter) {
-      const defaultList = createElement("li", { class: ["projects_link_default"] });
-      const defaultMsg = createElement("p", { class: ["projects_link_default-msg"] }, "No matching projects");
-      const defaultSpan = createElement(
-        "span",
-        { class: ["projects_link_default-span"] },
-        `Press Ctrl+Enter to quickly `
-      );
-      const defaultLink = createElement(
-        "a",
-        { class: ["projects_link_default-span-link"] },
-        `create '${Store.filter}' project.`
-      );
-      defaultSpan.append(defaultLink);
-      defaultList.append(defaultMsg, defaultSpan);
-      projectList.append(defaultList);
-    }
-
+    const defaultLink = createElement(
+      "a",
+      { class: ["projects_link_default-span-link"] },
+      `create '${Store.filter}' project.`
+    );
+    defaultSpan.append(defaultLink);
+    defaultList.append(defaultMsg, defaultSpan);
+    projectList.append(defaultList);
+  } else {
     filteredProjects.length > 0 &&
       filteredProjects.map((el: string) => {
         projectList.append(createElement("li", { class: ["projects_link"] }, el));

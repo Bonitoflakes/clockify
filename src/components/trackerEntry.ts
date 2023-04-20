@@ -3,7 +3,7 @@ import calendarGray from "@assets/calendar-gray.svg";
 import playButton from "@assets/play.svg";
 import menuDots from "@assets/menu-dots-vertical.svg";
 
-import { Store, subscribePrimitive } from "@store";
+import { Store, subscribePrimitive, subscribe } from "@store";
 import { $, createElement } from "@utils";
 
 const generateInput = (description: string) => {
@@ -133,7 +133,7 @@ export const generateTrackerEntry = () => {
     const line4 = createElement("div", { class: ["line"] });
     const line5 = createElement("div", { class: ["line"] });
 
-    console.log(projectName);
+    // console.log(projectName);
 
     const _input = generateInput(description);
     const _projects = generateProjectPicker(projectName);
@@ -252,3 +252,5 @@ subscribePrimitive("isSidebarOpen", () => {
 
   root.style.setProperty("--input-width", Store.isSidebarOpen ? "35rem" : "45rem");
 });
+
+subscribe(Store.entries, generateTrackerEntry);

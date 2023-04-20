@@ -10,12 +10,14 @@ export const clickOutsideToCloseElement = (
   element: HTMLElement,
   parent: HTMLElement,
   cb: (e: any) => void
-): void => {
+) => {
   if (!parent.contains(e.target)) {
     element.classList.remove("active");
     document.removeEventListener("click", cb);
     element.removeEventListener("click", stopPropagation);
+    return true;
   }
+  return false;
 };
 
 export const stopPropagation = (e: { stopImmediatePropagation: () => void }) => {
