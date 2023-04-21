@@ -204,19 +204,15 @@ const updateStopwatchUI = () => {
 const save = () => {
   const workData = $("timetracker-recorder__input") as HTMLInputElement;
   const billable = $("timetracker-recorder__price-button") as HTMLInputElement;
-  const projectName = $("newproject-button-text") as HTMLElement;
   const now = Date.now();
 
   if (Store.activeProject === "") return "project name is empty";
 
   const findStartTime = () => {
-    const a = Store.timer[0];
-    const b = Store.timer[1];
-    const c = Store.timer[2];
-    const hrs2secs = a * 60 * 60;
-    const mins2secs = b * 60;
-
-    return (hrs2secs + mins2secs + c) * 1000;
+    const hrs2secs = Store.timer[0] * 60 * 60;
+    const mins2secs = Store.timer[1] * 60;
+    const secs = Store.timer[2];
+    return (hrs2secs + mins2secs + secs) * 1000;
   };
 
   console.log(now);
@@ -241,15 +237,38 @@ const save = () => {
     date: new Date().toLocaleDateString(),
   });
 
+  // Reset Recorder
   workData.value = "";
   billable.checked = false;
   for (const key of Store.timer.keys()) {
     Store.timer[key] = 0;
   }
-  projectName.textContent = "Projects";
+  resetProjectButton();
+  resetTagButton();
   Store.activeProject = "";
   Store.activeTags = [];
 
   console.log(Store.entries);
   return true;
+};
+
+const resetProjectButton = () => {
+  const spanImg = $("newproject-button__img");
+  const projectName = $("newproject-button-text") as HTMLElement;
+  const firstChild = spanImg.children[0];
+  const plusImg = createElement("img", { src: plusBlueReq });
+
+  projectName.textContent = "Projects";
+  projectName.style.color = "var(--primary-color)";
+  spanImg.replaceChild(plusImg, firstChild);
+};
+
+const resetTagButton = () => {
+  const tagButton = $("timetracker-recorder__tags-button");
+  const firstChild = tagButton.children[0];
+  const tagImg = createElement("img", { src: tagGray });
+
+  Store.allTags.map((tag) => (tag.isChecked = false));
+
+  tagButton.replaceChild(tagImg, firstChild);
 };

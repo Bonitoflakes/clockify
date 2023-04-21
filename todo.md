@@ -4,3 +4,4 @@
 - [ ] Navbar hover on closed State.
 - [ ] Billabe line-height issues. Probable solution: Capsizecss
 - [ ] documentFragment for better perf???
+- [ ] Layout shift on resetting tag and project tracker.
