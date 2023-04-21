@@ -1,5 +1,6 @@
-import { Store, subscribePrimitive } from "@store";
+import { Store, subscribe, subscribePrimitive } from "@store";
 import { createElement, $, $$ } from "@utils";
+import tagGray from "@assets/tag-gray.svg";
 
 export const generateTagPicker = () => {
   const picker = createElement("div", { class: ["tag__picker"] });
@@ -103,13 +104,17 @@ export const renderTagList = () => {
           if (target.checked) {
             Store.activeTags.push(value);
           }
+          if (!target.checked && Store.activeTags.includes(value)) {
+            const updatedTags = Store.activeTags.filter((tag) => tag !== value);
+            console.log(updatedTags);
+            Store.activeTags = updatedTags;
+          }
         }
 
         Store.allTags.map((tag) => {
           if (tag.tag === value) {
             console.log(`TAG:`, tag.tag);
             tag.isChecked = !tag.isChecked;
-            // renderTag();
           }
         });
       });
@@ -122,6 +127,12 @@ export const renderTagList = () => {
 export const renderTag = () => {
   const tagButton = $("timetracker-recorder__tags-button");
   const firstChild = tagButton.children[0];
+
+  if (Store.activeTags.length === 0) {
+    const tagImg = createElement("img", { src: tagGray });
+    tagButton.replaceChild(tagImg, firstChild);
+    return;
+  }
 
   const buttonText: string = Store.allTags.reduce((acc, curr) => {
     if (curr.isChecked) {
@@ -141,4 +152,3 @@ export const renderTag = () => {
 };
 
 subscribePrimitive("tagFilter", renderTagList);
-// subscribePrimitive("activeTag", renderTagList);

@@ -4,7 +4,14 @@ import listIcon from "@assets/list-blue.svg";
 import tagGray from "@assets/tag-gray.svg";
 
 import { Store, subscribe, subscribePrimitive } from "@store";
-import { createElement, $, clickOutsideToCloseElement, stopPropagation, stopSpacePropagation } from "@utils";
+import {
+  createElement,
+  $,
+  $$,
+  clickOutsideToCloseElement,
+  stopPropagation,
+  stopSpacePropagation,
+} from "@utils";
 import { renderTag } from "./tagPicker";
 
 export const generateTimeTrackerRecorder = () => {
@@ -245,8 +252,6 @@ const save = () => {
   }
   resetProjectButton();
   resetTagButton();
-  Store.activeProject = "";
-  Store.activeTags = [];
 
   console.log(Store.entries);
   return true;
@@ -261,6 +266,8 @@ const resetProjectButton = () => {
   projectName.textContent = "Projects";
   projectName.style.color = "var(--primary-color)";
   spanImg.replaceChild(plusImg, firstChild);
+
+  Store.activeProject = "";
 };
 
 const resetTagButton = () => {
@@ -268,7 +275,11 @@ const resetTagButton = () => {
   const firstChild = tagButton.children[0];
   const tagImg = createElement("img", { src: tagGray });
 
+  ($$("c_box") as NodeListOf<HTMLInputElement>).forEach((item) => (item.checked = false));
+
   Store.allTags.map((tag) => (tag.isChecked = false));
+
+  Store.activeTags = [];
 
   tagButton.replaceChild(tagImg, firstChild);
 };
