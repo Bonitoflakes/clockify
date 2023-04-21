@@ -22,7 +22,7 @@ import {
   initTagFilter,
 } from "@components";
 
-import { sidebarLinkData } from "@utils";
+import { createElement, sidebarLinkData } from "@utils";
 
 import LogRocket from "logrocket";
 LogRocket.init("kaaavr/clockify");
@@ -41,5 +41,7 @@ generateProjectPicker()
 generateTagPicker();
 initTagFilter();
 renderTagList();
+
+document.getElementById("app")!.append(createElement("main", { class: ["main"] }));
 
 generateTrackerEntry();

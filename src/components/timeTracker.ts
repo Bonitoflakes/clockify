@@ -213,8 +213,21 @@ const save = () => {
     const a = Store.timer[0];
     const b = Store.timer[1];
     const c = Store.timer[2];
-    return a * 60 * 60 + b * 60 + c * 1000;
+    const hrs2secs = a * 60 * 60;
+    const mins2secs = b * 60;
+
+    return (hrs2secs + mins2secs + c) * 1000;
   };
+
+  console.log(now);
+  console.log(findStartTime());
+  console.log(now - findStartTime());
+
+  const startTime = new Date(now - findStartTime()).toLocaleTimeString().slice(0, 5);
+  const endTime = new Date(now).toLocaleTimeString().slice(0, 5);
+
+  console.log(startTime);
+  console.log(endTime);
 
   Store.entries.push({
     id: 1,
@@ -223,8 +236,8 @@ const save = () => {
     billable: billable.checked,
     projectName: Store.activeProject,
     tags: [...Store.activeTags],
-    startTime: new Date(now - findStartTime()).toLocaleTimeString().slice(0, 5),
-    endTime: new Date(now).toLocaleTimeString().slice(0, 5),
+    startTime: startTime,
+    endTime: endTime,
     date: new Date().toLocaleDateString(),
   });
 
@@ -234,6 +247,8 @@ const save = () => {
     Store.timer[key] = 0;
   }
   projectName.textContent = "Projects";
+  Store.activeProject = "";
+  Store.activeTags = [];
 
   console.log(Store.entries);
   return true;
