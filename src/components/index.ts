@@ -1,6 +1,8 @@
 import { generateNavbar } from "./navbar";
 import { generateSidebar, initializeSidebar } from "./sidebar";
-import { generateTimeTrackerRecorder, initializeTimeTrackerRecorder } from "./timer";
+import { generateTimeTrackerRecorder, initializeTimeTrackerRecorder } from "./timeTracker";
+import { generateTrackerEntry } from "./trackerEntry";
+import { generateTagPicker, renderTagList, initTagFilter } from "./tagPicker";
 import {
   generateProjectPicker,
   initializeProjectPicker,
@@ -13,9 +15,13 @@ export {
   generateSidebar,
   generateTimeTrackerRecorder,
   generateProjectPicker,
+  generateTrackerEntry,
+  generateTagPicker,
   initializeSidebar,
   initializeTimeTrackerRecorder,
   initializeProjectPicker,
   initializeProjectFilter,
+  initTagFilter,
   renderProjectList,
+  renderTagList,
 };

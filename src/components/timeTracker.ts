@@ -5,6 +5,7 @@ import tagGray from "@assets/tag-gray.svg";
 
 import { Store, subscribe, subscribePrimitive } from "@store";
 import { createElement, $, clickOutsideToCloseElement, stopPropagation, stopSpacePropagation } from "@utils";
+import { renderTag } from "./tagPicker";
 
 export const generateTimeTrackerRecorder = () => {
   const timerTracker = createElement("div", { class: ["timetracker-recorder", "open"] });
@@ -94,6 +95,7 @@ export const initializeTimeTrackerRecorder = () => {
   const startButton = $("timetracker-recorder__start-button");
   const projectButton = $("timetracker-recorder__newproject-button");
   const timeTracker = $("timetracker-recorder");
+  const tagButton = $("timetracker-recorder__tags-button");
 
   const toggleTimeTracker = () => {
     timeTracker?.classList.toggle("open");
@@ -102,6 +104,12 @@ export const initializeTimeTrackerRecorder = () => {
   const closePicker = (e: MouseEvent) => {
     const picker = $("picker");
     clickOutsideToCloseElement(e, picker, projectButton, closePicker);
+  };
+
+  const closeTagPicker = (e: MouseEvent) => {
+    const picker = $("tag__picker");
+    const isClosed = clickOutsideToCloseElement(e, picker, tagButton, closeTagPicker);
+    isClosed && renderTag();
   };
 
   // SUBSCRIPTIONS
@@ -138,31 +146,18 @@ export const initializeTimeTrackerRecorder = () => {
     // close on click outside the picker
     document.addEventListener("click", closePicker);
   });
-};
 
-const save = () => {
-  const workData = $("timetracker-recorder__input") as HTMLInputElement;
-  const billable = $("timetracker-recorder__price-button") as HTMLInputElement;
-  const projectName = $("newproject-button-text") as HTMLElement;
+  tagButton.addEventListener("click", () => {
+    const tagPicker = $("tag__picker");
 
-  // if (Store.activeProject === "") return "project name is empty";
+    tagPicker.addEventListener("click", stopPropagation);
+    tagPicker.addEventListener("keyup", stopSpacePropagation);
 
-  Store.meow.push({
-    description: workData.value,
-    actualEffort: Array.from(Store.timer),
-    billable: billable.checked,
-    projectName: Store.activeProject,
-    tags: ["1", "2"],
+    tagPicker.classList.toggle("active");
+
+    // close on click outside the picker
+    document.addEventListener("click", closeTagPicker);
   });
-
-  workData.value = "";
-  billable.checked = false;
-  for (const key of Store.timer.keys()) {
-    Store.timer[key] = 0;
-  }
-  projectName.textContent = "Projects";
-
-  console.log(Store);
 };
 
 const incrementTimer = () => {
@@ -204,4 +199,57 @@ const updateStopwatchUI = () => {
 
   timerUI.textContent = `${hrs}:${mins}:${secs}`;
   document.title = `${hrs}:${mins}:${secs} - Clockify`;
+};
+
+const save = () => {
+  const workData = $("timetracker-recorder__input") as HTMLInputElement;
+  const billable = $("timetracker-recorder__price-button") as HTMLInputElement;
+  const projectName = $("newproject-button-text") as HTMLElement;
+  const now = Date.now();
+
+  if (Store.activeProject === "") return "project name is empty";
+
+  const findStartTime = () => {
+    const a = Store.timer[0];
+    const b = Store.timer[1];
+    const c = Store.timer[2];
+    const hrs2secs = a * 60 * 60;
+    const mins2secs = b * 60;
+
+    return (hrs2secs + mins2secs + c) * 1000;
+  };
+
+  console.log(now);
+  console.log(findStartTime());
+  console.log(now - findStartTime());
+
+  const startTime = new Date(now - findStartTime()).toLocaleTimeString().slice(0, 5);
+  const endTime = new Date(now).toLocaleTimeString().slice(0, 5);
+
+  console.log(startTime);
+  console.log(endTime);
+
+  Store.entries.push({
+    id: 1,
+    description: workData.value,
+    actualEffort: Array.from(Store.timer),
+    billable: billable.checked,
+    projectName: Store.activeProject,
+    tags: [...Store.activeTags],
+    startTime: startTime,
+    endTime: endTime,
+    date: new Date().toLocaleDateString(),
+  });
+
+  workData.value = "";
+  billable.checked = false;
+  for (const key of Store.timer.keys()) {
+    Store.timer[key] = 0;
+  }
+  projectName.textContent = "Projects";
+  Store.activeProject = "";
+  Store.activeTags = [];
+
+  console.log(Store.entries);
+  return true;
 };

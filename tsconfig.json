@@ -16,7 +16,7 @@
     "skipLibCheck": true,
     "paths": {
       "@assets": ["./assets/*"],
-      "@src": ["./src/*"],
+      // "@src": ["./src/*"],
       "@components": ["./src/components/index.ts"],
       "@utils": ["./src/utils/index.ts"],
       "@store": ["./src/globalStore.ts"]

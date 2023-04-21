@@ -1,0 +1,185 @@
+:root {
+  --tracker-margin-left: 22rem;
+  --input-width: 35rem;
+}
+
+.line {
+  min-height: 4rem;
+  background-color: rgb(225, 225, 225);
+  width: 1px;
+}
+
+.tracker-entry {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgb(198, 210, 217);
+  border-radius: 2px;
+  padding: 1rem;
+  background: white;
+  margin: 2rem;
+  box-shadow: 0 0 20px #0000001a;
+  margin-left: var(--tracker-margin-left);
+  transition: 0.3s margin ease-in-out;
+}
+
+[contenteditable="true"]:empty:before {
+  content: attr(placeholder);
+  display: block;
+  color: rgb(174, 184, 190);
+}
+
+.input-wrapper {
+  max-width: 100%;
+}
+
+.tracker-entry__input {
+  display: inline-block;
+  border: 1px solid transparent;
+  outline: none;
+  padding: 1rem;
+  font-size: 1.4rem;
+  color: rgb(51, 51, 51);
+  transition: border-color 0.3s ease-in-out;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: width 0.3s ease-out;
+
+  /* FIX */
+  min-width: 20rem;
+  max-width: var(--input-width);
+  /* font-family: "Roboto Mono"; */
+}
+
+.tracker-entry__input:focus {
+  text-overflow: initial;
+}
+
+.tracker-entry__input::placeholder {
+  color: rgb(146, 155, 161);
+  font-size: 1.4rem;
+}
+
+.tracker-entry:hover .tracker-entry__input,
+.tracker-entry__input:active,
+.tracker-entry__input:focus {
+  border: 1px solid rgb(198, 210, 217);
+}
+
+.tracker-entry__project-button {
+  display: flex;
+  align-items: center;
+  color: var(--project-color);
+  padding: 0 4rem 0 1rem;
+  position: relative;
+  flex: 1;
+}
+
+.tracker-entry__project-button--text {
+  padding-left: 1rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
+  width: 5rem;
+  flex: 1;
+}
+
+.tracker-entry__project-button:hover {
+  text-decoration: underline;
+}
+
+.tracker-entry__price-button {
+  visibility: hidden;
+  width: 0;
+}
+
+.tracker-entry__price-label {
+  padding: 0 2rem;
+  font-size: 2.4rem;
+  font-weight: 100;
+  cursor: pointer;
+  user-select: none;
+}
+
+.tracker-entry__price-button:checked + .tracker-entry__price-label {
+  font-weight: 400;
+  color: var(--primary-color);
+}
+
+.tracker-entry__tags-button {
+  padding: 0 2rem;
+  padding-top: 5px;
+}
+
+.tracker-entry__tag-button--blue {
+  color: rgb(2, 88, 127);
+  font-size: 1.2rem;
+  background: rgb(225, 245, 254);
+  padding: 0.5rem 1rem;
+  margin: 0 2rem;
+  border-radius: 2px;
+  max-width: 20rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.tracker-entry__tag-button--blue:hover {
+  background: rgb(179, 229, 252);
+}
+
+.tracker-entry__stopwatch {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #333333;
+  margin: 0 2rem;
+  min-width: 8rem;
+}
+
+.date-time-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.date-time-picker {
+  max-width: 5.2rem;
+  outline: none;
+  padding: 1rem 0.6rem;
+  font-size: 1.4rem;
+  color: rgb(51, 51, 51);
+  border: 1px solid transparent;
+  outline: none;
+  transition: border-color 0.3s ease-in-out;
+  text-align: center;
+}
+
+.tracker-entry:hover .date-time-picker {
+  border: 1px solid rgb(198, 210, 217);
+}
+
+.time-divider {
+  padding: 0 0.5rem;
+  color: #999;
+}
+
+.timetracker-recorder__date-button {
+  padding-top: 5px;
+  padding-left: 2rem;
+}
+
+.div1 {
+  flex: 1;
+}
+
+.div1,
+.div2 {
+  height: 4.3rem;
+  display: flex;
+  align-items: center;
+}
+
+.div2 {
+  /* width: 72rem; */
+}

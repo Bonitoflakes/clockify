@@ -15,14 +15,24 @@ interface IStore {
   isSidebarOpen: boolean;
   timer: number[];
   isTimerStarted: boolean;
+  allTags: {
+    tag: string;
+    isChecked: boolean;
+  }[];
   allProjects: string[];
   activeProject: string;
+  activeTags: string[];
+  tagFilter: string;
   filter: string;
-  meow: {
+  entries: {
+    id: number;
     description: string;
     actualEffort: number[];
     billable: boolean;
     projectName: string;
     tags: string[];
+    startTime: string;
+    endTime: string;
+    date: string;
   }[];
 }
