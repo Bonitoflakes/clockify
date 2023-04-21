@@ -96,8 +96,9 @@ const generateDate = (startDate: string, endDate: string) => {
   (endTime as HTMLInputElement).value = endDate ?? "10:40";
 
   const tagImg = createElement("img", { src: calendarGray, alt: "" });
+  const dateInput = createElement("input", { type: "date", class: ["native-date-picker"] });
   const tagBtn = createElement("button", { class: ["timetracker-recorder__date-button"] });
-  tagBtn.appendChild(tagImg);
+  tagBtn.append(tagImg, dateInput);
 
   div.append(startTime, hyphen, endTime, tagBtn);
   return div;
@@ -128,7 +129,7 @@ const generateStopwatch = (time: number[]) => {
 export const generateTrackerEntry = () => {
   $("main").innerHTML = "";
   Store.entries.map(
-    ({ id, description, actualEffort, billable, projectName, tags, startTime: st, endTime: et, date }) => {
+    ({ id, description, actualEffort, billable, projectName, tags, startTime: st, endTime: et }) => {
       const projectEntry = createElement("div", { class: ["tracker-entry", "open"] });
 
       const line1 = createElement("div", { class: ["line"] });
@@ -144,6 +145,7 @@ export const generateTrackerEntry = () => {
       const _tags = generateTags(tags);
       const _bill = generateBill(id, billable);
       const _stopwatch = generateStopwatch(actualEffort);
+      // TODO: add date as params to this func
       const _date = generateDate(st, et);
       const _play = generatePlayButton();
       const _menu = generateMenuDots();
@@ -245,6 +247,11 @@ export const generateTrackerEntry = () => {
 
           endTime.value = `${hrs_string}:${mins_string}`;
         }
+      });
+
+      $("timetracker-recorder__date-button").addEventListener("click", () => {
+        ($("native-date-picker") as HTMLInputElement).showPicker();
+        console.log("date button clicked");
       });
     }
   );

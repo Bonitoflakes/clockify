@@ -5,7 +5,7 @@ interface HTMLAttributes {
   click?: () => void;
   href?: string;
   alt?: string;
-  type?: "text" | "number" | "checkbox";
+  type?: "text" | "number" | "checkbox" | "date";
   placeholder?: string;
   for?: string;
   pattern?: string;
