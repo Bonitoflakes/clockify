@@ -32,6 +32,7 @@ export const generateProjectPicker = () => {
   //
   pickerWrapper.append(inputWrapper, projectListWrapper, newProjectButton);
   picker.appendChild(pickerWrapper);
+  // FIX:
   $("timetracker-recorder__newproject-button")!.appendChild(picker);
   return Promise.resolve();
 };

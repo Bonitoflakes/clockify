@@ -18,7 +18,7 @@ const Store: IStore = createProxy({
   activeTags: [],
   tagFilter: "",
   projectFilter: "",
-  /* entries: [
+  entries: [
     {
       id: 1,
       description: "string",
@@ -27,41 +27,23 @@ const Store: IStore = createProxy({
       projectName:
         "testProjecttestProjecttestProjecttestProjecttestProjecttestProjecttestProjecttestProjecttestProjecttestProjecttestProject",
       tags: ["tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2"],
+      startTime: "10:10",
+      endTime: "11:28",
+      date: "2023-02-18",
     },
     {
       id: 2,
-      description: "",
-      actualEffort: [180, 5, 58],
-      billable: false,
-      projectName: "rrr",
-      tags: ["tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2"],
+      description: "string",
+      actualEffort: [108, 55, 58],
+      billable: true,
+      projectName: "ertyukl; uyiguhkjlkm",
+      tags: ["tag1", "tag2", "3", "4"],
+      startTime: "20:45",
+      endTime: "11:28",
+      date: "1979-02-18",
     },
-    {
-      id: 3,
-      description: "Mere samne wale kidhi me kabhi pyaaj milta he rishab rocks",
-      actualEffort: [180, 5, 58],
-      billable: false,
-      projectName: "rrr",
-      tags: ["tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2"],
-    },
-    {
-      id: 3,
-      description: "Mere samne wale kidhi me kabhi pyaaj milta he rishab rocks",
-      actualEffort: [180, 5, 58],
-      billable: false,
-      projectName: "rrr",
-      tags: ["tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2"],
-    },
-    {
-      id: 3,
-      description: "Mere samne wale kidhi me kabhi pyaaj milta he rishab rocks",
-      actualEffort: [180, 5, 58],
-      billable: false,
-      projectName: "rrr asdfg lorem ipsum asdfgh rishab",
-      tags: ["tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2", "tag1", "tag2"],
-    },
-  ],*/
-  entries: [],
+  ],
+  // entries: [],
 });
 
 export { Store, createProxy, subscribe, subscribePrimitive };

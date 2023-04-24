@@ -123,6 +123,7 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  transition: all 0.3s ease-in-out;
 }
 
 .tracker-entry__tag-button--blue:hover {

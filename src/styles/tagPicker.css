@@ -76,10 +76,6 @@
   bottom: 0;
 }
 
-.tag__picker__newproject-btn:hover {
-  background-color: rgb(228, 234, 238);
-}
-
 .tag__projects_link {
   padding: 1rem 2rem;
   width: 100%;
@@ -158,4 +154,9 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   margin-top: -5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.tracker-entry__tag-p--blue:hover {
+  background: rgb(179, 229, 252);
 }

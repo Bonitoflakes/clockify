@@ -4,7 +4,7 @@ import playButton from "@assets/play.svg";
 import menuDots from "@assets/menu-dots-vertical.svg";
 
 import { Store, subscribePrimitive, subscribe } from "@store";
-import { $, createElement } from "@utils";
+import { $, createElement, createProjectPlusIcon } from "@utils";
 
 const generateInput = (description: string) => {
   const div = createElement("div", { class: ["input-wrapper"] });
@@ -79,9 +79,7 @@ const generateBill = (id: number, billable: boolean) => {
   return div;
 };
 
-const generateDate = (startDate: string, endDate: string) => {
-  console.log("-------", startDate, endDate);
-
+const generateDate = (startDate: string, endDate: string, date: string) => {
   const div = createElement("div", { class: ["date-time-wrapper"] });
 
   const startTime = createElement("input", {
@@ -96,7 +94,11 @@ const generateDate = (startDate: string, endDate: string) => {
   (endTime as HTMLInputElement).value = endDate ?? "10:40";
 
   const tagImg = createElement("img", { src: calendarGray, alt: "" });
-  const dateInput = createElement("input", { type: "date", class: ["native-date-picker"] });
+  const dateInput = createElement("input", {
+    type: "date",
+    class: ["native-date-picker"],
+  }) as HTMLInputElement;
+  dateInput.value = date;
   const tagBtn = createElement("button", { class: ["timetracker-recorder__date-button"] });
   tagBtn.append(tagImg, dateInput);
 
@@ -126,11 +128,45 @@ const generateStopwatch = (time: number[]) => {
   return stopwatch;
 };
 
+const picker = () => {
+  const picker = createElement("div", { class: ["project-picker"] });
+  const pickerWrapper = createElement("div", { class: ["project-picker__wrapper"] });
+  //
+  //
+  const inputWrapper = createElement("div", { class: ["project-picker__input-wrapper"] });
+  const projectInput = createElement("input", {
+    class: ["project-picker__input"],
+    placeholder: "Find project or client...",
+  });
+  inputWrapper.appendChild(projectInput);
+  //
+  //
+  const projectListWrapper = createElement("section", { class: ["project-picker__list-wrapper"] });
+  const projectList = createElement("ul", { class: ["project-picker__list"] });
+  projectListWrapper.appendChild(projectList);
+  //
+  //
+  const newProjectButtonSpan = createElement("span", { class: ["plusIconSpan"] });
+  const newProjectButton = createElement(
+    "button",
+    { class: ["project-picker__btn--new"] },
+    "Create new project"
+  );
+  //
+  newProjectButtonSpan.append(createProjectPlusIcon());
+  newProjectButton.insertBefore(newProjectButtonSpan, newProjectButton.firstChild);
+  //
+  //
+  pickerWrapper.append(inputWrapper, projectListWrapper, newProjectButton);
+  picker.appendChild(pickerWrapper);
+  return picker;
+};
+
 export const generateTrackerEntry = () => {
   $("main").replaceChildren();
 
   Store.entries.map(
-    ({ id, description, actualEffort, billable, projectName, tags, startTime: st, endTime: et }) => {
+    ({ id, description, actualEffort, billable, projectName, tags, startTime: st, endTime: et, date }) => {
       const projectEntry = createElement("div", { class: ["tracker-entry", "open"] });
 
       const line1 = createElement("div", { class: ["line"] });
@@ -147,7 +183,7 @@ export const generateTrackerEntry = () => {
       const _bill = generateBill(id, billable);
       const _stopwatch = generateStopwatch(actualEffort);
       // TODO: add date as params to this func
-      const _date = generateDate(st, et);
+      const _date = generateDate(st, et, date);
       const _play = generatePlayButton();
       const _menu = generateMenuDots();
 
@@ -250,9 +286,24 @@ export const generateTrackerEntry = () => {
         }
       });
 
+      _projects.addEventListener("click", (e) => {
+        console.log(e.clientX);
+        console.log(e.clientY);
+
+        const a = picker();
+        // _projects.append(a);
+      });
+
       $("timetracker-recorder__date-button").addEventListener("click", () => {
         ($("native-date-picker") as HTMLInputElement).showPicker();
         console.log("date button clicked");
+      });
+
+      $("native-date-picker").addEventListener("change", (e) => {
+        console.log((e.target as HTMLInputElement).value);
+        const a = Store.entries.find(({ id: e_id }) => id === e_id);
+        console.log(a?.date);
+        if (a) a.date = (e.target as HTMLInputElement).value;
       });
     }
   );
@@ -262,7 +313,6 @@ const root = document.querySelector(":root") as HTMLElement;
 
 subscribePrimitive("isSidebarOpen", () => {
   root.style.setProperty("--tracker-margin-left", Store.isSidebarOpen ? "22rem" : "9rem");
-
   root.style.setProperty("--input-width", Store.isSidebarOpen ? "35rem" : "45rem");
 });
 
