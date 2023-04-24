@@ -33,8 +33,7 @@ export const generateProjectPicker = () => {
   pickerWrapper.append(inputWrapper, projectListWrapper, newProjectButton);
   picker.appendChild(pickerWrapper);
   // FIX:
-  $("timetracker-recorder__newproject-button")!.appendChild(picker);
-  return Promise.resolve();
+  return picker;
 };
 
 export const initializeProjectPicker = async () => {
@@ -125,7 +124,7 @@ const updateProjectStatus = (checkInput = true) => {
 
   Store.projectFilter = "";
 
-  picker.classList.remove("active");
+  picker.remove();
 };
 
 const showUnmatchedMessage = () => {

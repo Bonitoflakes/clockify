@@ -5,14 +5,14 @@
  * @param parent Parent element to check e.target
  * @param cb callback function to be removed.
  */
-export const clickOutsideToCloseElement = (
+export const clickOutsideToDeleteElement = (
   e: any,
   element: HTMLElement,
   parent: HTMLElement,
   cb: (e: any) => void
 ) => {
   if (!parent.contains(e.target)) {
-    element.classList.remove("active");
+    element.remove();
     document.removeEventListener("click", cb);
     element.removeEventListener("click", stopPropagation);
     return true;

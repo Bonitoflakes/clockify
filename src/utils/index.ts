@@ -1,5 +1,5 @@
 import { createElement } from "./create";
-import { clickOutsideToCloseElement, stopPropagation, stopSpacePropagation } from "./closeElement";
+import { clickOutsideToDeleteElement, stopPropagation, stopSpacePropagation } from "./closeElement";
 import { sidebarLinkData } from "./fakeSidebar";
 import { customLog } from "./proxyLogger";
 import { $$, $ } from "./query";
@@ -7,7 +7,7 @@ import { createCircle, createProjectPlusIcon } from "./red-circle";
 
 export {
   createElement,
-  clickOutsideToCloseElement,
+  clickOutsideToDeleteElement,
   stopSpacePropagation,
   stopPropagation,
   sidebarLinkData,

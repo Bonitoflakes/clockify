@@ -3,7 +3,7 @@
   box-shadow: 0 5px 10px #0000001a;
   position: absolute;
   top: 155%;
-  display: none;
+  display: block;
   z-index: 100;
 }
 

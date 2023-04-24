@@ -4,7 +4,8 @@ import playButton from "@assets/play.svg";
 import menuDots from "@assets/menu-dots-vertical.svg";
 
 import { Store, subscribePrimitive, subscribe } from "@store";
-import { $, createElement, createProjectPlusIcon } from "@utils";
+import { $, createElement, clickOutsideToDeleteElement, stopPropagation, stopSpacePropagation } from "@utils";
+import { generateProjectPicker as gpp, initializeProjectPicker, renderProjectList } from "@components";
 
 const generateInput = (description: string) => {
   const div = createElement("div", { class: ["input-wrapper"] });
@@ -126,40 +127,6 @@ const generateStopwatch = (time: number[]) => {
   const secs = time[2].toString().padStart(2, "0");
   const stopwatch = createElement("div", { class: ["tracker-entry__stopwatch"] }, `${hrs}:${mins}:${secs}`);
   return stopwatch;
-};
-
-const picker = () => {
-  const picker = createElement("div", { class: ["project-picker"] });
-  const pickerWrapper = createElement("div", { class: ["project-picker__wrapper"] });
-  //
-  //
-  const inputWrapper = createElement("div", { class: ["project-picker__input-wrapper"] });
-  const projectInput = createElement("input", {
-    class: ["project-picker__input"],
-    placeholder: "Find project or client...",
-  });
-  inputWrapper.appendChild(projectInput);
-  //
-  //
-  const projectListWrapper = createElement("section", { class: ["project-picker__list-wrapper"] });
-  const projectList = createElement("ul", { class: ["project-picker__list"] });
-  projectListWrapper.appendChild(projectList);
-  //
-  //
-  const newProjectButtonSpan = createElement("span", { class: ["plusIconSpan"] });
-  const newProjectButton = createElement(
-    "button",
-    { class: ["project-picker__btn--new"] },
-    "Create new project"
-  );
-  //
-  newProjectButtonSpan.append(createProjectPlusIcon());
-  newProjectButton.insertBefore(newProjectButtonSpan, newProjectButton.firstChild);
-  //
-  //
-  pickerWrapper.append(inputWrapper, projectListWrapper, newProjectButton);
-  picker.appendChild(pickerWrapper);
-  return picker;
 };
 
 export const generateTrackerEntry = () => {
@@ -286,12 +253,20 @@ export const generateTrackerEntry = () => {
         }
       });
 
-      _projects.addEventListener("click", (e) => {
-        console.log(e.clientX);
-        console.log(e.clientY);
+      const deletePicker = (e: MouseEvent) => {
+        const picker = $("project-picker");
+        clickOutsideToDeleteElement(e, picker, $("tracker-entry__project-button"), deletePicker);
+      };
 
-        const a = picker();
-        // _projects.append(a);
+      _projects.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const a = gpp();
+        _projects.append(a);
+        a.addEventListener("click", stopPropagation);
+        a.addEventListener("keyup", stopSpacePropagation);
+        initializeProjectPicker();
+        renderProjectList();
+        document.addEventListener("click", deletePicker);
       });
 
       $("timetracker-recorder__date-button").addEventListener("click", () => {

@@ -7,7 +7,7 @@ import {
   createElement,
   $,
   $$,
-  clickOutsideToCloseElement,
+  clickOutsideToDeleteElement,
   stopPropagation,
   stopSpacePropagation,
   createProjectPlusIcon,
@@ -115,12 +115,12 @@ export const initializeTimeTrackerRecorder = () => {
 
   const closePicker = (e: MouseEvent) => {
     const picker = $("project-picker");
-    clickOutsideToCloseElement(e, picker, projectButton, closePicker);
+    clickOutsideToDeleteElement(e, picker, projectButton, closePicker);
   };
 
   const closeTagPicker = (e: MouseEvent) => {
     const picker = $("tag__picker");
-    const isClosed = clickOutsideToCloseElement(e, picker, tagButton, closeTagPicker);
+    const isClosed = clickOutsideToDeleteElement(e, picker, tagButton, closeTagPicker);
     isClosed && renderTag();
   };
 
