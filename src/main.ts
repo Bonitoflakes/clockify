@@ -15,7 +15,6 @@ import {
   initializeSidebar,
   initializeTimeTrackerRecorder,
   initializeProjectPicker,
-  initializeProjectFilter,
   renderProjectList,
   generateTagPicker,
   renderTagList,
@@ -35,7 +34,6 @@ generateTimeTrackerRecorder().then(() => initializeTimeTrackerRecorder());
 
 generateProjectPicker()
   .then(() => initializeProjectPicker())
-  .then(() => initializeProjectFilter())
   .then(() => renderProjectList());
 
 generateTagPicker();
@@ -45,5 +43,3 @@ renderTagList();
 document.getElementById("app")!.append(createElement("main", { class: ["main"] }));
 
 generateTrackerEntry();
-
-

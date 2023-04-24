@@ -3,6 +3,7 @@ import { clickOutsideToCloseElement, stopPropagation, stopSpacePropagation } fro
 import { sidebarLinkData } from "./fakeSidebar";
 import { customLog } from "./proxyLogger";
 import { $$, $ } from "./query";
+import { createCircle, createProjectPlusIcon } from "./red-circle";
 
 export {
   createElement,
@@ -13,4 +14,6 @@ export {
   customLog,
   $,
   $$,
+  createCircle,
+  createProjectPlusIcon,
 };

@@ -69,7 +69,7 @@
 .tracker-entry__project-button {
   display: flex;
   align-items: center;
-  color: var(--project-color);
+  color: var(--red-color);
   padding: 0 4rem 0 1rem;
   position: relative;
   flex: 1;

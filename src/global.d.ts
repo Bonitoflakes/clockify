@@ -23,7 +23,7 @@ interface IStore {
   activeProject: string;
   activeTags: string[];
   tagFilter: string;
-  filter: string;
+  projectFilter: string;
   entries: {
     id: number;
     description: string;

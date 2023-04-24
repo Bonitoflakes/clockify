@@ -127,7 +127,8 @@ const generateStopwatch = (time: number[]) => {
 };
 
 export const generateTrackerEntry = () => {
-  $("main").innerHTML = "";
+  $("main").replaceChildren();
+
   Store.entries.map(
     ({ id, description, actualEffort, billable, projectName, tags, startTime: st, endTime: et }) => {
       const projectEntry = createElement("div", { class: ["tracker-entry", "open"] });

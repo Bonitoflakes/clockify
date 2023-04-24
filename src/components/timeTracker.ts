@@ -1,4 +1,3 @@
-import plusBlueReq from "@assets/plus-blue-req.svg";
 import clockIcon from "@assets/clock-blue.svg";
 import listIcon from "@assets/list-blue.svg";
 import tagGray from "@assets/tag-gray.svg";
@@ -11,12 +10,17 @@ import {
   clickOutsideToCloseElement,
   stopPropagation,
   stopSpacePropagation,
+  createProjectPlusIcon,
 } from "@utils";
+
 import { renderTag } from "./tagPicker";
 
 export const generateTimeTrackerRecorder = () => {
-  const timerTracker = createElement("div", { class: ["timetracker-recorder", "open"] });
-
+  const timerTracker = createElement("div", {
+    class: ["timetracker-recorder", "timetracker-recorder--open"],
+  });
+  //
+  //
   const input = createElement("input", {
     type: "text",
     class: ["timetracker-recorder__input"],
@@ -24,8 +28,9 @@ export const generateTimeTrackerRecorder = () => {
   });
   //
   //
-  const plusImg = createElement("img", { src: plusBlueReq, alt: "" });
-  const plusSpan = createElement("span", { class: ["newproject-button__img"] });
+  const plusImg = createProjectPlusIcon();
+
+  const plusSpan = createElement("span", { class: ["newproject-button__span"] });
   plusSpan.appendChild(plusImg);
   //
   //
@@ -109,7 +114,7 @@ export const initializeTimeTrackerRecorder = () => {
   };
 
   const closePicker = (e: MouseEvent) => {
-    const picker = $("picker");
+    const picker = $("project-picker");
     clickOutsideToCloseElement(e, picker, projectButton, closePicker);
   };
 
@@ -142,7 +147,7 @@ export const initializeTimeTrackerRecorder = () => {
   });
 
   projectButton.addEventListener("click", () => {
-    const picker = $("picker");
+    const picker = $("project-picker");
 
     picker.addEventListener("click", stopPropagation);
     picker.addEventListener("keyup", stopSpacePropagation);
@@ -213,7 +218,7 @@ const save = () => {
   const billable = $("timetracker-recorder__price-button") as HTMLInputElement;
   const now = Date.now();
 
-  if (Store.activeProject === "") return "project name is empty";
+  if (Store.activeProject === "") return alert("project name is empty");
 
   const findStartTime = () => {
     const hrs2secs = Store.timer[0] * 60 * 60;
@@ -258,14 +263,15 @@ const save = () => {
 };
 
 const resetProjectButton = () => {
-  const spanImg = $("newproject-button__img");
+  const redDot = $("circle--red");
   const projectName = $("newproject-button-text") as HTMLElement;
-  const firstChild = spanImg.children[0];
-  const plusImg = createElement("img", { src: plusBlueReq });
+  const projectBtn = $("timetracker-recorder__newproject-button");
 
+  const plusImg = createProjectPlusIcon();
+
+  redDot.replaceWith(plusImg);
   projectName.textContent = "Projects";
-  projectName.style.color = "var(--primary-color)";
-  spanImg.replaceChild(plusImg, firstChild);
+  projectBtn.style.color = "var(--primary-color)";
 
   Store.activeProject = "";
 };

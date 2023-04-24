@@ -49,7 +49,7 @@ export const initTagFilter = () => {
 
 export const renderTagList = () => {
   const tagList = $("tag__projects_link-container");
-  tagList.innerHTML = "";
+  tagList.replaceChildren()
 
   if (Store.allTags.length === 0 && !Store.tagFilter) {
     tagList.append(createElement("li", { class: ["tag__projects_link_default"] }, "No tags yet..."));

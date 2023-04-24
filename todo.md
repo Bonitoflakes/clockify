@@ -5,3 +5,5 @@
 - [ ] Billabe line-height issues. Probable solution: Capsizecss
 - [ ] documentFragment for better perf???
 - [ ] Layout shift on resetting tag and project tracker.
+- [x] Use replaceWith() instead of innerHTML or replaceChildren()
+- [x] Refactor ProjectPicker component
