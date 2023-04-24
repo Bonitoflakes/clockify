@@ -110,7 +110,7 @@ export const initializeTimeTrackerRecorder = () => {
   const tagButton = $("timetracker-recorder__tags-button");
 
   const toggleTimeTracker = () => {
-    timeTracker?.classList.toggle("open");
+    timeTracker?.classList.toggle("timetracker-recorder--open");
   };
 
   const closePicker = (e: MouseEvent) => {
