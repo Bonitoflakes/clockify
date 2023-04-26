@@ -5,7 +5,11 @@ import menuDots from "@assets/menu-dots-vertical.svg";
 
 import { Store, subscribePrimitive, subscribe } from "@store";
 import { $, createElement, clickOutsideToDeleteElement, stopPropagation, stopSpacePropagation } from "@utils";
-import { generateProjectPicker as gpp, initializeProjectPicker, renderProjectList } from "@components";
+import {
+  generateProjectPicker as createProjectPicker,
+  initializeProjectPicker,
+  renderProjectList,
+} from "@components";
 
 const generateInput = (description: string) => {
   const div = createElement("div", { class: ["input-wrapper"] });
@@ -39,7 +43,7 @@ const generateProjectPicker = (projectName: string) => {
   );
 
   projectBtn.append(redCircle, projectBtnText);
-  return projectBtn;
+  return [projectBtn, projectBtnText];
 };
 
 const generateTags = (tags: string[]) => {
@@ -142,14 +146,11 @@ export const generateTrackerEntry = () => {
       const line4 = createElement("div", { class: ["line"] });
       const line5 = createElement("div", { class: ["line"] });
 
-      // console.log(projectName);
-
       const _input = generateInput(description);
-      const _projects = generateProjectPicker(projectName);
+      const [_projects, _projectText] = generateProjectPicker(projectName);
       const _tags = generateTags(tags);
       const _bill = generateBill(id, billable);
       const _stopwatch = generateStopwatch(actualEffort);
-      // TODO: add date as params to this func
       const _date = generateDate(st, et, date);
       const _play = generatePlayButton();
       const _menu = generateMenuDots();
@@ -253,19 +254,32 @@ export const generateTrackerEntry = () => {
         }
       });
 
-      const deletePicker = (e: MouseEvent) => {
+      const deletePicker = (e: any) => {
         const picker = $("project-picker");
-        clickOutsideToDeleteElement(e, picker, $("tracker-entry__project-button"), deletePicker);
+        if (picker) {
+          clickOutsideToDeleteElement(e, picker, _projects, deletePicker);
+        }
       };
 
       _projects.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const a = gpp();
-        _projects.append(a);
-        a.addEventListener("click", stopPropagation);
-        a.addEventListener("keyup", stopSpacePropagation);
-        initializeProjectPicker();
-        renderProjectList();
+        // create a new project picker.
+        console.log("button clicked");
+        console.log(e);
+        console.log(_projects);
+
+        const picker = createProjectPicker();
+        console.log(picker);
+
+        _projects.appendChild(picker);
+
+        picker.addEventListener("click", stopPropagation);
+        picker.addEventListener("keyup", stopSpacePropagation);
+
+        Store.activeProject = _projectText.textContent ?? "I messed up";
+
+        initializeProjectPicker(_projectText);
+        renderProjectList(deletePicker);
+
         document.addEventListener("click", deletePicker);
       });
 

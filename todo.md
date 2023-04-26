@@ -7,3 +7,4 @@
 - [ ] Layout shift on resetting tag and project tracker.
 - [x] Use replaceWith() instead of innerHTML or replaceChildren()
 - [x] Refactor ProjectPicker component
+- [x] Something is wrong with the projectButton Event Listener.

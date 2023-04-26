@@ -1,5 +1,6 @@
 import { createElement, $, createCircle, createProjectPlusIcon } from "@utils";
 import { Store, subscribePrimitive } from "@store";
+import { closePicker } from "../utils/red-circle";
 
 export const generateProjectPicker = () => {
   const picker = createElement("div", { class: ["project-picker"] });
@@ -32,22 +33,24 @@ export const generateProjectPicker = () => {
   //
   pickerWrapper.append(inputWrapper, projectListWrapper, newProjectButton);
   picker.appendChild(pickerWrapper);
-  // FIX:
   return picker;
 };
 
-export const initializeProjectPicker = async () => {
+let textToBeModified: HTMLElement;
+
+export const initializeProjectPicker = (textElement: HTMLElement) => {
   const newProjectButton = $("project-picker__btn--new") as HTMLButtonElement;
   const projectPickerInput = $("project-picker__input") as HTMLInputElement;
+  textToBeModified = textElement;
 
   newProjectButton.addEventListener("click", () => {
-    updateProjectStatus();
+    updateProjectStatus(textToBeModified);
   });
 
   // Show filtered projects based on user query.
   projectPickerInput.addEventListener("keyup", (e) => {
     if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
-      updateProjectStatus();
+      updateProjectStatus(textToBeModified);
     }
   });
 
@@ -58,7 +61,7 @@ export const initializeProjectPicker = async () => {
   });
 };
 
-export const renderProjectList = () => {
+export const renderProjectList = (cb?: any) => {
   const projectList = $("project-picker__list") as HTMLUListElement;
   // Empty all children.
   projectList.replaceChildren();
@@ -73,7 +76,7 @@ export const renderProjectList = () => {
 
     // No matching projects Message
     if (filteredProjects.length === 0 && Store.projectFilter) {
-      projectList.append(showUnmatchedMessage());
+      projectList.append(showUnmatchedMessage(textToBeModified));
     }
     //
     else {
@@ -84,12 +87,13 @@ export const renderProjectList = () => {
 
       // EVENT listener
       projectList.addEventListener("click", (e) => {
+        e.stopPropagation();
         const target = e.target as HTMLLIElement;
 
         if (target.nodeName === "A") return;
 
         Store.activeProject = target.textContent ?? "DEV messed up 😬";
-        updateProjectStatus(false);
+        updateProjectStatus(textToBeModified, false, cb);
       });
     }
   }
@@ -97,12 +101,10 @@ export const renderProjectList = () => {
 
 // Re-render the project list whenever filter value is changed or the active project is changed.
 subscribePrimitive("projectFilter", renderProjectList);
-subscribePrimitive("activeProject", renderProjectList);
 
-const updateProjectStatus = (checkInput = true) => {
+const updateProjectStatus = (textElement: HTMLElement, checkInput = true, cb?: any) => {
   const picker = $("project-picker");
   const projectBtn = $("timetracker-recorder__newproject-button");
-  const projectText = $("newproject-button-text");
   const projectImg = $("newproject-button__span");
 
   if (checkInput) {
@@ -114,7 +116,8 @@ const updateProjectStatus = (checkInput = true) => {
   }
 
   projectBtn.style.color = "var(--red-color)";
-  projectText.textContent = Store.activeProject;
+
+  textElement.textContent = Store.activeProject;
 
   let x = createCircle();
   projectImg.replaceChildren(x);
@@ -125,9 +128,12 @@ const updateProjectStatus = (checkInput = true) => {
   Store.projectFilter = "";
 
   picker.remove();
+  document.removeEventListener("click", closePicker);
+  console.log(cb);
+  document.removeEventListener("click", cb);
 };
 
-const showUnmatchedMessage = () => {
+const showUnmatchedMessage = (textElement: HTMLElement) => {
   const defaultList = createElement("li", { class: ["project-picker__link--default"] });
   const defaultMsg = createElement(
     "p",
@@ -151,7 +157,7 @@ const showUnmatchedMessage = () => {
   // EVENT Listeners
   defaultLink.addEventListener("click", () => {
     Store.activeProject = Store.projectFilter;
-    updateProjectStatus();
+    updateProjectStatus(textElement);
   });
 
   return defaultList;

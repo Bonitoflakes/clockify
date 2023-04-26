@@ -14,6 +14,8 @@ import {
 } from "@utils";
 
 import { renderTag } from "./tagPicker";
+import { generateProjectPicker, initializeProjectPicker, renderProjectList } from "./projectPicker";
+import { closePicker } from "../utils/red-circle";
 
 export const generateTimeTrackerRecorder = () => {
   const timerTracker = createElement("div", {
@@ -113,11 +115,6 @@ export const initializeTimeTrackerRecorder = () => {
     timeTracker?.classList.toggle("timetracker-recorder--open");
   };
 
-  const closePicker = (e: MouseEvent) => {
-    const picker = $("project-picker");
-    clickOutsideToDeleteElement(e, picker, projectButton, closePicker);
-  };
-
   const closeTagPicker = (e: MouseEvent) => {
     const picker = $("tag__picker");
     const isClosed = clickOutsideToDeleteElement(e, picker, tagButton, closeTagPicker);
@@ -125,7 +122,9 @@ export const initializeTimeTrackerRecorder = () => {
   };
 
   // SUBSCRIPTIONS
+  // update every second.
   subscribe(Store.timer, updateStopwatchUI);
+  // update when timer is reset.
   subscribePrimitive("timer", updateStopwatchUI);
   subscribePrimitive("isSidebarOpen", toggleTimeTracker);
 
@@ -147,7 +146,10 @@ export const initializeTimeTrackerRecorder = () => {
   });
 
   projectButton.addEventListener("click", () => {
-    const picker = $("project-picker");
+    const picker = generateProjectPicker();
+    projectButton.appendChild(picker);
+    initializeProjectPicker($("newproject-button-text"));
+    renderProjectList();
 
     picker.addEventListener("click", stopPropagation);
     picker.addEventListener("keyup", stopSpacePropagation);

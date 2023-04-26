@@ -21,7 +21,7 @@ import {
   initTagFilter,
 } from "@components";
 
-import { $, createElement, sidebarLinkData } from "@utils";
+import { createElement, sidebarLinkData } from "@utils";
 
 import LogRocket from "logrocket";
 LogRocket.init("kaaavr/clockify");
