@@ -50,14 +50,11 @@ export const initializeProjectPicker = (textElement: HTMLElement, ID?: number) =
   });
 
   // Show filtered projects based on user query.
-  projectPickerInput.addEventListener("keyup", (e) => {
+  projectPickerInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
       updateProjectStatus(textToBeModified);
     }
-  });
 
-  // Update filter value on every input keystroke.
-  projectPickerInput.addEventListener("input", (e) => {
     const target = e.target as HTMLInputElement;
     Store.projectFilter = target.value;
   });
@@ -72,8 +69,8 @@ export const renderProjectList = () => {
     projectList.append(createElement("li", { class: ["project-picker__link--default"] }, "No projects yet"));
   } else {
     // To prevent showing project link which is in active state.
-    const filteredProjects = Store.allProjects.filter((el: string) =>
-      el === Store.activeProject ? false : el.includes(Store.projectFilter)
+    const filteredProjects = Store.allProjects.filter(
+      (el: string) => el !== Store.activeProject && el.includes(Store.projectFilter)
     );
 
     // No matching projects Message
