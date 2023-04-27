@@ -37,11 +37,13 @@ export const generateProjectPicker = () => {
 };
 
 let textToBeModified: HTMLElement;
+let id: number | undefined;
 
-export const initializeProjectPicker = (textElement: HTMLElement) => {
+export const initializeProjectPicker = (textElement: HTMLElement, ID?: number) => {
   const newProjectButton = $("project-picker__btn--new") as HTMLButtonElement;
   const projectPickerInput = $("project-picker__input") as HTMLInputElement;
   textToBeModified = textElement;
+  id = ID;
 
   newProjectButton.addEventListener("click", () => {
     updateProjectStatus(textToBeModified);
@@ -58,7 +60,6 @@ export const initializeProjectPicker = (textElement: HTMLElement) => {
   projectPickerInput.addEventListener("input", (e) => {
     const target = e.target as HTMLInputElement;
     Store.projectFilter = target.value;
-    console.log(target.value);
   });
 };
 
@@ -116,9 +117,15 @@ const updateProjectStatus = (textElement: HTMLElement, checkInput = true) => {
 
   textElement.textContent = Store.activeProject;
 
+  if (id) {
+    const a = Store.entries.find(({ id: e_id }) => id === e_id);
+    a!.projectName = Store.activeProject;
+    console.table(a);
+  }
+
   Store.projectFilter = "";
 
-  picker.remove();
+  if (picker) picker.remove();
 
   if (textElement.classList.contains("newproject-button-text")) {
     const projectBtn = $("timetracker-recorder__newproject-button");

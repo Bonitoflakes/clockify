@@ -65,7 +65,7 @@ export const generateTrackerEntry = () => {
 
         Store.activeProject = _projectText.textContent ?? "I messed up";
 
-        initializeProjectPicker(_projectText);
+        initializeProjectPicker(_projectText,id);
         renderProjectList();
       });
 

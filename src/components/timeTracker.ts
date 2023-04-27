@@ -15,7 +15,6 @@ import {
 
 import { renderTag } from "./tagPicker";
 import { generateProjectPicker, initializeProjectPicker, renderProjectList } from "./projectPicker";
-import { closePicker } from "../utils/red-circle";
 
 export const generateTimeTrackerRecorder = () => {
   const timerTracker = createElement("div", {
@@ -144,19 +143,12 @@ export const initializeTimeTrackerRecorder = () => {
 
     // create a new project picker.
     const picker = generateProjectPicker();
+    const projectText = $("newproject-button-text");
     projectButton.appendChild(picker);
 
-    Store.activeProject = $("newproject-button-text").textContent ?? "I messed up";
-    initializeProjectPicker($("newproject-button-text"));
+    Store.activeProject = projectText.textContent ?? "DEV messed up";
+    initializeProjectPicker(projectText);
     renderProjectList();
-
-    // const projectBtn = $("timetracker-recorder__newproject-button");
-    // const projectImg = $("newproject-button__span");
-
-    // projectImg.replaceChildren(createCircle());
-    // projectBtn.style.color = "var(--red-color)";
-    // projectImg.style.width = "auto";
-    // projectImg.style.height = "auto";
 
     picker.addEventListener("click", stopPropagation);
     picker.addEventListener("keyup", stopSpacePropagation);

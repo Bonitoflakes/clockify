@@ -33,10 +33,6 @@ generateSidebar(sidebarLinkData).then(() => initializeSidebar());
 
 generateTimeTrackerRecorder().then(() => initializeTimeTrackerRecorder());
 
-// generateProjectPicker()
-//   .then(() => initializeProjectPicker())
-//   .then(() => renderProjectList());
-
 generateTagPicker();
 initTagFilter();
 renderTagList();
