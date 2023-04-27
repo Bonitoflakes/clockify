@@ -38,22 +38,31 @@ export const generateProjectPicker = () => {
 
 let textToBeModified: HTMLElement;
 
-export const initializeProjectPicker = (textElement: HTMLElement) => {
+export const initializeProjectPicker = (textElement: HTMLElement, cb: any) => {
   const newProjectButton = $("project-picker__btn--new") as HTMLButtonElement;
   const projectPickerInput = $("project-picker__input") as HTMLInputElement;
   textToBeModified = textElement;
 
   newProjectButton.addEventListener("click", () => {
-    updateProjectStatus(textToBeModified);
+    updateProjectStatus(textToBeModified, true, cb);
   });
 
   // Show filtered projects based on user query.
   projectPickerInput.addEventListener("keyup", (e) => {
     if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
-      updateProjectStatus(textToBeModified);
+      updateProjectStatus(textToBeModified, true, cb);
     }
   });
 
+  projectPickerInput.addEventListener("mousedown", (e) => {
+    e.stopPropagation();
+  });
+
+  projectPickerInput.addEventListener("mouseup", (e) => {
+    e.stopPropagation();
+  });
+
+  // FIX:
   // Update filter value on every input keystroke.
   projectPickerInput.addEventListener("input", (e) => {
     const target = e.target as HTMLInputElement;
@@ -76,7 +85,7 @@ export const renderProjectList = (cb?: any) => {
 
     // No matching projects Message
     if (filteredProjects.length === 0 && Store.projectFilter) {
-      projectList.append(showUnmatchedMessage(textToBeModified));
+      projectList.append(showUnmatchedMessage(textToBeModified, cb));
     }
     //
     else {
@@ -115,25 +124,24 @@ const updateProjectStatus = (textElement: HTMLElement, checkInput = true, cb?: a
     pickerInput.value = "";
   }
 
-  projectBtn.style.color = "var(--red-color)";
-
   textElement.textContent = Store.activeProject;
 
   let x = createCircle();
   projectImg.replaceChildren(x);
 
+  projectBtn.style.color = "var(--red-color)";
   projectImg.style.width = "auto";
   projectImg.style.height = "auto";
 
   Store.projectFilter = "";
 
   picker.remove();
-  document.removeEventListener("click", closePicker);
-  console.log(cb);
-  document.removeEventListener("click", cb);
+  // document.removeEventListener("click", closePicker);
+  // console.log(cb);
+  document.removeEventListener("mouseup", cb);
 };
 
-const showUnmatchedMessage = (textElement: HTMLElement) => {
+const showUnmatchedMessage = (textElement: HTMLElement, cb: any) => {
   const defaultList = createElement("li", { class: ["project-picker__link--default"] });
   const defaultMsg = createElement(
     "p",
@@ -155,9 +163,9 @@ const showUnmatchedMessage = (textElement: HTMLElement) => {
   defaultList.append(defaultMsg, defaultSpan);
 
   // EVENT Listeners
-  defaultLink.addEventListener("click", () => {
+  defaultLink.addEventListener("mousedown", () => {
     Store.activeProject = Store.projectFilter;
-    updateProjectStatus(textElement);
+    updateProjectStatus(textElement, true, cb);
   });
 
   return defaultList;

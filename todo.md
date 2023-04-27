@@ -8,3 +8,4 @@
 - [x] Use replaceWith() instead of innerHTML or replaceChildren()
 - [x] Refactor ProjectPicker component
 - [x] Something is wrong with the projectButton Event Listener.
+- [ ] Delete event is fired when in the input field of the picker.

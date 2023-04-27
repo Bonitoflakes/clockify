@@ -117,7 +117,7 @@ export const initializeTimeTrackerRecorder = () => {
 
   const closeTagPicker = (e: MouseEvent) => {
     const picker = $("tag__picker");
-    const isClosed = clickOutsideToDeleteElement(e, picker, tagButton, closeTagPicker);
+    const isClosed = clickOutsideToDeleteElement(e, picker, tagButton, closeTagPicker,'1');
     isClosed && renderTag();
   };
 
@@ -240,7 +240,7 @@ const save = () => {
   console.log(endTime);
 
   Store.entries.push({
-    id: 1,
+    id: 80,
     description: workData.value,
     actualEffort: Array.from(Store.timer),
     billable: billable.checked,
