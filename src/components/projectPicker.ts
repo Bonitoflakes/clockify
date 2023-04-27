@@ -1,9 +1,9 @@
 import { createElement, $, createCircle, createProjectPlusIcon } from "@utils";
 import { Store, subscribePrimitive } from "@store";
-import { closePicker } from "../utils/red-circle";
 
 export const generateProjectPicker = () => {
   const picker = createElement("div", { class: ["project-picker"] });
+  picker.tabIndex = 0;
   const pickerWrapper = createElement("div", { class: ["project-picker__wrapper"] });
   //
   //
@@ -38,39 +38,31 @@ export const generateProjectPicker = () => {
 
 let textToBeModified: HTMLElement;
 
-export const initializeProjectPicker = (textElement: HTMLElement, cb: any) => {
+export const initializeProjectPicker = (textElement: HTMLElement) => {
   const newProjectButton = $("project-picker__btn--new") as HTMLButtonElement;
   const projectPickerInput = $("project-picker__input") as HTMLInputElement;
   textToBeModified = textElement;
 
   newProjectButton.addEventListener("click", () => {
-    updateProjectStatus(textToBeModified, true, cb);
+    updateProjectStatus(textToBeModified);
   });
 
   // Show filtered projects based on user query.
   projectPickerInput.addEventListener("keyup", (e) => {
     if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
-      updateProjectStatus(textToBeModified, true, cb);
+      updateProjectStatus(textToBeModified);
     }
   });
 
-  projectPickerInput.addEventListener("mousedown", (e) => {
-    e.stopPropagation();
-  });
-
-  projectPickerInput.addEventListener("mouseup", (e) => {
-    e.stopPropagation();
-  });
-
-  // FIX:
   // Update filter value on every input keystroke.
   projectPickerInput.addEventListener("input", (e) => {
     const target = e.target as HTMLInputElement;
     Store.projectFilter = target.value;
+    console.log(target.value);
   });
 };
 
-export const renderProjectList = (cb?: any) => {
+export const renderProjectList = () => {
   const projectList = $("project-picker__list") as HTMLUListElement;
   // Empty all children.
   projectList.replaceChildren();
@@ -85,7 +77,7 @@ export const renderProjectList = (cb?: any) => {
 
     // No matching projects Message
     if (filteredProjects.length === 0 && Store.projectFilter) {
-      projectList.append(showUnmatchedMessage(textToBeModified, cb));
+      projectList.append(showUnmatchedMessage(textToBeModified));
     }
     //
     else {
@@ -98,11 +90,11 @@ export const renderProjectList = (cb?: any) => {
       projectList.addEventListener("click", (e) => {
         e.stopPropagation();
         const target = e.target as HTMLLIElement;
-
         if (target.nodeName === "A") return;
 
         Store.activeProject = target.textContent ?? "DEV messed up 😬";
-        updateProjectStatus(textToBeModified, false, cb);
+        Store.projectFilter = "";
+        updateProjectStatus(textToBeModified, false);
       });
     }
   }
@@ -111,10 +103,8 @@ export const renderProjectList = (cb?: any) => {
 // Re-render the project list whenever filter value is changed or the active project is changed.
 subscribePrimitive("projectFilter", renderProjectList);
 
-const updateProjectStatus = (textElement: HTMLElement, checkInput = true, cb?: any) => {
+const updateProjectStatus = (textElement: HTMLElement, checkInput = true) => {
   const picker = $("project-picker");
-  const projectBtn = $("timetracker-recorder__newproject-button");
-  const projectImg = $("newproject-button__span");
 
   if (checkInput) {
     Store.activeProject = Store.projectFilter;
@@ -126,22 +116,22 @@ const updateProjectStatus = (textElement: HTMLElement, checkInput = true, cb?: a
 
   textElement.textContent = Store.activeProject;
 
-  let x = createCircle();
-  projectImg.replaceChildren(x);
-
-  projectBtn.style.color = "var(--red-color)";
-  projectImg.style.width = "auto";
-  projectImg.style.height = "auto";
-
   Store.projectFilter = "";
 
   picker.remove();
-  // document.removeEventListener("click", closePicker);
-  // console.log(cb);
-  document.removeEventListener("mouseup", cb);
+
+  if (textElement.classList.contains("newproject-button-text")) {
+    const projectBtn = $("timetracker-recorder__newproject-button");
+    const projectImg = $("newproject-button__span");
+
+    projectImg.replaceChildren(createCircle());
+    projectBtn.style.color = "var(--red-color)";
+    projectImg.style.width = "auto";
+    projectImg.style.height = "auto";
+  }
 };
 
-const showUnmatchedMessage = (textElement: HTMLElement, cb: any) => {
+const showUnmatchedMessage = (textElement: HTMLElement) => {
   const defaultList = createElement("li", { class: ["project-picker__link--default"] });
   const defaultMsg = createElement(
     "p",
@@ -165,7 +155,7 @@ const showUnmatchedMessage = (textElement: HTMLElement, cb: any) => {
   // EVENT Listeners
   defaultLink.addEventListener("mousedown", () => {
     Store.activeProject = Store.projectFilter;
-    updateProjectStatus(textElement, true, cb);
+    updateProjectStatus(textElement);
   });
 
   return defaultList;

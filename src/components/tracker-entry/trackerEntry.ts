@@ -1,5 +1,5 @@
-import { Store, subscribePrimitive, subscribe } from "@store";
-import { $, createElement, clickOutsideToDeleteElement, stopPropagation, stopSpacePropagation } from "@utils";
+import { Store, subscribe } from "@store";
+import { $, createElement, stopPropagation, stopSpacePropagation } from "@utils";
 
 import {
   generateProjectPicker as createProjectPicker,
@@ -32,7 +32,10 @@ export const generateTrackerEntry = () => {
       const line5 = createElement("div", { class: ["line"] });
 
       const _input = generateInput(description);
+
       const [_projects, _projectText] = generateProjectPicker(projectName, id);
+      _projects.dataset.id = `project-picker-button-${id}`;
+
       const _tags = generateTags(tags);
       const _bill = generateBill(id, billable);
       const _stopwatch = generateStopwatch(actualEffort);
@@ -48,51 +51,28 @@ export const generateTrackerEntry = () => {
       projectEntry.append(div1, div2);
       $("main")!.append(projectEntry);
 
-      function DELETE(e: any) {
-        console.log("delete is run");
-
-        const picker = $("project-picker");
-        if (!picker) {
-          // document.removeEventListener("mouseup", DELETE);
-          return;
+      _projects.addEventListener("click", () => {
+        if ($("project-picker")) {
+          return $("project-picker").remove();
         }
 
-        const isValidChild = _projects.contains(e.target);
-        console.log(isValidChild, e.target);
+        // create a new project picker.
+        const picker = createProjectPicker();
+        _projects.appendChild(picker);
 
-        if (!isValidChild) {
-          console.log("removing picker, DELETE event.....");
-          picker.remove();
-          document.removeEventListener("mouseup", DELETE);
-        }
-      }
+        picker.addEventListener("click", stopPropagation);
+        picker.addEventListener("keyup", stopSpacePropagation);
 
-      _projects.dataset.id = `project-picker-button-${id}`;
+        Store.activeProject = _projectText.textContent ?? "I messed up";
 
-      _projects.addEventListener(
-        "click",
-        () => {
-          // create a new project picker.
-          const picker = createProjectPicker();
-          picker.dataset.id = _projects.dataset.id;
-          _projects.appendChild(picker);
+        initializeProjectPicker(_projectText);
+        renderProjectList();
+      });
 
-          // console.log(_projects);
-          // console.log(picker);
-
-          picker.addEventListener("click", stopPropagation);
-          picker.addEventListener("keyup", stopSpacePropagation);
-
-          Store.activeProject = _projectText.textContent ?? "I messed up";
-
-          initializeProjectPicker(_projectText, DELETE);
-          renderProjectList(DELETE);
-
-          // debugger;
-          document.addEventListener("mouseup", DELETE);
-        },
-        { capture: false }
-      );
+      _projects.addEventListener("blur", (e) => {
+        const isChild = (e.target as HTMLButtonElement).contains(e.relatedTarget as Node);
+        !isChild && $("project-picker").remove();
+      });
 
       const startTime = $("start-time") as HTMLInputElement;
       const endTime = $("end-time") as HTMLInputElement;

@@ -8,4 +8,5 @@
 - [x] Use replaceWith() instead of innerHTML or replaceChildren()
 - [x] Refactor ProjectPicker component
 - [x] Something is wrong with the projectButton Event Listener.
-- [ ] Delete event is fired when in the input field of the picker.
+- [x] Delete event is fired when in the input field of the picker. BAKA BAKA BAKA!!!!!!!! Look at alternate solutions before going on your own.
+- [ ] Edge case: When there is filter and li is clicked, picker.remove() throws error.

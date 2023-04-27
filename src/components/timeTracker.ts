@@ -108,25 +108,17 @@ let timerID: NodeJS.Timeout;
 export const initializeTimeTrackerRecorder = () => {
   const startButton = $("timetracker-recorder__start-button");
   const projectButton = $("timetracker-recorder__newproject-button");
-  const timeTracker = $("timetracker-recorder");
   const tagButton = $("timetracker-recorder__tags-button");
-
-  const toggleTimeTracker = () => {
-    timeTracker?.classList.toggle("timetracker-recorder--open");
-  };
 
   const closeTagPicker = (e: MouseEvent) => {
     const picker = $("tag__picker");
-    const isClosed = clickOutsideToDeleteElement(e, picker, tagButton, closeTagPicker,'1');
+    const isClosed = clickOutsideToDeleteElement(e, picker, tagButton, closeTagPicker, "1");
     isClosed && renderTag();
   };
 
   // SUBSCRIPTIONS
-  // update every second.
-  subscribe(Store.timer, updateStopwatchUI);
-  // update when timer is reset.
-  subscribePrimitive("timer", updateStopwatchUI);
-  subscribePrimitive("isSidebarOpen", toggleTimeTracker);
+  subscribe(Store.timer, updateStopwatchUI); // update every second.
+  subscribePrimitive("timer", updateStopwatchUI); // update when timer is reset.
 
   // EVENT LISTENERS
   startButton.addEventListener("click", () => {
@@ -146,19 +138,33 @@ export const initializeTimeTrackerRecorder = () => {
   });
 
   projectButton.addEventListener("click", () => {
+    if ($("project-picker")) {
+      return $("project-picker").remove();
+    }
+
+    // create a new project picker.
     const picker = generateProjectPicker();
     projectButton.appendChild(picker);
+
+    Store.activeProject = $("newproject-button-text").textContent ?? "I messed up";
     initializeProjectPicker($("newproject-button-text"));
     renderProjectList();
 
+    // const projectBtn = $("timetracker-recorder__newproject-button");
+    // const projectImg = $("newproject-button__span");
+
+    // projectImg.replaceChildren(createCircle());
+    // projectBtn.style.color = "var(--red-color)";
+    // projectImg.style.width = "auto";
+    // projectImg.style.height = "auto";
+
     picker.addEventListener("click", stopPropagation);
     picker.addEventListener("keyup", stopSpacePropagation);
+  });
 
-    picker.classList.toggle("active");
-    picker.style.height = "auto";
-
-    // close on click outside the picker
-    document.addEventListener("click", closePicker);
+  projectButton.addEventListener("blur", (e) => {
+    const isChild = (e.target as HTMLButtonElement).contains(e.relatedTarget as Node);
+    !isChild && $("project-picker").remove();
   });
 
   tagButton.addEventListener("click", () => {
