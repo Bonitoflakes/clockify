@@ -9,13 +9,10 @@ import "./styles/trackerEntry.css";
 import {
   generateNavbar,
   generateSidebar,
-  generateProjectPicker,
   generateTimeTrackerRecorder,
   generateTrackerEntry,
   initializeSidebar,
   initializeTimeTrackerRecorder,
-  initializeProjectPicker,
-  renderProjectList,
   generateTagPicker,
   renderTagList,
   initTagFilter,
@@ -23,9 +20,7 @@ import {
 
 import { createElement, sidebarLinkData } from "@utils";
 
-import LogRocket from "logrocket";
 import { Store, subscribePrimitive } from "@store";
-LogRocket.init("kaaavr/clockify");
 
 generateNavbar();
 

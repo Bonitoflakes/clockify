@@ -16,6 +16,38 @@ import {
 import { renderTag } from "./tagPicker";
 import { generateProjectPicker, initializeProjectPicker, renderProjectList } from "./projectPicker";
 
+// FIX:
+export const removeProjectPicker = (e: any) => {
+  const picker = $("project-picker");
+  console.log(e);
+
+  const target = e.target as HTMLElement;
+  console.log(target)
+  console.log("i ran");
+
+  // const a = target.matches(".timetracker-recorder__newproject-button");
+  // console.log(a);
+
+  // if (a) {
+  //   document.removeEventListener("click", removeProjectPicker);
+  //   return;
+  // }
+  // if(b){
+  //   target.offsetParent?.matches
+  // }
+
+  // if (target.contains(picker)) return console.log(" return");
+
+  Store.projectFilter = "";
+
+  console.log("removing picker from IRAN");
+
+  if (picker) picker.remove();
+
+  document.removeEventListener("click", removeProjectPicker);
+  console.log("document event removed!!");
+};
+
 export const generateTimeTrackerRecorder = () => {
   const timerTracker = createElement("div", {
     class: ["timetracker-recorder", "timetracker-recorder--open"],
@@ -136,7 +168,10 @@ export const initializeTimeTrackerRecorder = () => {
     }
   });
 
-  projectButton.addEventListener("click", () => {
+  projectButton.addEventListener("click", (e) => {
+    console.log("click on button ");
+    document.body.style.background = "lightgreen";
+
     if ($("project-picker")) {
       return $("project-picker").remove();
     }
@@ -150,13 +185,31 @@ export const initializeTimeTrackerRecorder = () => {
     initializeProjectPicker(projectText);
     renderProjectList();
 
+    e.stopPropagation();
     picker.addEventListener("click", stopPropagation);
     picker.addEventListener("keyup", stopSpacePropagation);
+    // FIX:
+    document.addEventListener("click", removeProjectPicker);
   });
 
   projectButton.addEventListener("blur", (e) => {
-    const isChild = (e.target as HTMLButtonElement).contains(e.relatedTarget as Node);
-    !isChild && $("project-picker").remove();
+    console.log("blur event fired!");
+
+    const isChild = (e.currentTarget as HTMLButtonElement).contains(e.relatedTarget as Node);
+    const picker = $("project-closePicker");
+
+    if (isChild) return console.log("blur event halted!!");
+    console.log("focusing out");
+
+    document.body.style.background = "pink";
+
+    if (!isChild && picker) {
+      console.log("Removing picker from focusEVENT");
+      // FIX:
+      document.removeEventListener("click", removeProjectPicker);
+
+      picker?.remove();
+    }
   });
 
   tagButton.addEventListener("click", () => {
