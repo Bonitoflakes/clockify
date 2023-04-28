@@ -30,11 +30,11 @@ interface IStore {
     actualEffort: number[];
     billable: boolean;
     projectName: string;
-    // tags: string[];
-    tags: {
-      tag: string;
-      isChecked: boolean;
-    }[];
+    tags: string[];
+    // tags: {
+    //   tag: string;
+    //   isChecked: boolean;
+    // }[];
     startTime: string;
     endTime: string;
     date: string;

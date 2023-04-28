@@ -52,7 +52,6 @@ export const renderTagList = () => {
   const tagList = $("tag__projects_link-container");
   tagList?.replaceChildren();
 
-  // FIX:
   if (Store.allTags.length === 0 && !Store.tagFilter) {
     tagList.append(createElement("li", { class: ["tag__projects_link_default"] }, "No tags yet..."));
     tagList.append(
@@ -61,6 +60,7 @@ export const renderTagList = () => {
     return;
   }
 
+  // FIX: Refactor code, too many repetitions
   // Filter iterates over every tag and checks if it's an active tag filter.
   let filteredTags = Store.allTags.filter(({ tag }) => tag.includes(Store.tagFilter));
 
@@ -69,15 +69,7 @@ export const renderTagList = () => {
     return;
   }
 
-  if (entryToBeModifiedID) {
-    const entry = Store.entries.find(({ id }) => entryToBeModifiedID === id);
-    console.table(entry);
-    if (entry) {
-      filteredTags = entry.tags;
-    }
-  }
-
-  if (filteredTags.length > 0) {
+  if (!entryToBeModifiedID) {
     filteredTags.map(({ tag, isChecked }) => {
       const checkbox = createElement("input", {
         class: ["c_box"],
@@ -88,10 +80,60 @@ export const renderTagList = () => {
       const c_wrap = createElement("div", { class: ["c_wrap"] });
 
       checkbox.checked = isChecked;
+
       c_wrap.append(checkbox, label);
       tagList.append(c_wrap);
     });
+
+    const allHTMLCheckBox = $$("c_box") as NodeListOf<HTMLInputElement>;
+
+    allHTMLCheckBox.forEach((tag) => {
+      tag.addEventListener("change", (e) => {
+        const target = e.target as HTMLInputElement;
+        if (!target.labels) return;
+
+        let value: string;
+        value = target.labels[0].outerText;
+
+        const toUpdate = Store.allTags.find((tag) => tag.tag === value);
+
+        if (target.checked) {
+          Store.activeTags.push(value);
+          toUpdate!.isChecked = true;
+        }
+
+        // checkbox unchecked and existing in activeTags, if so remove it from the activeTags
+        if (!target.checked && Store.activeTags.includes(value)) {
+          const updatedTags = Store.activeTags.filter((tag) => tag !== value);
+          Store.activeTags = updatedTags;
+          toUpdate!.isChecked = false;
+        }
+      });
+    });
+
+    return;
   }
+
+  const entry = Store.entries.find(({ id }) => entryToBeModifiedID === id);
+
+  if (!entry) return;
+
+  // RENDER TAG LIST
+  filteredTags.map(({ tag }) => {
+    const checkbox = createElement("input", {
+      class: ["c_box"],
+      type: "checkbox",
+      id: tag,
+    }) as HTMLInputElement;
+    const label = createElement("label", { class: ["c_label"], for: tag }, tag);
+    const c_wrap = createElement("div", { class: ["c_wrap"] });
+
+    const isTagPresent = entry.tags.find((t) => tag === t);
+    checkbox.checked = isTagPresent ? true : false;
+
+    c_wrap.append(checkbox, label);
+    tagList.append(c_wrap);
+  });
 
   const allHTMLCheckBox = $$("c_box") as NodeListOf<HTMLInputElement>;
 
@@ -105,20 +147,15 @@ export const renderTagList = () => {
 
       if (target.checked) {
         Store.activeTags.push(value);
+        entry.tags = Store.activeTags;
       }
 
       // checkbox unchecked and existing in activeTags, if so remove it from the activeTags
       if (!target.checked && Store.activeTags.includes(value)) {
         const updatedTags = Store.activeTags.filter((tag) => tag !== value);
         Store.activeTags = updatedTags;
+        entry.tags = Store.activeTags;
       }
-
-      Store.allTags.map((tag) => {
-        if (tag.tag === value) {
-          tag.isChecked = !tag.isChecked;
-        }
-      });
-      //
     });
   });
 };
@@ -128,22 +165,17 @@ export const renderTag = () => {
   const tagButton = textToBeModified;
   const firstChild = tagButton.children[0];
 
+  if (firstChild.nodeName === "IMG" && Store.activeTags.length === 0) return;
+
   if (Store.activeTags.length === 0) {
     const tagImg = createElement("img", { src: tagGray });
     tagButton.replaceChild(tagImg, firstChild);
     return;
   }
 
-  const buttonText: string = Store.allTags.reduce((acc, curr) => {
-    if (curr.isChecked) {
-      if (acc.length === 0) {
-        return curr.tag;
-      } else {
-        return acc + ", " + curr.tag;
-      }
-    }
-    return acc;
-  }, "");
+  const buttonText: string = Store.activeTags.reduce((acc, curr) => {
+    return acc + ", " + curr;
+  });
 
   const text = createElement("p", { class: ["tracker-entry__tag-p--blue"] }, buttonText);
 

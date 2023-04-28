@@ -43,28 +43,15 @@ export const generateProjectPicker = (projectName: string, id: number) => {
   return [projectBtn, projectBtnText];
 };
 
-export const generateTags = (
-  tags: {
-    tag: string;
-    isChecked: boolean;
-  }[]
-) => {
+export const generateTags = (tags: string[]) => {
   if (tags.length === 0) {
     const tagImg = createElement("img", { src: tagGray, alt: "" });
     const tagBtn = createElement("button", { class: ["timetracker-recorder__tags-button"] });
     tagBtn.appendChild(tagImg);
     return tagBtn;
   } else {
-    const tagText = tags.reduce((acc, curr) => {
-      if (curr.isChecked) {
-        if (acc.length === 0) {
-          return curr.tag;
-        } else {
-          return acc + ", " + curr.tag;
-        }
-      }
-      return acc;
-    }, "");
+    const tagText = tags.reduce((acc, curr) => acc + ", " + curr);
+
     const tagP = createElement("p", { class: ["tracker-entry__tag-p--blue"] });
     tagP.textContent = tagText;
 

@@ -22,6 +22,7 @@ export const removeTagPicker = () => {
 
   const picker = $("tag__picker");
   Store.tagFilter = "";
+  Store.activeTags = [];
 
   if (picker) picker.remove();
   document.removeEventListener("click", removeTagPicker);
@@ -77,6 +78,10 @@ export const handleTPClick = (e: MouseEvent, id?: number) => {
   const ex = $("tag__picker");
 
   const target = e.target as HTMLElement;
+  const firstChild = (e.currentTarget as Node).firstChild;
+
+  const entryTags = firstChild?.nodeName === "IMG" ? [] : firstChild?.textContent?.split(", ");
+  Store.activeTags = entryTags ?? [];
 
   if (target.offsetParent?.contains(ex)) return ex.remove();
 

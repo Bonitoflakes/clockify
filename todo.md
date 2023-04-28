@@ -12,6 +12,7 @@
 - [x] Edge case: When there is filter and li is clicked, picker.remove() throws error.
 - [x] clear projectFilter onBlur
 - [x] Parent Blur event to be prevented when child is clicked.
+- [ ] Tag Picker get other tag data when the picker is open and someother tag is clicked.
 
 # Doubts:
 
