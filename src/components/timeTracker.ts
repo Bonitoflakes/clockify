@@ -22,7 +22,7 @@ export const removeTagPicker = () => {
 
   const picker = $("tag__picker");
   Store.tagFilter = "";
-  Store.activeTags = [];
+  // Store.activeTags = [];
 
   if (picker) picker.remove();
   document.removeEventListener("click", removeTagPicker);
