@@ -7,3 +7,15 @@
 - [ ] Layout shift on resetting tag and project tracker.
 - [x] Use replaceWith() instead of innerHTML or replaceChildren()
 - [x] Refactor ProjectPicker component
+- [x] Something is wrong with the projectButton Event Listener.
+- [x] Delete event is fired when in the input field of the picker. BAKA BAKA BAKA!!!!!!!! Look at alternate solutions before going on your own.
+- [x] Edge case: When there is filter and li is clicked, picker.remove() throws error.
+- [x] clear projectFilter onBlur
+- [x] Parent Blur event to be prevented when child is clicked.
+- [ ] Tag Picker get other tag data when the picker is open and someother tag is clicked.
+
+# Doubts:
+
+1. How to avoid document level event listeners?
+2. How to avoid module level variables? / Best practices
+3. Auto-resizing input.

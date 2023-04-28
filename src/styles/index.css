@@ -1,6 +1,8 @@
 :root {
   --primary-color: #03a9f4;
   --red-color: #f44336;
+  --tracker-margin-left: 22rem;
+  --input-width: 35rem;
 }
 
 *,

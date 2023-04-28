@@ -3,17 +3,104 @@ import listIcon from "@assets/list-blue.svg";
 import tagGray from "@assets/tag-gray.svg";
 
 import { Store, subscribe, subscribePrimitive } from "@store";
-import {
-  createElement,
-  $,
-  $$,
-  clickOutsideToCloseElement,
-  stopPropagation,
-  stopSpacePropagation,
-  createProjectPlusIcon,
-} from "@utils";
+import { createElement, $, $$, stopPropagation, stopSpacePropagation, createProjectPlusIcon } from "@utils";
 
-import { renderTag } from "./tagPicker";
+import { generateTagPicker, initTagFilter, renderTag, renderTagList } from "./tagPicker";
+import { generateProjectPicker, initializeProjectPicker, renderProjectList } from "./projectPicker";
+
+// FIX:
+export const removeProjectPicker = () => {
+  const picker = $("project-picker");
+  Store.projectFilter = "";
+
+  if (picker) picker.remove();
+  document.removeEventListener("click", removeProjectPicker);
+};
+
+export const removeTagPicker = () => {
+  renderTag();
+
+  const picker = $("tag__picker");
+  Store.tagFilter = "";
+  Store.activeTags = [];
+
+  if (picker) picker.remove();
+  document.removeEventListener("click", removeTagPicker);
+};
+
+export const handlePPClick = (e: MouseEvent, text: HTMLElement, id?: number) => {
+  const ex = $("project-picker");
+
+  // if (ex) document.body.style.background = "pink";
+
+  const target = e.target as HTMLElement;
+
+  if (target.offsetParent?.contains(ex)) return ex.remove();
+
+  if (ex) {
+    Store.projectFilter = "";
+    ex.remove();
+  }
+
+  // create a new project picker.
+  const picker = generateProjectPicker();
+
+  (e.currentTarget as HTMLElement).appendChild(picker);
+
+  Store.activeProject = text.textContent ?? "DEV messed up";
+  initializeProjectPicker(text, id);
+  renderProjectList();
+
+  picker.addEventListener("click", stopPropagation);
+  picker.addEventListener("keyup", stopSpacePropagation);
+
+  // FIX:
+  e.stopPropagation();
+  document.addEventListener("click", removeProjectPicker);
+};
+
+export const handlePPBlur = (e: FocusEvent) => {
+  const isChild = (e.currentTarget as HTMLButtonElement).contains(e.relatedTarget as Node);
+
+  const picker = $("project-picker");
+
+  if (isChild) return;
+
+  if (picker) {
+    // FIX:
+    document.removeEventListener("click", removeProjectPicker);
+
+    picker.remove();
+  }
+};
+
+export const handleTPClick = (e: MouseEvent, id?: number) => {
+  const ex = $("tag__picker");
+
+  const target = e.target as HTMLElement;
+  const firstChild = (e.currentTarget as Node).firstChild;
+
+  const entryTags = firstChild?.nodeName === "IMG" ? [] : firstChild?.textContent?.split(", ");
+  Store.activeTags = entryTags ?? [];
+
+  if (target.offsetParent?.contains(ex)) return ex.remove();
+
+  if (ex) {
+    Store.tagFilter = "";
+    ex.remove();
+    renderTag();
+  }
+
+  const picker = generateTagPicker();
+  (e.currentTarget as HTMLElement).append(picker);
+  initTagFilter(e.currentTarget as HTMLElement, id);
+  renderTagList();
+
+  picker.addEventListener("click", stopPropagation);
+  picker.addEventListener("keyup", stopSpacePropagation);
+  e.stopPropagation();
+  document.addEventListener("click", removeTagPicker);
+};
 
 export const generateTimeTrackerRecorder = () => {
   const timerTracker = createElement("div", {
@@ -106,28 +193,11 @@ let timerID: NodeJS.Timeout;
 export const initializeTimeTrackerRecorder = () => {
   const startButton = $("timetracker-recorder__start-button");
   const projectButton = $("timetracker-recorder__newproject-button");
-  const timeTracker = $("timetracker-recorder");
   const tagButton = $("timetracker-recorder__tags-button");
 
-  const toggleTimeTracker = () => {
-    timeTracker?.classList.toggle("timetracker-recorder--open");
-  };
-
-  const closePicker = (e: MouseEvent) => {
-    const picker = $("project-picker");
-    clickOutsideToCloseElement(e, picker, projectButton, closePicker);
-  };
-
-  const closeTagPicker = (e: MouseEvent) => {
-    const picker = $("tag__picker");
-    const isClosed = clickOutsideToCloseElement(e, picker, tagButton, closeTagPicker);
-    isClosed && renderTag();
-  };
-
   // SUBSCRIPTIONS
-  subscribe(Store.timer, updateStopwatchUI);
-  subscribePrimitive("timer", updateStopwatchUI);
-  subscribePrimitive("isSidebarOpen", toggleTimeTracker);
+  subscribe(Store.timer, updateStopwatchUI); // update every second.
+  subscribePrimitive("timer", updateStopwatchUI); // update when timer is reset.
 
   // EVENT LISTENERS
   startButton.addEventListener("click", () => {
@@ -146,30 +216,23 @@ export const initializeTimeTrackerRecorder = () => {
     }
   });
 
-  projectButton.addEventListener("click", () => {
-    const picker = $("project-picker");
+  projectButton.addEventListener("click", (e) => handlePPClick(e, $("newproject-button-text")));
 
-    picker.addEventListener("click", stopPropagation);
-    picker.addEventListener("keyup", stopSpacePropagation);
+  projectButton.addEventListener("blur", handlePPBlur);
 
-    picker.classList.toggle("active");
-    picker.style.height = "auto";
+  tagButton.addEventListener("click", (e) => handleTPClick(e));
 
-    // close on click outside the picker
-    document.addEventListener("click", closePicker);
-  });
+  // tagButton.addEventListener("blur", (e) => {
+  //   const isChild = (e.currentTarget as HTMLButtonElement).contains(e.relatedTarget as Node);
 
-  tagButton.addEventListener("click", () => {
-    const tagPicker = $("tag__picker");
+  //   const picker = $("tag__picker");
 
-    tagPicker.addEventListener("click", stopPropagation);
-    tagPicker.addEventListener("keyup", stopSpacePropagation);
+  //   if (isChild) return;
 
-    tagPicker.classList.toggle("active");
-
-    // close on click outside the picker
-    document.addEventListener("click", closeTagPicker);
-  });
+  //   if (picker) {
+  //     picker.remove();
+  //   }
+  // });
 };
 
 const incrementTimer = () => {
@@ -238,7 +301,7 @@ const save = () => {
   console.log(endTime);
 
   Store.entries.push({
-    id: 1,
+    id: 80,
     description: workData.value,
     actualEffort: Array.from(Store.timer),
     billable: billable.checked,

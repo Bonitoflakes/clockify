@@ -1,8 +1,10 @@
 import { createElement, $, createCircle, createProjectPlusIcon } from "@utils";
 import { Store, subscribePrimitive } from "@store";
+import { removeProjectPicker } from "./timeTracker";
 
 export const generateProjectPicker = () => {
   const picker = createElement("div", { class: ["project-picker"] });
+  picker.tabIndex = 0;
   const pickerWrapper = createElement("div", { class: ["project-picker__wrapper"] });
   //
   //
@@ -32,78 +34,77 @@ export const generateProjectPicker = () => {
   //
   pickerWrapper.append(inputWrapper, projectListWrapper, newProjectButton);
   picker.appendChild(pickerWrapper);
-  $("timetracker-recorder__newproject-button")!.appendChild(picker);
-  return Promise.resolve();
+  return picker;
 };
 
-export const initializeProjectPicker = async () => {
+let textToBeModified: HTMLElement;
+let entryToBeModifiedID: number | undefined;
+
+export const initializeProjectPicker = (textElement: HTMLElement, ID?: number) => {
   const newProjectButton = $("project-picker__btn--new") as HTMLButtonElement;
   const projectPickerInput = $("project-picker__input") as HTMLInputElement;
+  textToBeModified = textElement;
+  entryToBeModifiedID = ID;
 
   newProjectButton.addEventListener("click", () => {
-    updateProjectStatus();
+    updateProjectStatus(textToBeModified);
   });
 
-  // Show filtered projects based on user query.
   projectPickerInput.addEventListener("keyup", (e) => {
-    if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
-      updateProjectStatus();
-    }
-  });
-
-  // Update filter value on every input keystroke.
-  projectPickerInput.addEventListener("input", (e) => {
+    // Update filter value on keystroke.
     const target = e.target as HTMLInputElement;
     Store.projectFilter = target.value;
+
+    // Create project on Ctrl + Enter.
+    if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+      updateProjectStatus(textToBeModified);
+    }
   });
 };
 
 export const renderProjectList = () => {
   const projectList = $("project-picker__list") as HTMLUListElement;
-  // Empty all children.
-  projectList.replaceChildren();
+
+  if (!projectList) return;
+  projectList.replaceChildren(); // Empty all children.
 
   if (Store.allProjects.length === 0 && !Store.projectFilter) {
     projectList.append(createElement("li", { class: ["project-picker__link--default"] }, "No projects yet"));
-  } else {
-    // To prevent showing project link which is in active state.
-    const filteredProjects = Store.allProjects.filter((el: string) =>
-      el === Store.activeProject ? false : el.includes(Store.projectFilter)
-    );
-
-    // No matching projects Message
-    if (filteredProjects.length === 0 && Store.projectFilter) {
-      projectList.append(showUnmatchedMessage());
-    }
-    //
-    else {
-      filteredProjects.length > 0 &&
-        filteredProjects.map((name: string) => {
-          projectList.append(createElement("li", { class: ["project-picker__list--link"] }, name));
-        });
-
-      // EVENT listener
-      projectList.addEventListener("click", (e) => {
-        const target = e.target as HTMLLIElement;
-
-        if (target.nodeName === "A") return;
-
-        Store.activeProject = target.textContent ?? "DEV messed up 😬";
-        updateProjectStatus(false);
-      });
-    }
+    return;
   }
+
+  // To prevent showing project link which is in active state.
+  const filteredProjects = Store.allProjects.filter(
+    (el: string) => el !== Store.activeProject && el.includes(Store.projectFilter)
+  );
+
+  // No matching projects Message
+  if (filteredProjects.length === 0 && Store.projectFilter) {
+    projectList.append(showUnmatchedMessage(textToBeModified));
+    return;
+  }
+
+  // Loop through all the projects and attach them to the list.
+  if (filteredProjects.length > 0) {
+    filteredProjects.map((name: string) => {
+      projectList.append(createElement("li", { class: ["project-picker__list--link"] }, name));
+    });
+  }
+
+  // EVENT listener
+  projectList.addEventListener("click", (e) => {
+    // e.stopPropagation();
+    const target = e.target as HTMLLIElement;
+    if (target.nodeName !== "LI") return;
+
+    Store.activeProject = target.textContent ?? "DEV messed up 😬";
+    Store.projectFilter = "";
+    updateProjectStatus(textToBeModified, false);
+  });
 };
 
-// Re-render the project list whenever filter value is changed or the active project is changed.
-subscribePrimitive("projectFilter", renderProjectList);
-subscribePrimitive("activeProject", renderProjectList);
-
-const updateProjectStatus = (checkInput = true) => {
+const updateProjectStatus = (textToBeModified: HTMLElement, checkInput = true) => {
   const picker = $("project-picker");
-  const projectBtn = $("timetracker-recorder__newproject-button");
-  const projectText = $("newproject-button-text");
-  const projectImg = $("newproject-button__span");
 
   if (checkInput) {
     Store.activeProject = Store.projectFilter;
@@ -113,22 +114,40 @@ const updateProjectStatus = (checkInput = true) => {
     pickerInput.value = "";
   }
 
-  projectBtn.style.color = "var(--red-color)";
-  projectText.textContent = Store.activeProject;
+  if (entryToBeModifiedID) {
+    const entry = Store.entries.find(({ id }) => entryToBeModifiedID === id);
+    entry!.projectName = Store.activeProject;
+    // console.table(entry);
+  }
 
-  let x = createCircle();
-  projectImg.replaceChildren(x);
-
-  projectImg.style.width = "auto";
-  projectImg.style.height = "auto";
-
+  textToBeModified.textContent = Store.activeProject;
   Store.projectFilter = "";
 
-  picker.classList.remove("active");
+  if (picker) {
+    console.log("Removing picker from innerFunction");
+
+    picker.remove();
+
+    // FIX:
+    document.removeEventListener("click", removeProjectPicker);
+  }
+
+  if (textToBeModified.classList.contains("newproject-button-text")) {
+    const projectBtn = $("timetracker-recorder__newproject-button");
+    const projectImg = $("newproject-button__span");
+
+    projectImg.replaceChildren(createCircle());
+    projectBtn.style.color = "var(--red-color)";
+    projectImg.style.width = "auto";
+    projectImg.style.height = "auto";
+  }
+
+  // FIX:
+  Store.allProjects = Array.from(new Set(Store.allProjects));
 };
 
-const showUnmatchedMessage = () => {
-  const defaultList = createElement("li", { class: ["project-picker__link--default"] });
+const showUnmatchedMessage = (textToBeModified: HTMLElement) => {
+  const defaultList = createElement("ol", { class: ["project-picker__link--default"] });
   const defaultMsg = createElement(
     "p",
     { class: ["project-picker__link--default-msg"] },
@@ -149,10 +168,13 @@ const showUnmatchedMessage = () => {
   defaultList.append(defaultMsg, defaultSpan);
 
   // EVENT Listeners
-  defaultLink.addEventListener("click", () => {
+  defaultLink.addEventListener("mousedown", () => {
     Store.activeProject = Store.projectFilter;
-    updateProjectStatus();
+    updateProjectStatus(textToBeModified);
   });
 
   return defaultList;
 };
+
+// Re-render the project list whenever filter value is changed or the active project is changed.
+subscribePrimitive("projectFilter", renderProjectList);

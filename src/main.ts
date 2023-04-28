@@ -9,37 +9,27 @@ import "./styles/trackerEntry.css";
 import {
   generateNavbar,
   generateSidebar,
-  generateProjectPicker,
   generateTimeTrackerRecorder,
   generateTrackerEntry,
   initializeSidebar,
   initializeTimeTrackerRecorder,
-  initializeProjectPicker,
-  renderProjectList,
-  generateTagPicker,
-  renderTagList,
-  initTagFilter,
 } from "@components";
 
-import { $, createElement, sidebarLinkData } from "@utils";
+import { createElement, sidebarLinkData } from "@utils";
 
-import LogRocket from "logrocket";
-LogRocket.init("kaaavr/clockify");
+import { Store, subscribePrimitive } from "@store";
 
 generateNavbar();
-
 generateSidebar(sidebarLinkData).then(() => initializeSidebar());
-
 generateTimeTrackerRecorder().then(() => initializeTimeTrackerRecorder());
-
-generateProjectPicker()
-  .then(() => initializeProjectPicker())
-  .then(() => renderProjectList());
-
-generateTagPicker();
-initTagFilter();
-renderTagList();
 
 document.getElementById("app")!.append(createElement("main", { class: ["main"] }));
 
 generateTrackerEntry();
+
+const root = document.querySelector(":root") as HTMLElement;
+
+subscribePrimitive("isSidebarOpen", () => {
+  root.style.setProperty("--tracker-margin-left", Store.isSidebarOpen ? "22rem" : "9rem");
+  root.style.setProperty("--input-width", Store.isSidebarOpen ? "35rem" : "45rem");
+});

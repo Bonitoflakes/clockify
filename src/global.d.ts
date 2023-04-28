@@ -31,6 +31,10 @@ interface IStore {
     billable: boolean;
     projectName: string;
     tags: string[];
+    // tags: {
+    //   tag: string;
+    //   isChecked: boolean;
+    // }[];
     startTime: string;
     endTime: string;
     date: string;
