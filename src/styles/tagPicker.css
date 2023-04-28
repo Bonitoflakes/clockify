@@ -11,11 +11,6 @@
   top: 155%;
   left: 0;
   z-index: 100;
-  display: none;
-}
-
-.tag__picker.active {
-  display: block;
 }
 
 .tag__picker__wrapper {

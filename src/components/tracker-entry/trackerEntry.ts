@@ -1,11 +1,5 @@
 import { Store, subscribe } from "@store";
-import { $, createElement, stopPropagation, stopSpacePropagation } from "@utils";
-
-import {
-  generateProjectPicker as createProjectPicker,
-  initializeProjectPicker,
-  renderProjectList,
-} from "@components";
+import { $, createElement } from "@utils";
 
 import {
   generateBill,
@@ -17,6 +11,8 @@ import {
   generateStopwatch,
   generateTags,
 } from "./helpers";
+
+import { handlePPBlur, handlePPClick, handleTPClick } from "../timeTracker";
 
 export const generateTrackerEntry = () => {
   $("main").replaceChildren();
@@ -51,28 +47,11 @@ export const generateTrackerEntry = () => {
       projectEntry.append(div1, div2);
       $("main")!.append(projectEntry);
 
-      _projects.addEventListener("click", () => {
-        if ($("project-picker")) {
-          return $("project-picker").remove();
-        }
+      _projects.addEventListener("click", (e) => handlePPClick(e, _projectText, id));
 
-        // create a new project picker.
-        const picker = createProjectPicker();
-        _projects.appendChild(picker);
+      _projects.addEventListener("blur", handlePPBlur);
 
-        picker.addEventListener("click", stopPropagation);
-        picker.addEventListener("keyup", stopSpacePropagation);
-
-        Store.activeProject = _projectText.textContent ?? "I messed up";
-
-        initializeProjectPicker(_projectText,id);
-        renderProjectList();
-      });
-
-      _projects.addEventListener("blur", (e) => {
-        const isChild = (e.target as HTMLButtonElement).contains(e.relatedTarget as Node);
-        !isChild && $("project-picker").remove();
-      });
+      _tags.addEventListener("click", (e) => handleTPClick(e, id));
 
       const startTime = $("start-time") as HTMLInputElement;
       const endTime = $("end-time") as HTMLInputElement;

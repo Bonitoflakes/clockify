@@ -13,9 +13,6 @@ import {
   generateTrackerEntry,
   initializeSidebar,
   initializeTimeTrackerRecorder,
-  generateTagPicker,
-  renderTagList,
-  initTagFilter,
 } from "@components";
 
 import { createElement, sidebarLinkData } from "@utils";
@@ -23,14 +20,8 @@ import { createElement, sidebarLinkData } from "@utils";
 import { Store, subscribePrimitive } from "@store";
 
 generateNavbar();
-
 generateSidebar(sidebarLinkData).then(() => initializeSidebar());
-
 generateTimeTrackerRecorder().then(() => initializeTimeTrackerRecorder());
-
-generateTagPicker();
-initTagFilter();
-renderTagList();
 
 document.getElementById("app")!.append(createElement("main", { class: ["main"] }));
 

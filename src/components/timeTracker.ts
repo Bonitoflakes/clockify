@@ -3,49 +3,98 @@ import listIcon from "@assets/list-blue.svg";
 import tagGray from "@assets/tag-gray.svg";
 
 import { Store, subscribe, subscribePrimitive } from "@store";
-import {
-  createElement,
-  $,
-  $$,
-  clickOutsideToDeleteElement,
-  stopPropagation,
-  stopSpacePropagation,
-  createProjectPlusIcon,
-} from "@utils";
+import { createElement, $, $$, stopPropagation, stopSpacePropagation, createProjectPlusIcon } from "@utils";
 
-import { renderTag } from "./tagPicker";
+import { generateTagPicker, initTagFilter, renderTag, renderTagList } from "./tagPicker";
 import { generateProjectPicker, initializeProjectPicker, renderProjectList } from "./projectPicker";
 
 // FIX:
-export const removeProjectPicker = (e: any) => {
+export const removeProjectPicker = () => {
   const picker = $("project-picker");
-  console.log(e);
-
-  const target = e.target as HTMLElement;
-  console.log(target)
-  console.log("i ran");
-
-  // const a = target.matches(".timetracker-recorder__newproject-button");
-  // console.log(a);
-
-  // if (a) {
-  //   document.removeEventListener("click", removeProjectPicker);
-  //   return;
-  // }
-  // if(b){
-  //   target.offsetParent?.matches
-  // }
-
-  // if (target.contains(picker)) return console.log(" return");
-
   Store.projectFilter = "";
 
-  console.log("removing picker from IRAN");
+  if (picker) picker.remove();
+  document.removeEventListener("click", removeProjectPicker);
+};
+
+export const removeTagPicker = () => {
+  renderTag();
+
+  const picker = $("tag__picker");
+  Store.tagFilter = "";
 
   if (picker) picker.remove();
+  document.removeEventListener("click", removeTagPicker);
+};
 
-  document.removeEventListener("click", removeProjectPicker);
-  console.log("document event removed!!");
+export const handlePPClick = (e: MouseEvent, text: HTMLElement, id?: number) => {
+  const ex = $("project-picker");
+
+  // if (ex) document.body.style.background = "pink";
+
+  const target = e.target as HTMLElement;
+
+  if (target.offsetParent?.contains(ex)) return ex.remove();
+
+  if (ex) {
+    Store.projectFilter = "";
+    ex.remove();
+  }
+
+  // create a new project picker.
+  const picker = generateProjectPicker();
+
+  (e.currentTarget as HTMLElement).appendChild(picker);
+
+  Store.activeProject = text.textContent ?? "DEV messed up";
+  initializeProjectPicker(text, id);
+  renderProjectList();
+
+  picker.addEventListener("click", stopPropagation);
+  picker.addEventListener("keyup", stopSpacePropagation);
+
+  // FIX:
+  e.stopPropagation();
+  document.addEventListener("click", removeProjectPicker);
+};
+
+export const handlePPBlur = (e: FocusEvent) => {
+  const isChild = (e.currentTarget as HTMLButtonElement).contains(e.relatedTarget as Node);
+
+  const picker = $("project-picker");
+
+  if (isChild) return;
+
+  if (picker) {
+    // FIX:
+    document.removeEventListener("click", removeProjectPicker);
+
+    picker.remove();
+  }
+};
+
+export const handleTPClick = (e: MouseEvent, id?: number) => {
+  const ex = $("tag__picker");
+
+  const target = e.target as HTMLElement;
+
+  if (target.offsetParent?.contains(ex)) return ex.remove();
+
+  if (ex) {
+    Store.tagFilter = "";
+    ex.remove();
+    renderTag();
+  }
+
+  const picker = generateTagPicker();
+  (e.currentTarget as HTMLElement).append(picker);
+  initTagFilter(e.currentTarget as HTMLElement, id);
+  renderTagList();
+
+  picker.addEventListener("click", stopPropagation);
+  picker.addEventListener("keyup", stopSpacePropagation);
+  e.stopPropagation();
+  document.addEventListener("click", removeTagPicker);
 };
 
 export const generateTimeTrackerRecorder = () => {
@@ -141,12 +190,6 @@ export const initializeTimeTrackerRecorder = () => {
   const projectButton = $("timetracker-recorder__newproject-button");
   const tagButton = $("timetracker-recorder__tags-button");
 
-  const closeTagPicker = (e: MouseEvent) => {
-    const picker = $("tag__picker");
-    const isClosed = clickOutsideToDeleteElement(e, picker, tagButton, closeTagPicker, "1");
-    isClosed && renderTag();
-  };
-
   // SUBSCRIPTIONS
   subscribe(Store.timer, updateStopwatchUI); // update every second.
   subscribePrimitive("timer", updateStopwatchUI); // update when timer is reset.
@@ -168,61 +211,23 @@ export const initializeTimeTrackerRecorder = () => {
     }
   });
 
-  projectButton.addEventListener("click", (e) => {
-    console.log("click on button ");
-    document.body.style.background = "lightgreen";
+  projectButton.addEventListener("click", (e) => handlePPClick(e, $("newproject-button-text")));
 
-    if ($("project-picker")) {
-      return $("project-picker").remove();
-    }
+  projectButton.addEventListener("blur", handlePPBlur);
 
-    // create a new project picker.
-    const picker = generateProjectPicker();
-    const projectText = $("newproject-button-text");
-    projectButton.appendChild(picker);
+  tagButton.addEventListener("click", (e) => handleTPClick(e));
 
-    Store.activeProject = projectText.textContent ?? "DEV messed up";
-    initializeProjectPicker(projectText);
-    renderProjectList();
+  // tagButton.addEventListener("blur", (e) => {
+  //   const isChild = (e.currentTarget as HTMLButtonElement).contains(e.relatedTarget as Node);
 
-    e.stopPropagation();
-    picker.addEventListener("click", stopPropagation);
-    picker.addEventListener("keyup", stopSpacePropagation);
-    // FIX:
-    document.addEventListener("click", removeProjectPicker);
-  });
+  //   const picker = $("tag__picker");
 
-  projectButton.addEventListener("blur", (e) => {
-    console.log("blur event fired!");
+  //   if (isChild) return;
 
-    const isChild = (e.currentTarget as HTMLButtonElement).contains(e.relatedTarget as Node);
-    const picker = $("project-closePicker");
-
-    if (isChild) return console.log("blur event halted!!");
-    console.log("focusing out");
-
-    document.body.style.background = "pink";
-
-    if (!isChild && picker) {
-      console.log("Removing picker from focusEVENT");
-      // FIX:
-      document.removeEventListener("click", removeProjectPicker);
-
-      picker?.remove();
-    }
-  });
-
-  tagButton.addEventListener("click", () => {
-    const tagPicker = $("tag__picker");
-
-    tagPicker.addEventListener("click", stopPropagation);
-    tagPicker.addEventListener("keyup", stopSpacePropagation);
-
-    tagPicker.classList.toggle("active");
-
-    // close on click outside the picker
-    document.addEventListener("click", closeTagPicker);
-  });
+  //   if (picker) {
+  //     picker.remove();
+  //   }
+  // });
 };
 
 const incrementTimer = () => {

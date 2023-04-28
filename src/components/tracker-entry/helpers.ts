@@ -43,19 +43,34 @@ export const generateProjectPicker = (projectName: string, id: number) => {
   return [projectBtn, projectBtnText];
 };
 
-export const generateTags = (tags: string[]) => {
+export const generateTags = (
+  tags: {
+    tag: string;
+    isChecked: boolean;
+  }[]
+) => {
   if (tags.length === 0) {
     const tagImg = createElement("img", { src: tagGray, alt: "" });
     const tagBtn = createElement("button", { class: ["timetracker-recorder__tags-button"] });
     tagBtn.appendChild(tagImg);
     return tagBtn;
   } else {
-    let tagText = tags.reduce((acc, curr) => {
-      return acc + ", " + curr;
-    });
+    const tagText = tags.reduce((acc, curr) => {
+      if (curr.isChecked) {
+        if (acc.length === 0) {
+          return curr.tag;
+        } else {
+          return acc + ", " + curr.tag;
+        }
+      }
+      return acc;
+    }, "");
+    const tagP = createElement("p", { class: ["tracker-entry__tag-p--blue"] });
+    tagP.textContent = tagText;
 
-    const tagBtn = createElement("button", { class: ["tracker-entry__tag-button--blue"] });
-    tagBtn.textContent = tagText;
+    // FIX: Class Name
+    const tagBtn = createElement("button", { class: ["timetracker-recorder__tags-button"] });
+    tagBtn.append(tagP);
     return tagBtn;
   }
 };
