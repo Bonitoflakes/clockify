@@ -2,6 +2,8 @@ import tagGray from "@assets/tag-gray.svg";
 
 import { Store } from "@store";
 import { createElement, $, $$ } from "@utils";
+import { generateToast, removeTagPicker } from "@components";
+
 import { __zeroMatch } from ".";
 
 let textToBeModified: HTMLElement;
@@ -19,8 +21,15 @@ export const initializeTagFilter = (textElement: HTMLElement, ID?: number) => {
     if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
       Store.activeTags.push(tagInput.value);
       Store.allTags.push({ tag: tagInput.value, isChecked: true });
+
+      generateToast(`Tag ${tagInput.value} has been created.`, true);
+
       Store.tagFilter = "";
       tagInput.value = "";
+    }
+
+    if (e.key === "Escape") {
+      removeTagPicker();
     }
   });
 };
@@ -87,6 +96,7 @@ const __generateCheckBox = (filteredTags: typeof Store.allTags, entryCheck = fal
 
   if (entryCheck && !entry) return;
 
+  // renders the tags and updates the checkbox state.
   filteredTags.map(({ tag, isChecked }) => {
     const checkbox = createElement("input", {
       class: ["c_box"],
@@ -110,6 +120,7 @@ const __generateCheckBox = (filteredTags: typeof Store.allTags, entryCheck = fal
 
   const allHTMLCheckBox = $$("c_box") as NodeListOf<HTMLInputElement>;
 
+  // EVENT Listener.
   allHTMLCheckBox.forEach((tag) => {
     tag.addEventListener("change", (e) => {
       const target = e.target as HTMLInputElement;

@@ -5,6 +5,7 @@ import "./styles/timetracker-recorder.css";
 import "./styles/projectPicker.css";
 import "./styles/tagPicker.css";
 import "./styles/trackerEntry.css";
+import "./styles/toast.css";
 
 import {
   generateNavbar,
@@ -19,11 +20,15 @@ import { createElement, sidebarLinkData } from "@utils";
 
 import { Store, subscribePrimitive } from "@store";
 
+const app = document.getElementById("app")!;
+const main = createElement("main", { class: ["main"] });
+const toastContainer = createElement("div", { class: ["toast-container"] });
+
 generateNavbar();
 generateSidebar(sidebarLinkData).then(() => initializeSidebar());
 generateTimeTrackerRecorder().then(() => initializeTimeTrackerRecorder());
 
-document.getElementById("app")!.append(createElement("main", { class: ["main"] }));
+app.append(main, toastContainer);
 
 generateTrackerEntry();
 

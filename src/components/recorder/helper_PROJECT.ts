@@ -30,9 +30,17 @@ export const handlePPClick = (e: MouseEvent, text: HTMLElement, id?: number) => 
 
   (e.currentTarget as HTMLElement).appendChild(picker);
 
-  Store.activeProject = text.textContent ?? "DEV messed up";
+  // BUG(EmptyProject):
+  if (text.textContent === "Projects") {
+    Store.activeProject = "";
+  } else {
+    Store.activeProject = text.textContent ?? "DEV messed up";
+  }
+
   initializeProjectPicker(text, id);
   renderProjectList();
+  const projectInput = $("project-picker__input") as HTMLInputElement;
+  projectInput.focus();
 
   picker.addEventListener("click", stopPropagation);
   picker.addEventListener("keyup", stopSpacePropagation);
@@ -67,7 +75,7 @@ export const resetProjectButton = () => {
   if (Store.activeProject !== "") {
     redDot.replaceWith(plusImg);
     projectName.textContent = "Projects";
-    projectBtn.style.color = "var(--primary-color)";
+    projectBtn.style.color = "var(--primary)";
   }
 
   Store.activeProject = "";

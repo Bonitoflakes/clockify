@@ -2,7 +2,7 @@ import { createElement, $, createCircle } from "@utils";
 import { Store } from "@store";
 
 import { __zeroMatch } from ".";
-import { removeProjectPicker } from "@components";
+import { generateToast, removeProjectPicker } from "@components";
 
 let textToBeModified: HTMLElement;
 let entryToBeModifiedID: number | undefined;
@@ -15,16 +15,22 @@ export const initializeProjectPicker = (textElement: HTMLElement, ID?: number) =
 
   newProjectButton.addEventListener("click", () => {
     __updateProjectStatus(textToBeModified);
+    generateToast(`Project ${Store.activeProject} was created successfully.`, true);
   });
 
   projectPickerInput.addEventListener("keyup", (e) => {
     // Update filter value on keystroke.
     const target = e.target as HTMLInputElement;
-    Store.projectFilter = target.value;
+    Store.projectFilter = target.value.trim();
 
     // Create project on Ctrl + Enter.
     if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
       __updateProjectStatus(textToBeModified);
+      generateToast(`Project ${Store.activeProject} was created successfully.`, true);
+    }
+
+    if (e.key === "Escape") {
+      removeProjectPicker();
     }
   });
 };
@@ -67,6 +73,7 @@ export const renderProjectList = () => {
     Store.activeProject = target.textContent ?? "DEV messed up 😬";
     Store.projectFilter = "";
     __updateProjectStatus(textToBeModified, false);
+    generateToast(`Project ${Store.activeProject} is selected.`, true);
   });
 };
 
@@ -88,6 +95,7 @@ export const __updateProjectStatus = (textToBeModified: HTMLElement, checkInput 
   }
 
   textToBeModified.textContent = Store.activeProject;
+
   Store.projectFilter = "";
 
   if (picker) {
@@ -104,7 +112,7 @@ export const __updateProjectStatus = (textToBeModified: HTMLElement, checkInput 
     const projectImg = $("newproject-button__span");
 
     projectImg.replaceChildren(createCircle());
-    projectBtn.style.color = "var(--red-color)";
+    projectBtn.style.color = "var(--red)";
     projectImg.style.width = "auto";
     projectImg.style.height = "auto";
   }

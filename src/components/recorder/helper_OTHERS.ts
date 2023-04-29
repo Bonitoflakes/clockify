@@ -32,17 +32,14 @@ export const resetRecorder = () => {
 
   resetProjectButton();
   resetTagButton();
+  resetToggleButton();
+  resetStartButton("start", "var(--primary)");
 };
 
 export const saveEntry = () => {
   const workData = $("timetracker-recorder__input") as HTMLInputElement; //Desc
   const billable = $("timetracker-recorder__price-button") as HTMLInputElement; // bill
   const now = Date.now(); //date
-
-  // TODO: Return toast
-  if (Store.activeProject === "") {
-    return alert("project name is empty");
-  }
 
   console.log(now);
   console.log(findTimeElapsed());
@@ -73,7 +70,7 @@ export const saveEntry = () => {
 
 export const discardEntry = (timerID: NodeJS.Timeout) => {
   resetRecorder();
-  resetStartButton("start", "var(--primary-color)");
+  resetStartButton("start", "var(--primary)");
   resetToggleButton();
 
   // Store.isTimerStarted = true; //Stupid hack

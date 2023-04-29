@@ -15,6 +15,8 @@
 - [ ] Tag Picker get other tag data when the picker is open and someother tag is clicked.
 - [ ] Tag picker is not closed when project button is clicked.
 - [x] Creating new entry after discard fails.
+- [ ] BUG(EmptyProject):
+- [ ] Configure Linter
 
 # Doubts:
 

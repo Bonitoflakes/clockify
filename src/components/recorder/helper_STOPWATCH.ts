@@ -1,6 +1,7 @@
 import { Store } from "@store";
 import { $, createElement } from "@utils";
-import { discardEntry, resetStartButton, resetToggleButton, saveEntry } from "./helper_OTHERS";
+import { discardEntry, resetStartButton, saveEntry } from "./helper_OTHERS";
+import { generateToast } from "@components";
 
 let timerID: NodeJS.Timeout;
 
@@ -61,12 +62,14 @@ export const handleStopwatch = () => {
   const start = performance.now();
   const X = $("timetracker-recorder__togglemode");
 
+  // if (Store.isTimerStarted && Store.activeProject === "") return;
+
   Store.isTimerStarted = !Store.isTimerStarted;
 
   // If timer is started and running...
   if (Store.isTimerStarted) {
     startStopwatch(start);
-    resetStartButton("stop", "var(--red-color)");
+    resetStartButton("stop", "var(--red)");
 
     X.replaceChildren(createElement("button", { class: ["discard-btn"] }, "X"));
 
@@ -75,12 +78,16 @@ export const handleStopwatch = () => {
 
   // If timer is stopped...
   if (!Store.isTimerStarted) {
-    X.removeEventListener("click", wrapper);
+    console.log("123456", Store.activeProject);
 
+    if (!Store.activeProject) {
+      Store.isTimerStarted = !Store.isTimerStarted;
+      generateToast(`Project name is empty`, false);
+      return;
+    }
+
+    X.removeEventListener("click", wrapper);
     clearTimeout(timerID);
     saveEntry();
-
-    resetToggleButton();
-    resetStartButton("start", "var(--primary-color)");
   }
 };

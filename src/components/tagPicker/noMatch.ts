@@ -1,3 +1,4 @@
+import { generateToast } from "@components";
 import { Store } from "@store";
 import { $, createElement } from "@utils";
 
@@ -19,10 +20,12 @@ export const __zeroMatch = () => {
 
   // EVENT Listeners
   defaultLink.addEventListener("mousedown", () => {
-    //  TODO:
     const tagInput = $("tag__picker__input") as HTMLInputElement;
     Store.activeTags.push(Store.tagFilter);
     Store.allTags.push({ tag: tagInput.value, isChecked: true });
+
+    generateToast(`Tag ${tagInput.value} has been created.`, true);
+
     tagInput.value = "";
     Store.tagFilter = "";
   });

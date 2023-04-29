@@ -26,6 +26,8 @@ export const handleTPClick = (e: MouseEvent, id?: number) => {
   (e.currentTarget as HTMLElement).append(picker);
   initializeTagFilter(e.currentTarget as HTMLElement, id);
   renderTagList();
+  const tagInput = $("tag__picker__input") as HTMLInputElement;
+  tagInput.focus();
 
   picker.addEventListener("click", stopPropagation);
   picker.addEventListener("keyup", stopSpacePropagation);
