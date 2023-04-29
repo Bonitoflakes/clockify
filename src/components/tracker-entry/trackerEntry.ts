@@ -12,7 +12,8 @@ import {
   generateTags,
 } from "./helpers";
 
-import { handlePPBlur, handlePPClick, handleTPClick } from "../timeTracker";
+import { handlePPClick, handlePPBlur } from "../recorder/helper_PROJECT";
+import { handleTPClick } from "../recorder/helper_TAG";
 
 export const generateTrackerEntry = () => {
   $("main").replaceChildren();

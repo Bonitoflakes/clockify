@@ -131,11 +131,35 @@
 .c_wrap {
   display: flex;
   align-items: center;
+  cursor: default;
   padding: 1rem 2rem;
 }
 
+.c_box {
+  cursor: pointer;
+  border-radius: 2px;
+  width: 1.4rem;
+  height: 1.4rem;
+  border: #c6d2d9 solid 1px;
+  accent-color: var(--primary-color);
+}
+
+.c_box:focus {
+  box-shadow: 0 0 4px 1px #90a4ae;
+  accent-color: var(--primary-color);
+}
+
+.c_box:checked {
+  accent-color: var(--primary-color);
+  /* filter: invert(60%) sepia(87%) saturate(3929%) hue-rotate(167deg) brightness(99%) contrast(103%); */
+}
+
 .c_label {
+  cursor: pointer;
   padding-left: 1rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .tracker-entry__tag-p--blue {

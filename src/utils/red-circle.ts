@@ -1,5 +1,7 @@
 import plusBlueReq from "@assets/plus-blue-req.svg";
-import { $, createElement } from "@utils";
+import tagGray from "@assets/tag-gray.svg";
+
+import { createElement } from "@utils";
 
 export const createCircle = () => {
   return createElement("div", { class: ["circle--red"] });
@@ -13,12 +15,10 @@ export const createProjectPlusIcon = () => {
   });
 };
 
-export const closePicker = (e: any) => {
-  const picker = $("project-picker");
-  const projectButton = $("timetracker-recorder__newproject-button");
-
-  if (!projectButton.contains(e.target)) {
-    picker.remove();
-    document.removeEventListener("click", closePicker);
-  }
+export const createTagIcon = () => {
+  return createElement("img", {
+    src: tagGray,
+    alt: "plus-img",
+    class: ["newproject-button__img--plus"],
+  });
 };

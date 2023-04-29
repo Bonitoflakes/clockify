@@ -106,4 +106,5 @@
   flex-direction: column;
   gap: 0.4rem;
   color: var(--primary-color);
+  width: 3.3rem; /* Set to prevent CLS */
 }

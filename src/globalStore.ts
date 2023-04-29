@@ -68,4 +68,17 @@ const Store: IStore = createProxy({
   // entries: [],
 });
 
+// const Store: IStore = createProxy({
+//   isSidebarOpen: true,
+//   timer: [0, 0, 0],
+//   isTimerStarted: false,
+//   allProjects: [],
+//   allTags: [],
+//   activeProject: "",
+//   activeTags: [],
+//   tagFilter: "",
+//   projectFilter: "",
+//   entries: [],
+// });
+
 export { Store, createProxy, subscribe, subscribePrimitive };
