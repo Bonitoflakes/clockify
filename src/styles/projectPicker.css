@@ -39,7 +39,7 @@
   width: 100%;
   flex: 1;
   overflow-y: scroll;
-  scrollbar-color: var(--primary-color);
+  scrollbar-color: var(--primary);
   scrollbar-width: thin;
 }
 
@@ -63,7 +63,7 @@
 }
 
 .project-picker__btn--new {
-  color: var(--primary-color);
+  color: var(--primary);
   padding: 1rem 2rem;
   width: 100%;
   font-size: 1.4rem;
@@ -108,7 +108,7 @@
 }
 
 .circle--red {
-  background: var(--red-color);
+  background: var(--red);
   border-radius: 1000px;
   width: 6px;
   height: 6px;
@@ -134,7 +134,7 @@
 }
 
 .project-picker__link--default-link {
-  color: var(--primary-color);
+  color: var(--primary);
 }
 
 .project-picker__link--default-link:hover {

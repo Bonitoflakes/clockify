@@ -40,7 +40,7 @@
 .timetracker-recorder__newproject-button {
   display: flex;
   align-items: center;
-  color: var(--primary-color);
+  color: var(--primary);
   padding: 0 4rem 0 1rem;
   position: relative;
 }
@@ -69,11 +69,11 @@
 
 .timetracker-recorder__price-button:checked + .timetracker-recorder__price-label {
   font-weight: 400;
-  color: var(--primary-color);
+  color: var(--primary);
 }
 
 .timetracker-recorder__start-button {
-  background: var(--primary-color);
+  background: var(--primary);
   font-size: 1.4rem;
   text-transform: uppercase;
   color: white;
@@ -105,6 +105,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  color: var(--primary-color);
+  color: var(--primary);
   width: 3.3rem; /* Set to prevent CLS */
 }

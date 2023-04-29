@@ -56,7 +56,7 @@
 }
 
 .tag__picker__newproject-btn {
-  color: var(--primary-color);
+  color: var(--primary);
   padding: 1rem 2rem;
   width: 100%;
   font-size: 1.4rem;
@@ -120,7 +120,7 @@
 }
 
 .tag__projects_link_default-span-link {
-  color: var(--primary-color);
+  color: var(--primary);
 }
 
 .projects_link_default-span-link:hover {
@@ -141,16 +141,16 @@
   width: 1.4rem;
   height: 1.4rem;
   border: #c6d2d9 solid 1px;
-  accent-color: var(--primary-color);
+  accent-color: var(--primary);
 }
 
 .c_box:focus {
   box-shadow: 0 0 4px 1px #90a4ae;
-  accent-color: var(--primary-color);
+  accent-color: var(--primary);
 }
 
 .c_box:checked {
-  accent-color: var(--primary-color);
+  accent-color: var(--primary);
   /* filter: invert(60%) sepia(87%) saturate(3929%) hue-rotate(167deg) brightness(99%) contrast(103%); */
 }
 

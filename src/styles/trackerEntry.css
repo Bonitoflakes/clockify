@@ -64,7 +64,7 @@
 .tracker-entry__project-button {
   display: flex;
   align-items: center;
-  color: var(--red-color);
+  color: var(--red);
   padding: 0 4rem 0 1rem;
   position: relative;
   flex: 1;
@@ -99,7 +99,7 @@
 
 .tracker-entry__price-button:checked + .tracker-entry__price-label {
   font-weight: 400;
-  color: var(--primary-color);
+  color: var(--primary);
 }
 
 .tracker-entry__tags-button {

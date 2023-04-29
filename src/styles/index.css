@@ -1,6 +1,9 @@
 :root {
-  --primary-color: #03a9f4;
-  --red-color: #f44336;
+  --primary: #03a9f4;
+  --red: #f44336;
+  --red-2: #f22112;
+  --green: #4caf50;
+
   --tracker-margin-left: 22rem;
   --input-width: 35rem;
 }
