@@ -52,8 +52,14 @@ const startStopwatch = (start: number) => {
   timerID = setTimeout(() => startStopwatch(start), nextTick);
 };
 
+function wrapper(e: MouseEvent) {
+  discardEntry(timerID);
+  (e.currentTarget as HTMLElement).removeEventListener("click", wrapper);
+}
+
 export const handleStopwatch = () => {
   const start = performance.now();
+  const X = $("timetracker-recorder__togglemode");
 
   Store.isTimerStarted = !Store.isTimerStarted;
 
@@ -62,17 +68,15 @@ export const handleStopwatch = () => {
     startStopwatch(start);
     resetStartButton("stop", "var(--red-color)");
 
-    const X = $("timetracker-recorder__togglemode");
     X.replaceChildren(createElement("button", { class: ["discard-btn"] }, "X"));
 
-    X.addEventListener("click", function wrapper() {
-      discardEntry(timerID);
-      X.removeEventListener("click", wrapper);
-    });
+    X.addEventListener("click", wrapper);
   }
 
   // If timer is stopped...
   if (!Store.isTimerStarted) {
+    X.removeEventListener("click", wrapper);
+
     clearTimeout(timerID);
     saveEntry();
 

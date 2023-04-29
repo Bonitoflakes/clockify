@@ -4,7 +4,7 @@
 - [ ] Navbar hover on closed State.
 - [ ] Billabe line-height issues. Probable solution: Capsizecss
 - [ ] documentFragment for better perf???
-- [ ] Layout shift on resetting tag and project tracker.
+- [ ] Layout shift on resetting tag and project tracker. ( Solution : replaceChildren instead of replacing the entire element, have a prefixed width)
 - [x] Use replaceWith() instead of innerHTML or replaceChildren()
 - [x] Refactor ProjectPicker component
 - [x] Something is wrong with the projectButton Event Listener.
@@ -13,6 +13,8 @@
 - [x] clear projectFilter onBlur
 - [x] Parent Blur event to be prevented when child is clicked.
 - [ ] Tag Picker get other tag data when the picker is open and someother tag is clicked.
+- [ ] Tag picker is not closed when project button is clicked.
+- [x] Creating new entry after discard fails.
 
 # Doubts:
 
