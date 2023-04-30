@@ -14,6 +14,7 @@
 - [x] Parent Blur event to be prevented when child is clicked.
 - [ ] Tag Picker get other tag data when the picker is open and someother tag is clicked.
 - [ ] Tag picker is not closed when project button is clicked.
+  ### RCA: happening due to focus trap on input, e.stopPropagation
 - [x] Creating new entry after discard fails.
 - [ ] BUG(EmptyProject):
 - [ ] Configure Linter

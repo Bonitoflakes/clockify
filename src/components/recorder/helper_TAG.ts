@@ -27,7 +27,8 @@ export const handleTPClick = (e: MouseEvent, id?: number) => {
   initializeTagFilter(e.currentTarget as HTMLElement, id);
   renderTagList();
   const tagInput = $("tag__picker__input") as HTMLInputElement;
-  tagInput.focus();
+  // FIX:
+  // tagInput.focus();
 
   picker.addEventListener("click", stopPropagation);
   picker.addEventListener("keyup", stopSpacePropagation);
@@ -35,7 +36,18 @@ export const handleTPClick = (e: MouseEvent, id?: number) => {
   document.addEventListener("click", removeTagPicker);
 };
 
-export const removeTagPicker = () => {
+export const handleTPBlur = (e: FocusEvent) => {
+  const isChild = (e.currentTarget as HTMLButtonElement).contains(e.relatedTarget as Node);
+  if (isChild) return;
+
+  console.log("TP BLURRRR");
+
+  removeTagPicker();
+};
+
+export const removeTagPicker = (e?: any) => {
+  console.log(e);
+
   renderTag_BLUE();
 
   const picker = $("tag__picker");
