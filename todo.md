@@ -18,6 +18,7 @@
 - [x] Creating new entry after discard fails.
 - [ ] BUG(EmptyProject):
 - [ ] BUG: Click on the tags button of an entry and click on the project button of the recorder.
+- [ ] Solution: Auto-resizing input: https://codepen.io/rkhivsara/pen/JjmygdJ
 - [ ] Configure Linter
 
 # Doubts:
