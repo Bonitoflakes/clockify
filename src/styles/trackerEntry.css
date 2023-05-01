@@ -193,3 +193,139 @@
   width: 100%;
   height: 100%;
 }
+
+.timetracker-recorder__tags-button {
+  padding: 0 2rem;
+  padding-top: 5px;
+  position: relative;
+}
+
+.menu-dropdown {
+  position: absolute;
+  background-color: #fefefe;
+  right: -11px;
+  top: 155%;
+  width: 300%;
+  box-shadow: 0 5px 10px #0000001a;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.option:hover {
+  background: #e4eaee;
+}
+
+.option {
+  font-size: 1.4rem;
+  font-weight: 400;
+  text-align: left;
+  width: 100%;
+  padding: 1.4rem 2rem;
+  pointer-events: auto;
+}
+
+.option--delete {
+  color: var(--red);
+}
+
+.option:first-child {
+  margin-top: 0.5rem;
+}
+
+.option:last-child {
+  margin-bottom: 0.5rem;
+}
+
+/* MODAL */
+.modal {
+  width: 100vw;
+  height: 100dvh;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: 0.25s backdropIn ease;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  background-color: #fefefe;
+  min-width: 50rem;
+  border-radius: 5px;
+  animation: 0.45s fadeInBottomBig ease-out;
+}
+
+.modal-header {
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #c6d2d9;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+}
+
+.modal-title {
+  font-size: 2.4rem;
+  color: rgb(102, 102, 102);
+}
+
+.modal-button--close {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.modal-button--close:focus-within,
+.modal-button--cancel:focus-within,
+.modal-button--delete:focus-within{
+  outline: 2px solid black;
+}
+
+.modal-close__img {
+  mix-blend-mode: difference;
+  opacity: 0.2;
+}
+
+.modal-body {
+  padding: 2rem;
+  border-bottom: 1px solid #c6d2d9;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+}
+
+.modal-body__text {
+  color: rgb(51, 51, 51);
+  font-size: 1.4rem;
+}
+
+.modal-footer {
+  padding: 2rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.modal-button--cancel {
+  font-size: 1.4rem;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.modal-button--cancel:hover {
+  text-decoration: underline;
+  color: rgb(2, 88, 127);
+}
+
+.modal-button--delete {
+  font-size: 1.4rem;
+  background-color: var(--red);
+  text-transform: capitalize;
+  padding: 1rem 2.4rem;
+  color: #fefefe;
+  margin-left: 4rem;
+  cursor: pointer;
+}

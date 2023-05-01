@@ -83,7 +83,7 @@ export const generateBill = (id: number, billable: boolean) => {
   return div;
 };
 
-export const generateDate = (startDate: string, endDate: string, date: string) => {
+export const generateDate = (date: string, startDate: string, endDate: string) => {
   const div = createElement("div", { class: ["date-time-wrapper"] });
 
   const startTime = createElement("input", {
@@ -94,20 +94,21 @@ export const generateDate = (startDate: string, endDate: string, date: string) =
 
   const hyphen = createElement("span", { class: ["time-divider"] }, "-");
 
-  (startTime as HTMLInputElement).value = startDate ?? "01:20";
-  (endTime as HTMLInputElement).value = endDate ?? "10:40";
+  (startTime as HTMLInputElement).value = startDate ?? "Dev Messed up";
+  (endTime as HTMLInputElement).value = endDate ?? "Dev Messed up";
 
-  const tagImg = createElement("img", { src: calendarGray, alt: "" });
+  const dateImg = createElement("img", { src: calendarGray, alt: "" });
   const dateInput = createElement("input", {
     type: "date",
     class: ["native-date-picker"],
   }) as HTMLInputElement;
   dateInput.value = date;
-  const tagBtn = createElement("button", { class: ["timetracker-recorder__date-button"] });
-  tagBtn.append(tagImg, dateInput);
+  const dateButton = createElement("button", { class: ["timetracker-recorder__date-button"] });
+  dateButton.append(dateImg, dateInput);
 
-  div.append(startTime, hyphen, endTime, tagBtn);
-  return div;
+  div.append(startTime, hyphen, endTime, dateButton);
+
+  return [div, startTime, endTime, dateButton, dateInput];
 };
 
 export const generatePlayButton = () => {
@@ -130,4 +131,8 @@ export const generateStopwatch = (time: number[]) => {
   const secs = time[2].toString().padStart(2, "0");
   const stopwatch = createElement("div", { class: ["tracker-entry__stopwatch"] }, `${hrs}:${mins}:${secs}`);
   return stopwatch;
+};
+
+export const generateLine = () => {
+  return createElement("div", { class: ["line"] });
 };

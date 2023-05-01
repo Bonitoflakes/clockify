@@ -6,6 +6,7 @@ import "./styles/projectPicker.css";
 import "./styles/tagPicker.css";
 import "./styles/trackerEntry.css";
 import "./styles/toast.css";
+import "./styles/animation.css";
 
 import {
   generateNavbar,

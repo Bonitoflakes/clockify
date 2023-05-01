@@ -12,10 +12,12 @@ interface HTMLAttributes {
   contenteditable?: boolean;
 }
 
-export function createElement(tag: string, attributes: HTMLAttributes, text?: string) {
+export function createElement(tag: string, attributes?: HTMLAttributes, text?: string) {
   const element = document.createElement(tag);
 
   if (text) element.textContent = text;
+
+  if (!attributes) return element;
 
   for (const [key, value] of Object.entries(attributes)) {
     if (key === "class" && Array.isArray(value)) {

@@ -1,6 +1,5 @@
-import { Store, subscribe } from "@store";
+import { Store } from "@store";
 import { $, createElement } from "@utils";
-import closeWhite from "@assets/close-white.svg";
 
 import {
   generateBill,
@@ -16,7 +15,13 @@ import {
 
 import { handlePPClick, handlePPBlur } from "../recorder/helper_PROJECT";
 import { handleTPClick } from "../recorder/helper_TAG";
-import { generateToast } from "../toast";
+import {
+  handleTimeArrowKeys,
+  findEntry,
+  createDeleteModal,
+  createDropdown,
+  focusModal,
+} from "./helpers_OTHERS";
 
 export const generateTrackerEntry = () => {
   $("main").replaceChildren();
@@ -69,195 +74,63 @@ export const generateTrackerEntry = () => {
         entry.date = (e.currentTarget as HTMLInputElement).value;
       });
 
-      _play.addEventListener("click", () => {});
+      _play.addEventListener("click", handlePlayClick);
 
-      _menu.addEventListener("click", (e) => {
-        console.clear();
-        const dropdown = createElement("div", { class: ["menu-dropdown"] });
-        const duplicateOption = createElement(
-          "button",
-          { class: ["option", "option--duplicate"] },
-          "Duplicate"
-        );
-        const deleteOption = createElement("button", { class: ["option", "option--delete"] }, "Delete");
+      _menu.addEventListener("click", (e) => handleMenuClick(e, id));
 
-        dropdown.append(duplicateOption, deleteOption);
-        _menu.append(dropdown);
-
-        // const a = (e.target as HTMLElement).isEqualNode(dropdown);
-        // console.log(a);
-
-        // if (a) {
-        //   console.log("early exit");
-        //   return dropdown.remove();
-        // }
-
-        // dropdown.addEventListener("click", (e) => e.stopPropagation());
-
-        duplicateOption.addEventListener("click", (e) => {
-          e.stopPropagation();
-          console.log("duplicate");
-          dropdown.remove();
-        });
-
-        deleteOption.addEventListener("click", (e) => {
-          e.stopPropagation();
-          console.log("delete");
-
-          const modal = createDeleteModal(() => dropdown.remove());
-          document.body.append(modal);
-
-          const focusableElements =
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-
-          const focusableContent = modal.querySelectorAll(focusableElements);
-
-          const firstFocusableElement = focusableContent[0] as HTMLElement; // get first element to be focused inside modal
-
-          const lastFocusableElement = focusableContent[focusableContent.length - 1] as HTMLElement; // get last element to be focused inside modal
-
-          document.addEventListener("keydown", function (e) {
-            let isTabPressed = e.key === "Tab";
-
-            if (!isTabPressed) {
-              return;
-            }
-
-            if (e.shiftKey) {
-              // if shift key pressed for shift + tab combination
-              if (document.activeElement === firstFocusableElement) {
-                lastFocusableElement.focus(); // add focus for the last focusable element
-                e.preventDefault();
-              }
-            } else {
-              // if tab key is pressed
-              if (document.activeElement === lastFocusableElement) {
-                // if focused has reached to last focusable element then focus first focusable element after pressing tab
-                firstFocusableElement.focus(); // add focus for the first focusable element
-                e.preventDefault();
-              }
-            }
-          });
-
-          lastFocusableElement.focus();
-        });
-      });
-
-      _menu.addEventListener("blur", (e) => {
-        const dropdown = $("menu-dropdown");
-        const duplicateOption = $("option--duplicate");
-        const deleteOption = $("option--delete");
-        const relatedTarget = e.relatedTarget as HTMLElement;
-
-        if (relatedTarget?.isEqualNode(duplicateOption)) return;
-        if (relatedTarget?.isEqualNode(deleteOption)) return;
-
-        dropdown.remove();
-      });
+      _menu.addEventListener("blur", handleMenuBlur);
     }
   );
 };
 
-const handleTimeArrowKeys = (e: KeyboardEvent) => {
-  const input = e.currentTarget as HTMLInputElement;
-  if (e.key === "ArrowUp") {
-    let [hrs, mins] = getHoursAndMins(input.value);
-    mins++;
+const handleMenuBlur = (e: FocusEvent) => {
+  const dropdown = $("menu-dropdown");
+  const duplicateOption = $("option--duplicate");
+  const deleteOption = $("option--delete");
+  const relatedTarget = e.relatedTarget as HTMLElement;
 
-    if (mins >= 60) {
-      hrs++;
-      mins = 0;
-    }
+  // Target Phase takes priority over bubble or capture phase.
+  // FIX: dropdown menu is currently closing when dropdown area is clicked. Not the case with the original site.
 
-    if (hrs >= 24) {
-      hrs = 0;
-    }
+  if (relatedTarget?.isEqualNode(duplicateOption)) return;
+  if (relatedTarget?.isEqualNode(deleteOption)) return;
 
-    const hrs_string = hrs.toString().padStart(2, "0");
-    const mins_string = mins.toString().padStart(2, "0");
-    input.value = `${hrs_string}:${mins_string}`;
-  }
-  if (e.key === "ArrowDown") {
-    let [hrs, mins] = getHoursAndMins(input.value);
-
-    mins--;
-
-    if (mins < 0) {
-      hrs--;
-      mins = 59;
-    }
-
-    if (hrs < 0) {
-      hrs = 23;
-    }
-
-    const hrs_string = hrs.toString().padStart(2, "0");
-    const mins_string = mins.toString().padStart(2, "0");
-    input.value = `${hrs_string}:${mins_string}`;
-  }
+  dropdown.remove();
 };
 
-// Function to get hours and minutes from the time input value
-const getHoursAndMins = (value: string) => {
-  // TODO: Add validation for numbers only, length <=5 && >3
-  const hrs = Number(value.split(":").join("").slice(0, 2));
-  const mins = Number(value.split(":").join("").slice(-2));
-  return [hrs, mins];
-};
+const handleMenuClick = (e: MouseEvent, id: number) => {
+  const ex = $("menu-dropdown");
+  if (ex) return ex.remove();
 
-const findEntry = (id: number) => {
-  const entry = Store.entries.find(({ id: e_id }) => id === e_id);
-  if (!entry) throw new Error("Entry not found!!, please check the ID");
+  const _menu = e.currentTarget as HTMLElement;
 
-  return entry;
-};
+  const [dropdown, duplicateOption, deleteOption] = createDropdown();
+  _menu.append(dropdown);
 
-const createDeleteModal = (sideEffect: () => void) => {
-  const modal = createElement("div", { class: ["modal"] });
-  const modalContent = createElement("div", { class: ["modal-content"] });
-  const modalHeader = createElement("div", { class: ["modal-header"] });
-  const modalTitle = createElement("h1", { class: ["modal-title"] }, "Delete");
-  const closeButton = createElement("button", { class: ["modal-button--close"] });
-  const closeIconImg = createElement("img", { src: closeWhite, class: ["modal-close__img"] });
-  const modalBody = createElement("div", { class: ["modal-body"] });
-  const modalBodyText = createElement(
-    "p",
-    { class: ["modal-body__text"] },
-    "Are you sure you want to delete this entry?"
-  );
-  const modalFooter = createElement("div", { class: ["modal-footer"] });
-  const cancelButton = createElement("a", { class: ["modal-button--cancel"], href: "#" }, "Cancel");
-  const deleteButton = createElement("button", { class: ["modal-button--delete"] }, "Delete");
-
-  closeButton.appendChild(closeIconImg);
-  modalHeader.append(modalTitle, closeButton);
-
-  modalBody.appendChild(modalBodyText);
-
-  modalFooter.appendChild(cancelButton);
-  modalFooter.appendChild(deleteButton);
-
-  modalContent.append(modalHeader, modalBody, modalFooter);
-  modal.append(modalContent);
-
-  cancelButton.addEventListener("click", removeModal);
-  closeButton.addEventListener("click", removeModal);
-  deleteButton.addEventListener("click", () => {
-    removeModal();
-    generateToast("Entry deleted successfully", true);
+  duplicateOption.addEventListener("click", (e) => {
+    e.stopPropagation();
+    console.log("duplicate");
+    dropdown.remove();
   });
 
-  function removeModal() {
-    modalContent.classList.add("fadeOutUpBig");
-    Promise.all(modalContent.getAnimations().map((animation) => animation.finished)).then(() =>
-      modal.remove()
-    );
-    sideEffect();
-  }
-
-  return modal;
+  deleteOption.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const modal = createDeleteModal(id);
+    trapFocusOnInit(modal);
+  });
 };
 
-const trapFocus = () => {};
+const trapFocusOnInit = (modal: HTMLElement) => {
+  const focusableElements = 'button, a, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  const focusableContent = modal.querySelectorAll(focusableElements);
+  const lastFocusableElement = focusableContent[focusableContent.length - 1] as HTMLElement;
 
-subscribe(Store.entries, generateTrackerEntry);
+  lastFocusableElement.focus();
+
+  // MAIN!!!!!
+  document.addEventListener("keydown", focusModal);
+};
+
+const handlePlayClick = () => {
+  console.log("play button clicked!!");
+};
