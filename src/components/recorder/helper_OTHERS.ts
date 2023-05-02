@@ -19,10 +19,10 @@ export const resetStartButton = (text: string, color: string) => {
 };
 
 export const resetRecorder = () => {
-  const workData = $("timetracker-recorder__input") as HTMLInputElement; //Desc
+  const desc = $("timetracker-recorder__input") as HTMLInputElement; //Desc
   const billable = $("timetracker-recorder__price-button") as HTMLInputElement; // bill
 
-  workData.value = ""; //desc
+  desc.value = ""; //desc
   billable.checked = false; //bill
 
   // stopwatch
@@ -37,7 +37,7 @@ export const resetRecorder = () => {
 };
 
 export const saveEntry = () => {
-  const workData = $("timetracker-recorder__input") as HTMLInputElement; //Desc
+  const desc = $("timetracker-recorder__input") as HTMLInputElement; //Desc
   const billable = $("timetracker-recorder__price-button") as HTMLInputElement; // bill
   const now = Date.now(); //date
 
@@ -53,8 +53,8 @@ export const saveEntry = () => {
 
   // If all looks good, save the entry.
   Store.entries.push({
-    id: 80,
-    description: workData.value,
+    id: Math.ceil(Math.random() * 100000000),
+    description: desc.value,
     actualEffort: Array.from(Store.timer),
     billable: billable.checked,
     projectName: Store.activeProject,
@@ -73,10 +73,9 @@ export const discardEntry = (timerID: NodeJS.Timeout) => {
   resetStartButton("start", "var(--primary)");
   resetToggleButton();
 
-  // Store.isTimerStarted = true; //Stupid hack
-  console.log("This should match After:", Store.isTimerStarted);
+  // console.log("This should match After:", Store.isTimerStarted);
   Store.isTimerStarted = !Store.isTimerStarted;
-  console.log("NEW After:", Store.isTimerStarted);
+  // console.log("NEW After:", Store.isTimerStarted);
 
   clearTimeout(timerID);
 };

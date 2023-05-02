@@ -1,5 +1,5 @@
 import { Store } from "@store";
-import { $, createElement } from "@utils";
+import { $, $$, createCircle, createElement } from "@utils";
 
 import {
   generateBill,
@@ -22,6 +22,7 @@ import {
   createDropdown,
   focusModal,
 } from "./helpers_OTHERS";
+import { generateToast } from "../toast";
 
 export const generateTrackerEntry = () => {
   $("main").replaceChildren();
@@ -43,7 +44,7 @@ export const generateTrackerEntry = () => {
       _projects.dataset.id = `project-picker-button-${id}`;
 
       const _tags = generateTags(tags);
-      const _bill = generateBill(id, billable);
+      const [_bill, billableBtn] = generateBill(id, billable);
       const _stopwatch = generateStopwatch(actualEffort);
       const [_date, startTime, endTime, dateButton, dateInput] = generateDate(date, st, et);
       const _play = generatePlayButton();
@@ -64,6 +65,11 @@ export const generateTrackerEntry = () => {
 
       _tags.addEventListener("click", (e) => handleTPClick(e, id));
 
+      billableBtn.addEventListener("click", () => {
+        const entry = findEntry(id);
+        entry.billable = !entry.billable;
+      });
+
       startTime.addEventListener("keydown", handleTimeArrowKeys);
       endTime.addEventListener("keydown", handleTimeArrowKeys);
 
@@ -74,7 +80,7 @@ export const generateTrackerEntry = () => {
         entry.date = (e.currentTarget as HTMLInputElement).value;
       });
 
-      _play.addEventListener("click", handlePlayClick);
+      _play.addEventListener("click", () => handlePlayClick(description, projectName, tags, billable));
 
       _menu.addEventListener("click", (e) => handleMenuClick(e, id));
 
@@ -131,6 +137,46 @@ const trapFocusOnInit = (modal: HTMLElement) => {
   document.addEventListener("keydown", focusModal);
 };
 
-const handlePlayClick = () => {
+const handlePlayClick = (description: string, projectName: string, tags: string[], billable: boolean) => {
+  console.clear();
   console.log("play button clicked!!");
+
+  // return;
+
+  if (Store.isTimerStarted) return generateToast("A Project is already been tracked!", false);
+
+  Store.activeProject = projectName;
+  Store.activeTags = tags;
+
+  const recorderInput = $("timetracker-recorder__input") as HTMLInputElement;
+  recorderInput.value = description;
+
+  const recorderImgP = $("newproject-button__span");
+  recorderImgP.replaceChildren(createCircle());
+
+  const recorderProjectBtn = $("timetracker-recorder__newproject-button");
+  recorderProjectBtn.click();
+  const allProjects = $$("project-picker__list--link") as NodeListOf<HTMLElement>;
+  allProjects.forEach((element) => {
+    if (element.textContent === projectName) {
+      element.click();
+    }
+  });
+
+  const tagsBtn = $("timetracker-recorder__tags-button");
+  tagsBtn.click();
+  const allTags = $$("c_label") as NodeListOf<HTMLElement>; // get all labels
+  allTags.forEach((element) => {
+    if (!element.textContent) return;
+
+    if (tags.includes(element.textContent)) {
+      element.click();
+    }
+  });
+
+  const billableBtn = $("timetracker-recorder__price-button") as HTMLInputElement;
+  billableBtn.checked = billable;
+
+  const startBtn = $("timetracker-recorder__start-button");
+  startBtn.click();
 };

@@ -80,7 +80,7 @@ export const generateBill = (id: number, billable: boolean) => {
   if (billable) (billableBtn as HTMLInputElement).checked = true;
 
   div.append(billableBtn, billableLabel);
-  return div;
+  return [div, billableBtn];
 };
 
 export const generateDate = (date: string, startDate: string, endDate: string) => {
