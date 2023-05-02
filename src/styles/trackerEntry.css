@@ -4,9 +4,29 @@
   width: 1px;
 }
 
-.card {
+.week {
   margin: 2rem;
   margin-left: var(--tracker-margin-left);
+  transition: 0.3s margin ease-in-out;
+}
+
+.week-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgb(153, 153, 153);
+  margin: 2rem 0;
+}
+
+.week-header__date {
+  font-size: 1.4rem;
+  color: rgb(51, 51, 51);
+}
+
+.card {
+  border: 1px solid rgb(198, 210, 217);
+  border-radius: 2px;
+  border-bottom: 4px solid #c6d2d9;
 }
 
 .card-header {
@@ -15,12 +35,12 @@
   align-items: center;
   color: rgb(153, 153, 153);
   background-color: #e4eaee;
-  padding: 0 2rem;
+  padding: 0.7rem 2rem;
 }
 
 .card-header__total {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .card-header__date {
@@ -29,27 +49,29 @@
 
 .card-header__text--total {
   font-size: 1.2rem;
+  text-transform: capitalize;
 }
 
 .card-header__text--time {
   color: #333333;
   font-size: 1.8rem;
+  font-weight: 500;
+  margin-left: 1rem;
 }
 
 .card-header__button--edit {
-  margin-left: 0.5rem;
+  margin-left: 1rem;
 }
 
 .tracker-entry {
   display: flex;
   align-items: center;
-  border: 1px solid rgb(198, 210, 217);
-  border-radius: 2px;
+  border-top: 1px solid rgb(198, 210, 217);
+  border-bottom: 1px solid rgb(198, 210, 217);
+  /* border-radius: 2px; */
   padding: 1rem;
   background: white;
   box-shadow: 0 0 20px #0000001a;
-
-  transition: 0.3s margin ease-in-out;
 }
 
 [contenteditable="true"]:empty:before {

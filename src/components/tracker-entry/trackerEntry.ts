@@ -60,9 +60,13 @@ export const generateTrackerEntry = () => {
       div2.append(_tags, line1, _bill, line2, _date, line3, _stopwatch, line4, _play, line5, _menu);
 
       projectEntry.append(div1, div2);
+
       const card = generateCard();
+      const week = generateWeekCard();
       card.append(projectEntry);
-      $("main")!.append(card);
+      week.append(card);
+
+      $("main")!.append(week);
 
       // Event Listeners
       _projects.addEventListener("click", (e) => handlePPClick(e, _projectText, id));
@@ -194,7 +198,7 @@ function generateCard() {
 
   const totalWrapper = createElement("div", { class: ["card-header__total"] });
 
-  const totalText = createElement("p", { class: ["card-header__text--total"] }, "total");
+  const totalText = createElement("p", { class: ["card-header__text--total"] }, "total:");
   const totalTime = createElement("div", { class: ["card-header__text--time"] }, "00:00:04");
   const editButton = createElement("button", { class: ["card-header__button--edit"] });
   const editIcon = createElement("img", { class: ["card-header__button-img--edit"], src: bulkEdit });
@@ -203,5 +207,22 @@ function generateCard() {
   totalWrapper.append(totalText, totalTime, editButton);
   header.append(date, totalWrapper);
   card.append(header);
+
   return card;
 }
+
+const generateWeekCard = () => {
+  const weekWrapper = createElement("div", { class: ["week"] });
+  const weekHeader = createElement("div", { class: ["week-header"] });
+  const week = createElement("p", { class: ["week-header__date"] }, "Apr 10 - Apr 16");
+
+  const weektotalWrapper = createElement("div", { class: ["card-header__total"] });
+  const weektotalText = createElement("p", { class: ["card-header__text--total"] }, "week total:");
+  const weektotalTime = createElement("div", { class: ["card-header__text--time"] }, "00:10:04");
+
+  weektotalWrapper.append(weektotalText, weektotalTime);
+  weekHeader.append(week, weektotalWrapper);
+  weekWrapper.append(weekHeader);
+
+  return weekWrapper;
+};

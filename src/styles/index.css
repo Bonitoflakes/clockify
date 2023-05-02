@@ -14,6 +14,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji";
 }
 
 ::-webkit-resizer {
@@ -24,8 +26,7 @@ html {
   font-size: 62.5%;
   min-height: 100vh;
   scroll-behavior: smooth;
-  font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji";
+
   font-weight: 400;
   font-synthesis: none;
   text-rendering: optimizeLegibility;

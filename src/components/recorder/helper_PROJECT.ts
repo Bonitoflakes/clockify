@@ -32,7 +32,7 @@ export const handlePPClick = (e: MouseEvent, text: HTMLElement, id?: number) => 
   (e.currentTarget as HTMLElement).appendChild(picker);
 
   // BUG(EmptyProject):
-  if (text.textContent === "Projects") {
+  if (text.textContent === "Project") {
     Store.activeProject = "";
   } else {
     Store.activeProject = text.textContent ?? "DEV messed up";
@@ -76,7 +76,7 @@ export const resetProjectButton = () => {
 
   if (Store.activeProject !== "") {
     redDot.replaceWith(plusImg);
-    projectName.textContent = "Projects";
+    projectName.textContent = "Project";
     projectBtn.style.color = "var(--primary)";
   }
 

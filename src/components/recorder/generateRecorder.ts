@@ -25,7 +25,7 @@ export const generateTimeTrackerRecorder = () => {
   //
   const projectBtn = createElement("button", { class: ["timetracker-recorder__newproject-button"] });
 
-  const projectBtnText = createElement("span", { class: ["newproject-button-text"] }, "Projects");
+  const projectBtnText = createElement("span", { class: ["newproject-button-text"] }, "Project");
   projectBtn.insertBefore(plusSpan, projectBtn.firstChild);
   projectBtn.insertBefore(projectBtnText, projectBtn.nextSibling);
   //
