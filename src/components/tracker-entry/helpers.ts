@@ -8,6 +8,7 @@ import { createElement } from "@utils";
 export const generateInput = (description: string) => {
   const div = createElement("div", { class: ["input-wrapper"] });
 
+  // FIX: Use the auto-expanding input solution.
   const input = createElement("span", {
     // type: "text",
     class: ["tracker-entry__input"],

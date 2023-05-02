@@ -45,8 +45,7 @@ export const handleTPBlur = (e: FocusEvent) => {
   removeTagPicker();
 };
 
-export const removeTagPicker = (e?: any) => {
-  console.log(e);
+export const removeTagPicker = () => {
 
   renderTag_BLUE();
 

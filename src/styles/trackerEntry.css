@@ -4,6 +4,42 @@
   width: 1px;
 }
 
+.card {
+  margin: 2rem;
+  margin-left: var(--tracker-margin-left);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgb(153, 153, 153);
+  background-color: #e4eaee;
+  padding: 0 2rem;
+}
+
+.card-header__total {
+  display: flex;
+  align-items: center;
+}
+
+.card-header__date {
+  font-size: 1.2rem;
+}
+
+.card-header__text--total {
+  font-size: 1.2rem;
+}
+
+.card-header__text--time {
+  color: #333333;
+  font-size: 1.8rem;
+}
+
+.card-header__button--edit {
+  margin-left: 0.5rem;
+}
+
 .tracker-entry {
   display: flex;
   align-items: center;
@@ -11,9 +47,8 @@
   border-radius: 2px;
   padding: 1rem;
   background: white;
-  margin: 2rem;
   box-shadow: 0 0 20px #0000001a;
-  margin-left: var(--tracker-margin-left);
+
   transition: 0.3s margin ease-in-out;
 }
 
@@ -281,7 +316,7 @@
 
 .modal-button--close:focus-within,
 .modal-button--cancel:focus-within,
-.modal-button--delete:focus-within{
+.modal-button--delete:focus-within {
   outline: 2px solid black;
 }
 

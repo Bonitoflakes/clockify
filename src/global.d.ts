@@ -35,8 +35,8 @@ interface IStore {
     //   tag: string;
     //   isChecked: boolean;
     // }[];
-    startTime: string;
-    endTime: string;
+    startTime: number;
+    endTime: number;
     date: string;
   }[];
 }

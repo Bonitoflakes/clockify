@@ -26,3 +26,7 @@
 1. How to avoid document level event listeners?
 2. How to avoid module level variables? / Best practices
 3. Auto-resizing input.
+
+TODO:
+1. Use display:none instead of DOM manipulation.
+2. mouseleave event.

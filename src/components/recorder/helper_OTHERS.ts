@@ -59,8 +59,8 @@ export const saveEntry = () => {
     billable: billable.checked,
     projectName: Store.activeProject,
     tags: [...Store.activeTags],
-    startTime: startTime,
-    endTime: endTime,
+    startTime: now - findTimeElapsed(),
+    endTime: now,
     date: new Date().toLocaleDateString(),
   });
 

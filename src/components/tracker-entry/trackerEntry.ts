@@ -1,5 +1,6 @@
 import { Store } from "@store";
 import { $, $$, createCircle, createElement } from "@utils";
+import bulkEdit from "@assets/bulk-edit.svg";
 
 import {
   generateBill,
@@ -29,7 +30,7 @@ export const generateTrackerEntry = () => {
 
   Store.entries.map(
     ({ id, description, actualEffort, billable, projectName, tags, startTime: st, endTime: et, date }) => {
-      const projectEntry = createElement("div", { class: ["tracker-entry", "open"] });
+      const projectEntry = createElement("div", { class: ["tracker-entry"] });
 
       const line1 = generateLine();
       const line2 = generateLine();
@@ -46,6 +47,8 @@ export const generateTrackerEntry = () => {
       const _tags = generateTags(tags);
       const [_bill, billableBtn] = generateBill(id, billable);
       const _stopwatch = generateStopwatch(actualEffort);
+      // FIX:
+      // @ts-ignore
       const [_date, startTime, endTime, dateButton, dateInput] = generateDate(date, st, et);
       const _play = generatePlayButton();
       const _menu = generateMenuDots();
@@ -57,7 +60,9 @@ export const generateTrackerEntry = () => {
       div2.append(_tags, line1, _bill, line2, _date, line3, _stopwatch, line4, _play, line5, _menu);
 
       projectEntry.append(div1, div2);
-      $("main")!.append(projectEntry);
+      const card = generateCard();
+      card.append(projectEntry);
+      $("main")!.append(card);
 
       // Event Listeners
       _projects.addEventListener("click", (e) => handlePPClick(e, _projectText, id));
@@ -180,3 +185,23 @@ const handlePlayClick = (description: string, projectName: string, tags: string[
   const startBtn = $("timetracker-recorder__start-button");
   startBtn.click();
 };
+
+function generateCard() {
+  const card = createElement("div", { class: ["card"] });
+  const header = createElement("div", { class: ["card-header"] });
+
+  const date = createElement("p", { class: ["card-header__date"] }, "Sat, Apr 15");
+
+  const totalWrapper = createElement("div", { class: ["card-header__total"] });
+
+  const totalText = createElement("p", { class: ["card-header__text--total"] }, "total");
+  const totalTime = createElement("div", { class: ["card-header__text--time"] }, "00:00:04");
+  const editButton = createElement("button", { class: ["card-header__button--edit"] });
+  const editIcon = createElement("img", { class: ["card-header__button-img--edit"], src: bulkEdit });
+
+  editButton.append(editIcon);
+  totalWrapper.append(totalText, totalTime, editButton);
+  header.append(date, totalWrapper);
+  card.append(header);
+  return card;
+}
