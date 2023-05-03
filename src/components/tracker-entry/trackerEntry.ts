@@ -1,4 +1,4 @@
-import { Store } from "@store";
+import { Store, subscribe } from "@store";
 import { $, $$, createCircle, createElement } from "@utils";
 import bulkEdit from "@assets/bulk-edit.svg";
 
@@ -24,6 +24,7 @@ import {
   focusModal,
 } from "./helpers_OTHERS";
 import { generateToast } from "../toast";
+import { convertDateToString } from "../recorder/helper_OTHERS";
 
 export const generateTrackerEntry = () => {
   $("main").replaceChildren();
@@ -41,14 +42,13 @@ export const generateTrackerEntry = () => {
       const _input = generateInput(description);
 
       const [_projects, _projectText] = generateProjectPicker(projectName, id);
-      // For making sure, each projectPicker has a unique parent.
-      _projects.dataset.id = `project-picker-button-${id}`;
+
+      _projects.dataset.id = `project-picker-button-${id}`; // each projectPicker has a unique parent.
 
       const _tags = generateTags(tags);
       const [_bill, billableBtn] = generateBill(id, billable);
       const _stopwatch = generateStopwatch(actualEffort);
       // FIX:
-      // @ts-ignore
       const [_date, startTime, endTime, dateButton, dateInput] = generateDate(date, st, et);
       const _play = generatePlayButton();
       const _menu = generateMenuDots();
@@ -61,7 +61,9 @@ export const generateTrackerEntry = () => {
 
       projectEntry.append(div1, div2);
 
-      const card = generateCard();
+      console.log(date);
+
+      const [card, cardDate] = generateCard(date);
       const week = generateWeekCard();
       card.append(projectEntry);
       week.append(card);
@@ -86,7 +88,16 @@ export const generateTrackerEntry = () => {
 
       dateInput.addEventListener("change", (e) => {
         const entry = findEntry(id);
-        entry.date = (e.currentTarget as HTMLInputElement).value;
+        const value = convertDateToString(new Date((e.currentTarget as HTMLInputElement).value));
+        entry.date = value;
+
+        const currentYear = new Date().getFullYear().toString();
+
+        let entryDate2String_modifer = value;
+        console.log(value.slice(12));
+        if (value.slice(12) === currentYear) entryDate2String_modifer = value.slice(0,12);
+
+        cardDate.textContent = entryDate2String_modifer;
       });
 
       _play.addEventListener("click", () => handlePlayClick(description, projectName, tags, billable));
@@ -190,11 +201,20 @@ const handlePlayClick = (description: string, projectName: string, tags: string[
   startBtn.click();
 };
 
-function generateCard() {
+// To Refactor:
+const generateCard = (entryDate: string) => {
   const card = createElement("div", { class: ["card"] });
   const header = createElement("div", { class: ["card-header"] });
 
-  const date = createElement("p", { class: ["card-header__date"] }, "Sat, Apr 15");
+  const entryDate2String = convertDateToString(new Date(entryDate));
+  const currentYear = new Date().getFullYear().toString();
+  console.log(entryDate.slice(0, 4));
+
+  let entryDate2String_modifer = entryDate2String;
+
+  if (entryDate.slice(0, 4) === currentYear) entryDate2String_modifer = entryDate2String.slice(0, 11);
+
+  const date = createElement("p", { class: ["card-header__date"] }, entryDate2String_modifer);
 
   const totalWrapper = createElement("div", { class: ["card-header__total"] });
 
@@ -208,8 +228,8 @@ function generateCard() {
   header.append(date, totalWrapper);
   card.append(header);
 
-  return card;
-}
+  return [card, date];
+};
 
 const generateWeekCard = () => {
   const weekWrapper = createElement("div", { class: ["week"] });

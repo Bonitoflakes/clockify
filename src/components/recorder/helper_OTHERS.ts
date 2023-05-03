@@ -48,8 +48,10 @@ export const saveEntry = () => {
   const startTime = new Date(now - findTimeElapsed()).toTimeString().slice(0, 5);
   const endTime = new Date(now).toTimeString().slice(0, 5);
 
-  console.log(startTime);
-  console.log(endTime);
+  // console.log(startTime);
+  // console.log(endTime);
+
+  const date = convertDateToString(new Date());
 
   // If all looks good, save the entry.
   Store.entries.push({
@@ -61,11 +63,11 @@ export const saveEntry = () => {
     tags: [...Store.activeTags],
     startTime: now - findTimeElapsed(),
     endTime: now,
-    date: new Date().toLocaleDateString(),
+    date: date,
   });
 
   resetRecorder();
-  console.log(Store.entries);
+  console.table(Store.entries);
 };
 
 export const discardEntry = (timerID: NodeJS.Timeout) => {
@@ -78,4 +80,14 @@ export const discardEntry = (timerID: NodeJS.Timeout) => {
   // console.log("NEW After:", Store.isTimerStarted);
 
   clearTimeout(timerID);
+};
+
+export const convertDateToString = (dateMS: Date) => {
+  const currentYear = new Date().getFullYear();
+
+  const date = [...dateMS.toDateString()];
+  date.splice(3, 0, ",");
+  // if (dateMS.getFullYear() === currentYear) return date.join("").slice(0, 11);
+
+  return date.join("");
 };

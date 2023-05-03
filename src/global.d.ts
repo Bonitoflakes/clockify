@@ -24,19 +24,17 @@ interface IStore {
   activeTags: string[];
   tagFilter: string;
   projectFilter: string;
-  entries: {
-    id: number;
-    description: string;
-    actualEffort: number[];
-    billable: boolean;
-    projectName: string;
-    tags: string[];
-    // tags: {
-    //   tag: string;
-    //   isChecked: boolean;
-    // }[];
-    startTime: number;
-    endTime: number;
-    date: string;
-  }[];
+  entries: IEntry[];
+}
+
+interface IEntry {
+  id: number;
+  description: string;
+  actualEffort: number[];
+  billable: boolean;
+  projectName: string;
+  tags: string[];
+  startTime: number;
+  endTime: number;
+  date: string;
 }

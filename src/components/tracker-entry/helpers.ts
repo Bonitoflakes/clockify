@@ -84,7 +84,7 @@ export const generateBill = (id: number, billable: boolean) => {
   return [div, billableBtn];
 };
 
-export const generateDate = (date: string, startDate: string, endDate: string) => {
+export const generateDate = (date: string, startDate: number, endDate: number) => {
   const div = createElement("div", { class: ["date-time-wrapper"] });
 
   const startTime = createElement("input", {
@@ -95,8 +95,8 @@ export const generateDate = (date: string, startDate: string, endDate: string) =
 
   const hyphen = createElement("span", { class: ["time-divider"] }, "-");
 
-  (startTime as HTMLInputElement).value = startDate ?? "Dev Messed up";
-  (endTime as HTMLInputElement).value = endDate ?? "Dev Messed up";
+  (startTime as HTMLInputElement).value = startDate.toString() ?? "Dev Messed up";
+  (endTime as HTMLInputElement).value = endDate.toString() ?? "Dev Messed up";
 
   const dateImg = createElement("img", { src: calendarGray, alt: "" });
   const dateInput = createElement("input", {
