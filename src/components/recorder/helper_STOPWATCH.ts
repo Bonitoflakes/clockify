@@ -2,6 +2,7 @@ import { Store } from "@store";
 import { $, createElement } from "@utils";
 import { discardEntry, resetStartButton, saveEntry } from "./helper_OTHERS";
 import { generateToast } from "@components";
+import { renderEntries } from "../../main";
 
 let timerID: NodeJS.Timeout;
 
@@ -89,5 +90,7 @@ export const handleStopwatch = () => {
     X.removeEventListener("click", wrapper);
     clearTimeout(timerID);
     saveEntry();
+    renderEntries();
+
   }
 };

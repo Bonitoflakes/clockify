@@ -2,6 +2,7 @@ import { generateToast } from "@components";
 import { Store } from "@store";
 import { $, createElement } from "@utils";
 import closeWhite from "@assets/close-white.svg";
+import { renderEntries } from "../../main";
 
 export const handleTimeArrowKeys = (e: KeyboardEvent) => {
   const input = e.currentTarget as HTMLInputElement;
@@ -156,6 +157,7 @@ const deleteEntry = (id: number) => {
     Store.entries.findIndex((entry) => entry.id === id),
     1
   );
+  renderEntries()
 
   generateToast("Entry deleted successfully.", true);
 };

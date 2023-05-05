@@ -103,7 +103,12 @@ export const generateDate = (date: string, startDate: number, endDate: number) =
     type: "date",
     class: ["native-date-picker"],
   }) as HTMLInputElement;
-  dateInput.value = date;
+
+  const a = new Date(date).toISOString().slice(0, 10);
+  console.log(a);
+
+  dateInput.value = a;
+
   const dateButton = createElement("button", { class: ["timetracker-recorder__date-button"] });
   dateButton.append(dateImg, dateInput);
 

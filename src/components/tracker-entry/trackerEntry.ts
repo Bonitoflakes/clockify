@@ -1,6 +1,5 @@
-import { Store, subscribe } from "@store";
+import { Store } from "@store";
 import { $, $$, createCircle, createElement } from "@utils";
-import bulkEdit from "@assets/bulk-edit.svg";
 
 import {
   generateBill,
@@ -25,88 +24,111 @@ import {
 } from "./helpers_OTHERS";
 import { generateToast } from "../toast";
 import { convertDateToString } from "../recorder/helper_OTHERS";
+import { renderEntries } from "../../main";
 
-export const generateTrackerEntry = () => {
-  $("main").replaceChildren();
+export const generateTrackerEntry = ({
+  id,
+  description,
+  actualEffort,
+  billable,
+  projectName,
+  tags,
+  startTime: st,
+  endTime: et,
+  date,
+}: IEntry) => {
+  const projectEntry = createElement("div", { class: ["tracker-entry"] });
 
-  Store.entries.map(
-    ({ id, description, actualEffort, billable, projectName, tags, startTime: st, endTime: et, date }) => {
-      const projectEntry = createElement("div", { class: ["tracker-entry"] });
+  const line1 = generateLine();
+  const line2 = generateLine();
+  const line3 = generateLine();
+  const line4 = generateLine();
+  const line5 = generateLine();
 
-      const line1 = generateLine();
-      const line2 = generateLine();
-      const line3 = generateLine();
-      const line4 = generateLine();
-      const line5 = generateLine();
+  const _input = generateInput(description);
 
-      const _input = generateInput(description);
+  const [_projects, _projectText] = generateProjectPicker(projectName, id);
 
-      const [_projects, _projectText] = generateProjectPicker(projectName, id);
+  _projects.dataset.id = `project-picker-button-${id}`; // each projectPicker has a unique parent.
 
-      _projects.dataset.id = `project-picker-button-${id}`; // each projectPicker has a unique parent.
+  const _tags = generateTags(tags);
+  const [_bill, billableBtn] = generateBill(id, billable);
+  const _stopwatch = generateStopwatch(actualEffort);
+  // FIX:
+  const [_date, startTime, endTime, dateButton, dateInput] = generateDate(date, st, et);
+  const _play = generatePlayButton();
+  const _menu = generateMenuDots();
 
-      const _tags = generateTags(tags);
-      const [_bill, billableBtn] = generateBill(id, billable);
-      const _stopwatch = generateStopwatch(actualEffort);
-      // FIX:
-      const [_date, startTime, endTime, dateButton, dateInput] = generateDate(date, st, et);
-      const _play = generatePlayButton();
-      const _menu = generateMenuDots();
+  const div1 = createElement("div", { class: ["div1"] });
+  const div2 = createElement("div", { class: ["div2"] });
 
-      const div1 = createElement("div", { class: ["div1"] });
-      const div2 = createElement("div", { class: ["div2"] });
+  div1.append(_input, _projects);
+  div2.append(_tags, line1, _bill, line2, _date, line3, _stopwatch, line4, _play, line5, _menu);
 
-      div1.append(_input, _projects);
-      div2.append(_tags, line1, _bill, line2, _date, line3, _stopwatch, line4, _play, line5, _menu);
+  projectEntry.append(div1, div2);
 
-      projectEntry.append(div1, div2);
+  // Event Listeners
+  _projects.addEventListener("click", (e) => handlePPClick(e, _projectText, id));
+  _projects.addEventListener("blur", handlePPBlur);
 
-      console.log(date);
+  _tags.addEventListener("click", (e) => handleTPClick(e, id));
 
-      const [card, cardDate] = generateCard(date);
-      const week = generateWeekCard();
-      card.append(projectEntry);
-      week.append(card);
+  billableBtn.addEventListener("click", () => {
+    const entry = findEntry(id);
+    entry.billable = !entry.billable;
+  });
 
-      $("main")!.append(week);
+  startTime.addEventListener("keydown", handleTimeArrowKeys);
+  endTime.addEventListener("keydown", handleTimeArrowKeys);
 
-      // Event Listeners
-      _projects.addEventListener("click", (e) => handlePPClick(e, _projectText, id));
-      _projects.addEventListener("blur", handlePPBlur);
+  dateButton.addEventListener("click", () => (dateInput as HTMLInputElement).showPicker());
 
-      _tags.addEventListener("click", (e) => handleTPClick(e, id));
+  dateInput.addEventListener("change", (e) => {
+    const entry = findEntry(id);
+    const value = new Date((e.currentTarget as HTMLInputElement).value).toISOString().slice(0, 10);
 
-      billableBtn.addEventListener("click", () => {
-        const entry = findEntry(id);
-        entry.billable = !entry.billable;
-      });
+    entry.date = value;
 
-      startTime.addEventListener("keydown", handleTimeArrowKeys);
-      endTime.addEventListener("keydown", handleTimeArrowKeys);
 
-      dateButton.addEventListener("click", () => (dateInput as HTMLInputElement).showPicker());
+    const currentYear = new Date().getFullYear().toString();
 
-      dateInput.addEventListener("change", (e) => {
-        const entry = findEntry(id);
-        const value = convertDateToString(new Date((e.currentTarget as HTMLInputElement).value));
-        entry.date = value;
+    let entryDate2String_modifer = value;
+    if (value.slice(12) === currentYear) entryDate2String_modifer = value.slice(0, 12);
 
-        const currentYear = new Date().getFullYear().toString();
+    // FIX: Quick hack, ideally you don't want to re-render everything.
+    renderEntries();
 
-        let entryDate2String_modifer = value;
-        console.log(value.slice(12));
-        if (value.slice(12) === currentYear) entryDate2String_modifer = value.slice(0,12);
+    // weeklyDateRange.textContent = entryDate2String_modifer;
 
-        cardDate.textContent = entryDate2String_modifer;
-      });
+    // const entry = findEntry(id);
+    // const value = convertDateToString(new Date((e.currentTarget as HTMLInputElement).value));
+    // entry.date = value;
 
-      _play.addEventListener("click", () => handlePlayClick(description, projectName, tags, billable));
+    // const currentYear = new Date().getFullYear().toString();
+    // const entryYear = new Date(date).getFullYear().toString();
 
-      _menu.addEventListener("click", (e) => handleMenuClick(e, id));
+    // const firstDate = findFirstDayOfWeek(entry.date).toDateString().slice(4, 10);
+    // const lastDate = findLastDayOfWeek(entry.date).toDateString().slice(4, 10);
 
-      _menu.addEventListener("blur", handleMenuBlur);
-    }
-  );
+    // let weekString = `${firstDate} - ${lastDate}, ${entryYear}`;
+
+    // if (currentYear === entryYear) {
+    //   weekString = `${firstDate} - ${lastDate}`;
+    // }
+
+    // let entryDate2String_modifer = value;
+    // if (value.slice(12) === currentYear) entryDate2String_modifer = value.slice(0, 12);
+
+    // weeklyDateRange.textContent = weekString;
+  });
+
+  _play.addEventListener("click", () => handlePlayClick(description, projectName, tags, billable));
+
+  _menu.addEventListener("click", (e) => handleMenuClick(e, id));
+
+  _menu.addEventListener("blur", handleMenuBlur);
+
+  return projectEntry;
 };
 
 const handleMenuBlur = (e: FocusEvent) => {
@@ -161,8 +183,6 @@ const handlePlayClick = (description: string, projectName: string, tags: string[
   console.clear();
   console.log("play button clicked!!");
 
-  // return;
-
   if (Store.isTimerStarted) return generateToast("A Project is already been tracked!", false);
 
   Store.activeProject = projectName;
@@ -199,50 +219,4 @@ const handlePlayClick = (description: string, projectName: string, tags: string[
 
   const startBtn = $("timetracker-recorder__start-button");
   startBtn.click();
-};
-
-// To Refactor:
-const generateCard = (entryDate: string) => {
-  const card = createElement("div", { class: ["card"] });
-  const header = createElement("div", { class: ["card-header"] });
-
-  const entryDate2String = convertDateToString(new Date(entryDate));
-  const currentYear = new Date().getFullYear().toString();
-  console.log(entryDate.slice(0, 4));
-
-  let entryDate2String_modifer = entryDate2String;
-
-  if (entryDate.slice(0, 4) === currentYear) entryDate2String_modifer = entryDate2String.slice(0, 11);
-
-  const date = createElement("p", { class: ["card-header__date"] }, entryDate2String_modifer);
-
-  const totalWrapper = createElement("div", { class: ["card-header__total"] });
-
-  const totalText = createElement("p", { class: ["card-header__text--total"] }, "total:");
-  const totalTime = createElement("div", { class: ["card-header__text--time"] }, "00:00:04");
-  const editButton = createElement("button", { class: ["card-header__button--edit"] });
-  const editIcon = createElement("img", { class: ["card-header__button-img--edit"], src: bulkEdit });
-
-  editButton.append(editIcon);
-  totalWrapper.append(totalText, totalTime, editButton);
-  header.append(date, totalWrapper);
-  card.append(header);
-
-  return [card, date];
-};
-
-const generateWeekCard = () => {
-  const weekWrapper = createElement("div", { class: ["week"] });
-  const weekHeader = createElement("div", { class: ["week-header"] });
-  const week = createElement("p", { class: ["week-header__date"] }, "Apr 10 - Apr 16");
-
-  const weektotalWrapper = createElement("div", { class: ["card-header__total"] });
-  const weektotalText = createElement("p", { class: ["card-header__text--total"] }, "week total:");
-  const weektotalTime = createElement("div", { class: ["card-header__text--time"] }, "00:10:04");
-
-  weektotalWrapper.append(weektotalText, weektotalTime);
-  weekHeader.append(week, weektotalWrapper);
-  weekWrapper.append(weekHeader);
-
-  return weekWrapper;
 };

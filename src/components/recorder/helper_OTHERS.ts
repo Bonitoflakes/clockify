@@ -51,7 +51,7 @@ export const saveEntry = () => {
   // console.log(startTime);
   // console.log(endTime);
 
-  const date = convertDateToString(new Date());
+  const date = new Date().toISOString().slice(0, 10);
 
   // If all looks good, save the entry.
   Store.entries.push({
