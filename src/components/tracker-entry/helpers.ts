@@ -95,8 +95,8 @@ export const generateDate = (date: string, startDate: number, endDate: number) =
 
   const hyphen = createElement("span", { class: ["time-divider"] }, "-");
 
-  (startTime as HTMLInputElement).value = startDate.toString() ?? "Dev Messed up";
-  (endTime as HTMLInputElement).value = endDate.toString() ?? "Dev Messed up";
+  (startTime as HTMLInputElement).value = new Date(startDate).toTimeString().slice(0, 5) ?? "Dev Messed up";
+  (endTime as HTMLInputElement).value = new Date(endDate).toTimeString().slice(0, 5) ?? "Dev Messed up";
 
   const dateImg = createElement("img", { src: calendarGray, alt: "" });
   const dateInput = createElement("input", {
@@ -104,10 +104,9 @@ export const generateDate = (date: string, startDate: number, endDate: number) =
     class: ["native-date-picker"],
   }) as HTMLInputElement;
 
-  const a = new Date(date).toISOString().slice(0, 10);
-  console.log(a);
+  const formattedDate = new Date(date).toISOString().slice(0, 10); //YYYY-MM-DD
 
-  dateInput.value = a;
+  dateInput.value = formattedDate;
 
   const dateButton = createElement("button", { class: ["timetracker-recorder__date-button"] });
   dateButton.append(dateImg, dateInput);
