@@ -51,13 +51,6 @@ export const getHoursAndMins = (value: string) => {
   return [hrs, mins];
 };
 
-export const findEntry = (id: number) => {
-  const entry = Store.entries.find(({ id: e_id }) => id === e_id);
-  if (!entry) throw new Error("Entry not found!!, please check the ID");
-
-  return entry;
-};
-
 export const createDropdown = () => {
   const dropdown = createElement("div", { class: ["menu-dropdown"] });
   const duplicateOption = createElement("button", { class: ["option", "option--duplicate"] }, "Duplicate");
@@ -157,7 +150,7 @@ const deleteEntry = (id: number) => {
     Store.entries.findIndex((entry) => entry.id === id),
     1
   );
-  renderEntries()
+  renderEntries();
 
   generateToast("Entry deleted successfully.", true);
 };

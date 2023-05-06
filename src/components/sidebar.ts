@@ -8,19 +8,15 @@ const generateLink = (id?: string) => {
   }
   return createElement("a", { href: "#", class: ["sidebar__link"] });
 };
-const generateTitle = (title: string) => {
-  return createElement("div", { class: ["sidebar__link-title", "open"] }, title);
-};
-const generateImg = (src: string, alt: string) => {
-  return createElement("img", {
+const generateTitle = (title: string) =>
+  createElement("div", { class: ["sidebar__link-title", "open"] }, title);
+const generateImg = (src: string, alt: string) =>
+  createElement("img", {
     src,
     alt,
     class: ["sidebar__link-img"],
   });
-};
-const generateText = (text: string) => {
-  return createElement("span", { class: ["sidebar__link-text", "open"] }, text);
-};
+const generateText = (text: string) => createElement("span", { class: ["sidebar__link-text", "open"] }, text);
 
 // Generate a new sideBar.
 export const generateSidebar = (data: ISidebarLinks[]) => {
@@ -102,6 +98,7 @@ export const initializeSidebar = () => {
 
   hamburgerMenu.addEventListener("click", () => (Store.isSidebarOpen = !Store.isSidebarOpen));
 
+  // FIX: CSS z-index
   reportsLink.addEventListener("mouseover", () => {
     additionalOptions.style.width = Store.isSidebarOpen ? "80%" : "250%";
   });

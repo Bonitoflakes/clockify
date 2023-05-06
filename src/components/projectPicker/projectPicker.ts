@@ -1,8 +1,8 @@
 import { createElement, $, createCircle } from "@utils";
 import { Store } from "@store";
 
-import { __zeroMatch } from ".";
 import { generateToast, removeProjectPicker } from "@components";
+import { __zeroMatch } from ".";
 
 let textToBeModified: HTMLElement;
 let entryToBeModifiedID: number | undefined;

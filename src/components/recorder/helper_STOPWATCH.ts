@@ -1,7 +1,7 @@
 import { Store } from "@store";
 import { $, createElement } from "@utils";
-import { discardEntry, resetStartButton, saveEntry } from "./helper_OTHERS";
 import { generateToast } from "@components";
+import { discardEntry, resetStartButton, saveEntry } from "./helper_OTHERS";
 import { renderEntries } from "../../main";
 
 let timerID: NodeJS.Timeout;
@@ -35,7 +35,7 @@ export const findTimeElapsed = () => {
   const hrs2secs = Store.timer[0] * 3600;
   const mins2secs = Store.timer[1] * 60;
   const secs = Store.timer[2];
-  return (hrs2secs + mins2secs + secs) * 1000; //ms
+  return (hrs2secs + mins2secs + secs) * 1000; // ms
 };
 
 const startStopwatch = (start: number) => {
@@ -83,7 +83,7 @@ export const handleStopwatch = () => {
 
     if (!Store.activeProject) {
       Store.isTimerStarted = !Store.isTimerStarted;
-      generateToast(`Project name is empty`, false);
+      generateToast("Project name is empty", false);
       return;
     }
 

@@ -9,7 +9,6 @@ export const initializeTimeTrackerRecorder = () => {
   const projectButton = $("timetracker-recorder__newproject-button");
   const tagButton = $("timetracker-recorder__tags-button");
 
-
   // EVENT LISTENERS
   startButton.addEventListener("click", () => handleStopwatch());
 

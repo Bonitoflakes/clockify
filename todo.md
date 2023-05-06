@@ -28,5 +28,7 @@
 3. Auto-resizing input.
 
 TODO:
+
 1. Use display:none instead of DOM manipulation.
 2. mouseleave event.
+3. sub-nav css z-index hover.

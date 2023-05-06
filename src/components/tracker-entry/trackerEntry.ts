@@ -1,5 +1,7 @@
-import { Store } from "@store";
-import { $, $$, createCircle, createElement } from "@utils";
+import { Store } from '@store';
+import {
+  $, $$, createCircle, createElement, findEntry,
+} from '@utils';
 
 import {
   generateBill,
@@ -11,20 +13,15 @@ import {
   generateProjectPicker,
   generateStopwatch,
   generateTags,
-} from "./helpers";
+} from './helpers';
 
-import { handlePPClick, handlePPBlur } from "../recorder/helper_PROJECT";
-import { handleTPClick } from "../recorder/helper_TAG";
+import { handlePPClick, handlePPBlur } from '../recorder/helper_PROJECT';
+import { handleTPClick } from '../recorder/helper_TAG';
 import {
-  handleTimeArrowKeys,
-  findEntry,
-  createDeleteModal,
-  createDropdown,
-  focusModal,
-} from "./helpers_OTHERS";
-import { generateToast } from "../toast";
-import { convertDateToString } from "../recorder/helper_OTHERS";
-import { renderEntries } from "../../main";
+  handleTimeArrowKeys, createDeleteModal, createDropdown, focusModal,
+} from './helpers_OTHERS';
+import { generateToast } from '../toast';
+import { renderEntries } from '../../main';
 
 export const generateTrackerEntry = ({
   id,
@@ -37,7 +34,7 @@ export const generateTrackerEntry = ({
   endTime: et,
   date,
 }: IEntry) => {
-  const projectEntry = createElement("div", { class: ["tracker-entry"] });
+  const projectEntry = createElement('div', { class: ['tracker-entry'] });
 
   const line1 = generateLine();
   const line2 = generateLine();
@@ -53,14 +50,14 @@ export const generateTrackerEntry = ({
 
   const _tags = generateTags(tags);
   const [_bill, billableBtn] = generateBill(id, billable);
-  const _stopwatch = generateStopwatch(actualEffort);
   // FIX:
-  const [_date, startTime, endTime, dateButton, dateInput] = generateDate(date, st, et);
+  const [_date, startTime, endTime, dateButton, dateInput, sup] = generateDate(date, st, et);
+  const _stopwatch = generateStopwatch(actualEffort);
   const _play = generatePlayButton();
   const _menu = generateMenuDots();
 
-  const div1 = createElement("div", { class: ["div1"] });
-  const div2 = createElement("div", { class: ["div2"] });
+  const div1 = createElement('div', { class: ['div1'] });
+  const div2 = createElement('div', { class: ['div2'] });
 
   div1.append(_input, _projects);
   div2.append(_tags, line1, _bill, line2, _date, line3, _stopwatch, line4, _play, line5, _menu);
@@ -68,27 +65,93 @@ export const generateTrackerEntry = ({
   projectEntry.append(div1, div2);
 
   // Event Listeners
-  _projects.addEventListener("click", (e) => handlePPClick(e, _projectText, id));
-  _projects.addEventListener("blur", handlePPBlur);
+  _projects.addEventListener('click', (e) => handlePPClick(e, _projectText, id));
+  _projects.addEventListener('blur', handlePPBlur);
 
-  _tags.addEventListener("click", (e) => handleTPClick(e, id));
+  _tags.addEventListener('click', (e) => handleTPClick(e, id));
 
-  billableBtn.addEventListener("click", () => {
+  billableBtn.addEventListener('click', () => {
     const entry = findEntry(id);
     entry.billable = !entry.billable;
   });
 
-  startTime.addEventListener("keydown", handleTimeArrowKeys);
-  endTime.addEventListener("keydown", handleTimeArrowKeys);
+  // These are responsible for only updating the input DOM.
+  startTime.addEventListener('keydown', (e) => handleTimeArrowKeys(e));
+  endTime.addEventListener('keydown', (e) => handleTimeArrowKeys(e));
 
-  dateButton.addEventListener("click", () => (dateInput as HTMLInputElement).showPicker());
+  // These are responsible for updating the Store value.
+  startTime.addEventListener('blur', () => {
+    const entry = findEntry(id);
 
-  dateInput.addEventListener("change", (e) => {
+    const startTimeDate = new Date(`${entry.date}T${(startTime as HTMLInputElement).value}`);
+    const endTimeDate = new Date(`${entry.date}T${(endTime as HTMLInputElement).value}`);
+
+    const startTimeInMS = Date.parse(startTimeDate.toString());
+    entry.startTime = startTimeInMS;
+
+    const timeDiffInMs = endTimeDate.getTime() - startTimeDate.getTime();
+
+    let hours = Math.floor(timeDiffInMs / (1000 * 60 * 60));
+    let minutes = Math.floor((timeDiffInMs % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeDiffInMs % (1000 * 60)) / 1000);
+
+    if (Math.sign(hours) < 0) {
+      hours += 24;
+      sup.textContent = '+1';
+    }
+
+    if (Math.sign(minutes) < 0) {
+      minutes += 60;
+    }
+
+    const totalTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds
+      .toString()
+      .padStart(2, '0')}`;
+
+    _stopwatch.textContent = totalTime;
+    entry.actualEffort = [hours, minutes, seconds];
+    renderEntries();
+  });
+
+  endTime.addEventListener('blur', () => {
+    const entry = findEntry(id);
+
+    const startTimeDate = new Date(`${entry.date}T${(startTime as HTMLInputElement).value}`);
+    const endTimeDate = new Date(`${entry.date}T${(endTime as HTMLInputElement).value}`);
+
+    const endTimeInMS = Date.parse(endTimeDate.toString());
+    entry.endTime = endTimeInMS;
+
+    const timeDiffInMs = endTimeDate.getTime() - startTimeDate.getTime();
+
+    let hours = Math.floor(timeDiffInMs / (1000 * 60 * 60));
+    let minutes = Math.floor((timeDiffInMs % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeDiffInMs % (1000 * 60)) / 1000);
+
+    if (Math.sign(hours) < 0) {
+      hours += 24;
+    }
+
+    if (Math.sign(minutes) < 0) {
+      minutes += 60;
+    }
+
+    const totalTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds
+      .toString()
+      .padStart(2, '0')}`;
+
+    _stopwatch.textContent = totalTime;
+    entry.actualEffort = [hours, minutes, seconds];
+    renderEntries();
+  });
+
+  dateButton.addEventListener('click', () => (dateInput as HTMLInputElement).showPicker());
+
+  dateInput.addEventListener('change', (e) => {
     const entry = findEntry(id);
     const value = new Date((e.currentTarget as HTMLInputElement).value).toISOString().slice(0, 10);
 
     entry.date = value;
-
 
     const currentYear = new Date().getFullYear().toString();
 
@@ -122,19 +185,19 @@ export const generateTrackerEntry = ({
     // weeklyDateRange.textContent = weekString;
   });
 
-  _play.addEventListener("click", () => handlePlayClick(description, projectName, tags, billable));
+  _play.addEventListener('click', () => handlePlayClick(description, projectName, tags, billable));
 
-  _menu.addEventListener("click", (e) => handleMenuClick(e, id));
+  _menu.addEventListener('click', (e) => handleMenuClick(e, id));
 
-  _menu.addEventListener("blur", handleMenuBlur);
+  _menu.addEventListener('blur', handleMenuBlur);
 
-  return projectEntry;
+  return [projectEntry, _stopwatch];
 };
 
 const handleMenuBlur = (e: FocusEvent) => {
-  const dropdown = $("menu-dropdown");
-  const duplicateOption = $("option--duplicate");
-  const deleteOption = $("option--delete");
+  const dropdown = $('menu-dropdown');
+  const duplicateOption = $('option--duplicate');
+  const deleteOption = $('option--delete');
   const relatedTarget = e.relatedTarget as HTMLElement;
 
   // Target Phase takes priority over bubble or capture phase.
@@ -147,7 +210,7 @@ const handleMenuBlur = (e: FocusEvent) => {
 };
 
 const handleMenuClick = (e: MouseEvent, id: number) => {
-  const ex = $("menu-dropdown");
+  const ex = $('menu-dropdown');
   if (ex) return ex.remove();
 
   const _menu = e.currentTarget as HTMLElement;
@@ -155,13 +218,13 @@ const handleMenuClick = (e: MouseEvent, id: number) => {
   const [dropdown, duplicateOption, deleteOption] = createDropdown();
   _menu.append(dropdown);
 
-  duplicateOption.addEventListener("click", (e) => {
+  duplicateOption.addEventListener('click', (e) => {
     e.stopPropagation();
-    console.log("duplicate");
+    console.log('duplicate');
     dropdown.remove();
   });
 
-  deleteOption.addEventListener("click", (e) => {
+  deleteOption.addEventListener('click', (e) => {
     e.stopPropagation();
     const modal = createDeleteModal(id);
     trapFocusOnInit(modal);
@@ -176,36 +239,36 @@ const trapFocusOnInit = (modal: HTMLElement) => {
   lastFocusableElement.focus();
 
   // MAIN!!!!!
-  document.addEventListener("keydown", focusModal);
+  document.addEventListener('keydown', focusModal);
 };
 
 const handlePlayClick = (description: string, projectName: string, tags: string[], billable: boolean) => {
   console.clear();
-  console.log("play button clicked!!");
+  console.log('play button clicked!!');
 
-  if (Store.isTimerStarted) return generateToast("A Project is already been tracked!", false);
+  if (Store.isTimerStarted) return generateToast('A Project is already been tracked!', false);
 
   Store.activeProject = projectName;
   Store.activeTags = tags;
 
-  const recorderInput = $("timetracker-recorder__input") as HTMLInputElement;
+  const recorderInput = $('timetracker-recorder__input') as HTMLInputElement;
   recorderInput.value = description;
 
-  const recorderImgP = $("newproject-button__span");
+  const recorderImgP = $('newproject-button__span');
   recorderImgP.replaceChildren(createCircle());
 
-  const recorderProjectBtn = $("timetracker-recorder__newproject-button");
+  const recorderProjectBtn = $('timetracker-recorder__newproject-button');
   recorderProjectBtn.click();
-  const allProjects = $$("project-picker__list--link") as NodeListOf<HTMLElement>;
+  const allProjects = $$('project-picker__list--link') as NodeListOf<HTMLElement>;
   allProjects.forEach((element) => {
     if (element.textContent === projectName) {
       element.click();
     }
   });
 
-  const tagsBtn = $("timetracker-recorder__tags-button");
+  const tagsBtn = $('timetracker-recorder__tags-button');
   tagsBtn.click();
-  const allTags = $$("c_label") as NodeListOf<HTMLElement>; // get all labels
+  const allTags = $$('c_label') as NodeListOf<HTMLElement>; // get all labels
   allTags.forEach((element) => {
     if (!element.textContent) return;
 
@@ -214,9 +277,9 @@ const handlePlayClick = (description: string, projectName: string, tags: string[
     }
   });
 
-  const billableBtn = $("timetracker-recorder__price-button") as HTMLInputElement;
+  const billableBtn = $('timetracker-recorder__price-button') as HTMLInputElement;
   billableBtn.checked = billable;
 
-  const startBtn = $("timetracker-recorder__start-button");
+  const startBtn = $('timetracker-recorder__start-button');
   startBtn.click();
 };

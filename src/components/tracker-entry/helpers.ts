@@ -50,17 +50,16 @@ export const generateTags = (tags: string[]) => {
     const tagBtn = createElement("button", { class: ["timetracker-recorder__tags-button"] });
     tagBtn.appendChild(tagImg);
     return tagBtn;
-  } else {
-    const tagText = tags.reduce((acc, curr) => acc + ", " + curr);
-
-    const tagP = createElement("p", { class: ["tracker-entry__tag-p--blue"] });
-    tagP.textContent = tagText;
-
-    // FIX: Class Name
-    const tagBtn = createElement("button", { class: ["timetracker-recorder__tags-button"] });
-    tagBtn.append(tagP);
-    return tagBtn;
   }
+  const tagText = tags.reduce((acc, curr) => `${acc}, ${curr}`);
+
+  const tagP = createElement("p", { class: ["tracker-entry__tag-p--blue"] });
+  tagP.textContent = tagText;
+
+  // FIX: Class Name
+  const tagBtn = createElement("button", { class: ["timetracker-recorder__tags-button"] });
+  tagBtn.append(tagP);
+  return tagBtn;
 };
 
 export const generateBill = (id: number, billable: boolean) => {
@@ -104,16 +103,20 @@ export const generateDate = (date: string, startDate: number, endDate: number) =
     class: ["native-date-picker"],
   }) as HTMLInputElement;
 
-  const formattedDate = new Date(date).toISOString().slice(0, 10); //YYYY-MM-DD
+  const formattedDate = new Date(date).toISOString().slice(0, 10); // YYYY-MM-DD
 
   dateInput.value = formattedDate;
 
   const dateButton = createElement("button", { class: ["timetracker-recorder__date-button"] });
   dateButton.append(dateImg, dateInput);
 
-  div.append(startTime, hyphen, endTime, dateButton);
+  const supWrapper = createElement("div", { class: ["sup-div"] });
+  const sup = createElement("sup", { class: ["sup-div"] });
+  supWrapper.append(sup);
 
-  return [div, startTime, endTime, dateButton, dateInput];
+  div.append(startTime, hyphen, endTime, supWrapper, dateButton);
+
+  return [div, startTime, endTime, dateButton, dateInput, sup];
 };
 
 export const generatePlayButton = () => {
@@ -138,6 +141,4 @@ export const generateStopwatch = (time: number[]) => {
   return stopwatch;
 };
 
-export const generateLine = () => {
-  return createElement("div", { class: ["line"] });
-};
+export const generateLine = () => createElement("div", { class: ["line"] });

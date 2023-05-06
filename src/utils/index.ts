@@ -2,7 +2,7 @@ import { createElement } from "./create";
 import { stopPropagation, stopSpacePropagation } from "./closeElement";
 import { sidebarLinkData } from "./fakeSidebar";
 import { customLog } from "./proxyLogger";
-import { $$, $ } from "./query";
+import { $$, $, findEntry } from "./query";
 import { createCircle, createProjectPlusIcon, createTagIcon } from "./red-circle";
 
 export {
@@ -16,4 +16,5 @@ export {
   createCircle,
   createProjectPlusIcon,
   createTagIcon,
+  findEntry,
 };

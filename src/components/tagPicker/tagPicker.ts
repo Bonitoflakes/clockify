@@ -46,9 +46,7 @@ export const renderTag_BLUE = () => {
     return;
   }
 
-  const buttonText: string = Store.activeTags.reduce((acc, curr) => {
-    return acc + ", " + curr;
-  });
+  const buttonText: string = Store.activeTags.reduce((acc, curr) => `${acc}, ${curr}`);
 
   const text = createElement("p", { class: ["tracker-entry__tag-p--blue"] }, buttonText);
 
@@ -109,7 +107,7 @@ const __generateCheckBox = (filteredTags: typeof Store.allTags, entryCheck = fal
     const isTagPresent = entry?.tags.includes(tag);
 
     if (entryCheck) {
-      checkbox.checked = isTagPresent ? true : false;
+      checkbox.checked = !!isTagPresent;
     } else {
       checkbox.checked = isChecked;
     }

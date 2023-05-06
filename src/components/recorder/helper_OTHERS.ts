@@ -19,11 +19,11 @@ export const resetStartButton = (text: string, color: string) => {
 };
 
 export const resetRecorder = () => {
-  const desc = $("timetracker-recorder__input") as HTMLInputElement; //Desc
+  const desc = $("timetracker-recorder__input") as HTMLInputElement; // Desc
   const billable = $("timetracker-recorder__price-button") as HTMLInputElement; // bill
 
-  desc.value = ""; //desc
-  billable.checked = false; //bill
+  desc.value = ""; // desc
+  billable.checked = false; // bill
 
   // stopwatch
   for (const key of Store.timer.keys()) {
@@ -37,9 +37,9 @@ export const resetRecorder = () => {
 };
 
 export const saveEntry = () => {
-  const desc = $("timetracker-recorder__input") as HTMLInputElement; //Desc
+  const desc = $("timetracker-recorder__input") as HTMLInputElement; // Desc
   const billable = $("timetracker-recorder__price-button") as HTMLInputElement; // bill
-  const now = Date.now(); //date
+  const now = Date.now(); // date
 
   console.log(now);
   console.log(findTimeElapsed());
@@ -63,7 +63,7 @@ export const saveEntry = () => {
     tags: [...Store.activeTags],
     startTime: now - findTimeElapsed(),
     endTime: now,
-    date: date,
+    date,
   });
 
   resetRecorder();

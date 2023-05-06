@@ -123,7 +123,7 @@ const Store: IStore = createProxy({
     {
       id: 10,
       description: "You!!",
-      actualEffort: [10, 55,80],
+      actualEffort: [10, 55, 80],
       billable: true,
       projectName: "Meow",
       tags: [],

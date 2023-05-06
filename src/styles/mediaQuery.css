@@ -38,4 +38,12 @@
     max-width: 100%;
     width: 100%;
   }
+
+  .tracker-entry:hover .tracker-entry__input {
+    border: 1px solid transparent;
+  }
+
+  .tracker-entry__input:focus-visible {
+    border: 1px solid transparent;
+  }
 }

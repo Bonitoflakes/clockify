@@ -2,14 +2,13 @@ import { findFirstDayOfWeek } from "./getDates";
 
 export const groupByDate = (data: any[]): { string: IEntry[] } => {
   const dates = data.reduce((acc, curr) => {
-    const key = curr["date"];
+    const key = curr.date;
     const curGroup = acc[key] ?? [];
 
     return { ...acc, [key]: [...curGroup, curr] };
   }, {});
   return dates;
 };
-
 
 export const groupByWeekR = (obj: any) => {
   const dates = Object.entries(obj).reduce((prev: any, curr) => {

@@ -72,7 +72,7 @@ export const createProxy = <T extends ExtendedObject>(initState: T): T => {
    * Initially the proxied object is {} empty.
    * When we loop, we take every key from the initialState passed as parameter and  set it in the proxiedObject along with it's value. When this is done, the set() TRAP is called internally. During which we check if the initalState's value is an array or object. If so, we wrap it in another Proxy and set it as the value to the parent proxiedObject.
    */
-  for (let key in initState) {
+  for (const key in initState) {
     // @ts-ignore
     proxyObj[key] = initState[key];
   }

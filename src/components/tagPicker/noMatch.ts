@@ -8,7 +8,7 @@ export const __zeroMatch = () => {
   const defaultSpan = createElement(
     "span",
     { class: ["project-picker__link--default-span"] },
-    `Press Ctrl+Enter to quickly `
+    "Press Ctrl+Enter to quickly "
   );
   const defaultLink = createElement(
     "a",

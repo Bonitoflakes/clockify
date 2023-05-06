@@ -8,7 +8,7 @@ export const handleTPClick = (e: MouseEvent, id?: number) => {
   const ex = $("tag__picker");
 
   const target = e.target as HTMLElement;
-  const firstChild = (e.currentTarget as Node).firstChild;
+  const { firstChild } = e.currentTarget as Node;
 
   const entryTags = firstChild?.nodeName === "IMG" ? [] : firstChild?.textContent?.split(", ");
   Store.activeTags = entryTags ?? [];
@@ -46,7 +46,6 @@ export const handleTPBlur = (e: FocusEvent) => {
 };
 
 export const removeTagPicker = () => {
-
   renderTag_BLUE();
 
   const picker = $("tag__picker");
