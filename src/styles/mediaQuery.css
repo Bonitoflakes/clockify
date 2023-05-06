@@ -1,0 +1,41 @@
+@media only screen and (max-width: 1120px) {
+  .tracker-entry {
+    flex-wrap: wrap;
+    padding: 0;
+  }
+
+  .div2 {
+    width: 100%;
+    justify-content: space-evenly;
+    height: auto;
+    border-top: 1px solid #eee;
+  }
+
+  .tracker-entry:nth-child(2) {
+    border-top: 0px solid rgb(198, 210, 217);
+  }
+
+  .tracker-entry {
+    border-top: 3px solid rgb(198, 210, 217);
+  }
+
+  .div1 {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    width: 100%;
+  }
+
+  .tracker-entry__project-button {
+    padding: 2rem;
+  }
+
+  .tracker-entry__project-button--text {
+    width: auto;
+  }
+
+  .tracker-entry__input {
+    max-width: 100%;
+    width: 100%;
+  }
+}
