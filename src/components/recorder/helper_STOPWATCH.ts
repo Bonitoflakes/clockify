@@ -32,10 +32,10 @@ export const updateStopwatchUI = () => {
 };
 
 export const findTimeElapsed = () => {
-  const hrs2secs = Store.timer[0] * 60 * 60;
+  const hrs2secs = Store.timer[0] * 3600;
   const mins2secs = Store.timer[1] * 60;
   const secs = Store.timer[2];
-  return (hrs2secs + mins2secs + secs) * 1000;
+  return (hrs2secs + mins2secs + secs) * 1000; //ms
 };
 
 const startStopwatch = (start: number) => {
@@ -91,6 +91,5 @@ export const handleStopwatch = () => {
     clearTimeout(timerID);
     saveEntry();
     renderEntries();
-
   }
 };
