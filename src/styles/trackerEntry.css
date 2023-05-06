@@ -4,6 +4,10 @@
   width: 1px;
 }
 
+main {
+  margin-top: 8rem;
+}
+
 .week {
   margin: 2rem;
   margin-left: var(--tracker-margin-left);
@@ -68,10 +72,17 @@
   display: flex;
   align-items: center;
   border-top: 1px solid rgb(198, 210, 217);
-  border-bottom: 1px solid rgb(198, 210, 217);
+  /* border-bottom: 1px solid rgb(198, 210, 217); */
   /* border-radius: 2px; */
   padding: 1rem;
   background: white;
+}
+
+input.date-time-picker:focus-visible {
+  border: 1px solid rgb(198, 210, 217);
+}
+
+.tracker-entry:hover {
   box-shadow: 0 0 20px #0000001a;
 }
 
@@ -300,7 +311,7 @@
   height: 100dvh;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 100;
-  position: absolute;
+  position: fixed;
   top: 0;
   display: flex;
   align-items: center;

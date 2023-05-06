@@ -13,8 +13,11 @@
   background: white;
   margin: 2rem;
   box-shadow: 0 0 20px #0000001a;
-  margin-left: var(--tracker-margin-left);
   transition: 0.3s margin ease-in-out;
+  position: sticky;
+  top: 8rem;
+  z-index: 10000;
+  margin-left: var(--tracker-margin-left);
 }
 
 .timetracker-recorder__input {

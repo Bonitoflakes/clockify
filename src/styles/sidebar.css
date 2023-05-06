@@ -6,6 +6,8 @@
   transition: width 0.3s ease-in-out;
   min-height: 100vh;
   position: fixed;
+  margin-top: 5.2rem;
+  top: 0;
 }
 
 .sidebar.open {
