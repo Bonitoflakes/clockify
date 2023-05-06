@@ -1,8 +1,7 @@
 import { Store } from "@store";
 import { $, createElement } from "@utils";
-import { generateToast } from "@components";
+import { generateToast, renderEntries } from "@components";
 import { discardEntry, resetStartButton, saveEntry } from "./helper_OTHERS";
-import { renderEntries } from "../../main";
 
 let timerID: NodeJS.Timeout;
 

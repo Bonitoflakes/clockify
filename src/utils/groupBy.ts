@@ -10,7 +10,7 @@ export const groupByDate = (data: any[]): { string: IEntry[] } => {
   return dates;
 };
 
-export const groupByWeekR = (obj: any) => {
+export const groupByWeek = (obj: any) => {
   const dates = Object.entries(obj).reduce((prev: any, curr) => {
     //
     const curDate = new Date(curr[0]);

@@ -10,6 +10,7 @@ const generateLink = (id?: string) => {
 };
 const generateTitle = (title: string) =>
   createElement("div", { class: ["sidebar__link-title", "open"] }, title);
+
 const generateImg = (src: string, alt: string) =>
   createElement("img", {
     src,

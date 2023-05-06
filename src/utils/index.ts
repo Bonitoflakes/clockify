@@ -4,6 +4,8 @@ import { sidebarLinkData } from "./fakeSidebar";
 import { customLog } from "./proxyLogger";
 import { $$, $, findEntry } from "./query";
 import { createCircle, createProjectPlusIcon, createTagIcon } from "./red-circle";
+import { groupByDate, groupByWeek } from "./groupBy";
+import { findFirstDayOfWeek, findLastDayOfWeek } from "./getDates";
 
 export {
   createElement,
@@ -17,4 +19,8 @@ export {
   createProjectPlusIcon,
   createTagIcon,
   findEntry,
+  groupByDate,
+  groupByWeek,
+  findFirstDayOfWeek,
+  findLastDayOfWeek,
 };

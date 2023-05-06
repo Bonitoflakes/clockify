@@ -17,4 +17,5 @@ export const initializeTimeTrackerRecorder = () => {
 
   tagButton.addEventListener("click", (e) => handleTPClick(e));
   tagButton.addEventListener("blur", handleTPBlur); // just for one edge case🥲
+  return Promise.resolve();
 };

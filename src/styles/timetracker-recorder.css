@@ -16,7 +16,7 @@
   transition: 0.3s margin ease-in-out;
   position: sticky;
   top: 8rem;
-  z-index: 10000;
+  z-index: 100;
   margin-left: var(--tracker-margin-left);
 }
 

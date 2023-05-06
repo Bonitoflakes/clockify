@@ -26,9 +26,15 @@
     width: 100%;
   }
 
-  .tracker-entry__project-button {
+  .tracker-entry__project-button,
+  .tracker-entry__input {
     padding: 2rem;
   }
+
+  /* .timetracker-recorder__tags-button {
+    padding-left: 0;
+    padding-right: 0;
+  } */
 
   .tracker-entry__project-button--text {
     width: auto;

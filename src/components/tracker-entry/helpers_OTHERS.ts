@@ -2,7 +2,7 @@ import { generateToast } from "@components";
 import { Store } from "@store";
 import { $, createElement } from "@utils";
 import closeWhite from "@assets/close-white.svg";
-import { renderEntries } from "../../main";
+import { renderEntries } from "@components";
 
 export const handleTimeArrowKeys = (e: KeyboardEvent) => {
   const input = e.currentTarget as HTMLInputElement;
