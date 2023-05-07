@@ -1,6 +1,5 @@
-import tagGray from "@assets/tag-gray.svg";
 import { Store } from "@store";
-import { stopPropagation, stopSpacePropagation, $, createElement, $$, createTagIcon } from "@utils";
+import { stopPropagation, stopSpacePropagation, $, $$, createTagIcon } from "@utils";
 
 import { generateTagPicker, initializeTagFilter, renderTag_BLUE, renderTagList } from "@components";
 
@@ -40,7 +39,7 @@ export const handleTPBlur = (e: FocusEvent) => {
   const isChild = (e.currentTarget as HTMLButtonElement).contains(e.relatedTarget as Node);
   if (isChild) return;
 
-  console.log("TP BLURRRR");
+  // console.log("TP BLURRRR");
 
   removeTagPicker();
 };

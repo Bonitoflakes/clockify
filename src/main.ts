@@ -28,6 +28,14 @@ const app = document.getElementById("app")!;
 const main = createElement("main", { class: ["main"] });
 const toastContainer = createElement("div", { class: ["toast-container"] });
 
+const allEntries = JSON.parse(localStorage.getItem("entries") ?? "[]");
+const allTags = JSON.parse(localStorage.getItem("tags") ?? "[]");
+const allProjects = JSON.parse(localStorage.getItem("projects") ?? "[]");
+
+Store.entries = allEntries;
+Store.allTags = allTags;
+Store.allProjects = allProjects;
+
 generateNavbar();
 generateSidebar(sidebarLinkData).then(() => initializeSidebar());
 generateTimeTrackerRecorder()

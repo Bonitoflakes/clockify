@@ -111,8 +111,8 @@ const Store: IStore = createProxy({
     },
     {
       id: 9,
-      description: "Hey There",
-      actualEffort: [10, 55, 50],
+      description: "Hey There test123",
+      actualEffort: [1, 55, 50],
       billable: true,
       projectName: "Meow",
       tags: [],

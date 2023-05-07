@@ -78,7 +78,7 @@ export const handleStopwatch = () => {
 
   // If timer is stopped...
   if (!Store.isTimerStarted) {
-    console.log("123456", Store.activeProject);
+    // console.log("123456", Store.activeProject);
 
     if (!Store.activeProject) {
       Store.isTimerStarted = !Store.isTimerStarted;

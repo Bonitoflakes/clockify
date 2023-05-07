@@ -30,7 +30,7 @@ export const handleMenuClick = (e: MouseEvent, id: number) => {
 
   duplicateOption.addEventListener("click", (e) => {
     e.stopPropagation();
-    console.log("duplicate");
+    // console.log("duplicate");
     dropdown.remove();
   });
 
@@ -59,7 +59,7 @@ export const handlePlayClick = (
   billable: boolean
 ) => {
   console.clear();
-  console.log("play button clicked!!");
+  // console.log("play button clicked!!");
 
   if (Store.isTimerStarted) return generateToast("A Project is already been tracked!", false);
 

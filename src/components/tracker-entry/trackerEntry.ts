@@ -23,6 +23,7 @@ import {
   updateEntryTimeEnd,
   handleDateChange,
 } from "./handlers";
+import { renderEntries } from "./generateCard";
 
 export const generateTrackerEntry = ({
   id,
@@ -126,6 +127,42 @@ const initEntry = (
   startTime.addEventListener("blur", () => updateEntryTimeStart(id, startTime, endTime, sup, _stopwatch));
 
   endTime.addEventListener("blur", () => updateEntryTimeEnd(id, startTime, endTime, _stopwatch));
+
+  // TODO: _stopwatch.addEventListener('keydown',()=>{'Increase on descrease mins.'})
+  _stopwatch.addEventListener("blur", () => {
+    // exit if the input value is the same
+    const newValue = (_stopwatch as HTMLInputElement).value;
+    const oldValue = _stopwatch.title;
+    if (newValue !== oldValue) {
+      const time = newValue.split(":");
+      const hrs = Number(time[0].toString().padStart(2, "0"));
+      const mins = Number(time[1].toString().padStart(2, "0"));
+      const secs = Number(time[2].toString().padStart(2, "0"));
+      const totalInMS: number = (hrs * 3600 + mins * 60 + secs) * 1000;
+
+      // console.log(hrs, mins, secs);
+      const entry = findEntry(id);
+
+      const startTimeDate = new Date(`${entry.date}T${(startTime as HTMLInputElement).value}`);
+
+      const startTimeMS = Date.parse(startTimeDate.toString());
+
+      const newEndTimeInMS = startTimeMS + totalInMS;
+      // console.log(startTimeMS);
+      // console.log(totalInMS);
+      // console.log(newEndTimeInMS);
+
+      const newDate = new Date(newEndTimeInMS);
+      const endMins = newDate.getMinutes();
+      const endHrs = newDate.getHours();
+      (endTime as HTMLInputElement).value = `${endHrs}:${endMins}`;
+      // debugger
+      entry.actualEffort = [hrs, mins, secs];
+      console.log(entry.actualEffort);
+
+      renderEntries();
+    }
+  });
 
   dateButton.addEventListener("click", () => (dateInput as HTMLInputElement).showPicker());
 

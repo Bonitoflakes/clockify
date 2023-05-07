@@ -6,7 +6,7 @@ import { generateProjectPicker, initializeProjectPicker, renderProjectList } fro
 export const removeProjectPicker = (): void => {
   const picker = $("project-picker");
   Store.projectFilter = "";
-  console.log("Removing project picker via Doc Listener");
+  // console.log("Removing project picker via Doc Listener");
 
   if (picker) picker.remove();
   document.removeEventListener("click", removeProjectPicker);
@@ -56,7 +56,7 @@ export const handlePPBlur = (e: FocusEvent) => {
   const isChild = (e.currentTarget as HTMLButtonElement).contains(e.relatedTarget as Node);
   if (isChild) return;
 
-  console.log("Running Blur");
+  // console.log("Running Blur");
 
   const picker = $("project-picker");
 

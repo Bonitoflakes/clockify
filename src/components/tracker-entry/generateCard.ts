@@ -40,7 +40,7 @@ export const renderEntries = () => {
       for (const iterator of cardEntry) {
         const [asdf, stopwatch] = generateTrackerEntry(iterator);
         entryCard.append(asdf);
-        const stopWatchTextContent = stopwatch!.textContent!.split(":");
+        const stopWatchTextContent = (stopwatch as HTMLInputElement)!.value!.split(":");
         // console.log(stopWatchTextContent);
 
         add.push(stopWatchTextContent);
@@ -77,6 +77,11 @@ export const renderEntries = () => {
 
     $("main").append(weekCard);
   }
+
+  localStorage.setItem("entries", JSON.stringify(Store.entries));
+  localStorage.setItem("tags", JSON.stringify(Store.allTags));
+  localStorage.setItem("projects", JSON.stringify(Store.allProjects));
+  localStorage.setItem("Store", JSON.stringify(Store));
 };
 
 function generateCard(entryDate: string) {

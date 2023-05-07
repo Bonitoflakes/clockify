@@ -60,6 +60,8 @@ export const renderTagList = () => {
 
   if (Store.allTags.length === 0 && !Store.tagFilter) {
     tagList.append(createElement("li", { class: ["tag__projects_link_default"] }, "No tags yet..."));
+    $("tag__picker__wrapper").style.minHeight = "var(--emtpyTagList)";
+
     return tagList.append(
       createElement("li", { class: ["tag__projects_link_default-child"] }, "Start typing to create one")
     );

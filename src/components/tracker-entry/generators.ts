@@ -137,7 +137,9 @@ export const generateStopwatch = (time: number[]) => {
   const hrs = time[0].toString().padStart(2, "0");
   const mins = time[1].toString().padStart(2, "0");
   const secs = time[2].toString().padStart(2, "0");
-  const stopwatch = createElement("div", { class: ["tracker-entry__stopwatch"] }, `${hrs}:${mins}:${secs}`);
+  const stopwatch = createElement("input", { class: ["tracker-entry__stopwatch"] });
+  (stopwatch as HTMLInputElement).value = `${hrs}:${mins}:${secs}`;
+  stopwatch.title = `${hrs}:${mins}:${secs}`;
   return stopwatch;
 };
 

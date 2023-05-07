@@ -21,13 +21,15 @@
 }
 
 .tag__picker__wrapper {
+  --emtpyTagList: 12rem;
+  --TagList: 15.5rem;
   padding: 0.7rem 0;
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
   min-width: 26rem;
-  min-height: 15.5rem;
+  min-height: var(--TagList);
   max-width: 48rem;
   max-height: 60rem;
   resize: both;

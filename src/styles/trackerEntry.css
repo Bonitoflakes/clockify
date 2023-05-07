@@ -1,3 +1,4 @@
+/* TODO: Refactor hover css states, currently lying around in different corners. */
 .line {
   min-height: 4rem;
   background-color: rgb(225, 225, 225);
@@ -5,7 +6,7 @@
 }
 
 main {
-  margin-top: 8rem;
+  margin-top: 3rem;
 }
 
 .week {
@@ -199,7 +200,10 @@ input.date-time-picker:focus-visible {
   font-weight: 500;
   color: #333333;
   margin: 0 2rem;
-  min-width: 8rem;
+  max-width: 9rem;
+  text-align: center;
+  height: 3.85rem;
+  border: none;
 }
 
 .date-time-wrapper {
@@ -221,6 +225,12 @@ input.date-time-picker:focus-visible {
 }
 
 .tracker-entry:hover .date-time-picker {
+  border: 1px solid rgb(198, 210, 217);
+}
+
+.tracker-entry:hover .tracker-entry__stopwatch,
+.tracker-entry__stopwatch:active,
+.tracker-entry__stopwatch:focus {
   border: 1px solid rgb(198, 210, 217);
 }
 

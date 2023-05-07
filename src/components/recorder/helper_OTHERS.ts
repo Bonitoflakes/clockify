@@ -41,9 +41,9 @@ export const saveEntry = () => {
   const billable = $("timetracker-recorder__price-button") as HTMLInputElement; // bill
   const now = Date.now(); // date
 
-  console.log(now);
-  console.log(findTimeElapsed());
-  console.log(now - findTimeElapsed());
+  // console.log(now);
+  // console.log(findTimeElapsed());
+  // console.log(now - findTimeElapsed());
 
   const startTime = new Date(now - findTimeElapsed()).toTimeString().slice(0, 5);
   const endTime = new Date(now).toTimeString().slice(0, 5);
