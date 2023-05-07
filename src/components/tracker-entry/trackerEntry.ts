@@ -44,7 +44,7 @@ export const generateTrackerEntry = ({
   const line4 = generateLine();
   const line5 = generateLine();
 
-  const _input = generateInput(description);
+  const [_input, inputText, inputLabel] = generateInput(description);
 
   const [_projects, _projectText] = generateProjectPicker(projectName, id);
 
@@ -65,6 +65,11 @@ export const generateTrackerEntry = ({
   div2.append(_tags, line1, _bill, line2, _date, line3, _stopwatch, line4, _play, line5, _menu);
 
   projectEntry.append(div1, div2);
+
+  inputText.addEventListener("input", (e) => {
+    const target = e.target as HTMLInputElement;
+    target.parentElement!.dataset.value = target.value;
+  });
 
   // Event Listeners
   initEntry(

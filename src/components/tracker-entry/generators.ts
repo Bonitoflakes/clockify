@@ -8,13 +8,13 @@ import { createElement } from "@utils";
 export const generateInput = (description: string) => {
   const div = createElement("div", { class: ["input-wrapper"] });
 
-  // FIX: Use the auto-expanding input solution.
-  const input = createElement("span", {
-    // type: "text",
+  const inputLabel = createElement("label", { class: ["tracker-entry__input-sizer"] });
+  const input = createElement("input", {
     class: ["tracker-entry__input"],
     contenteditable: true,
     placeholder: "Add Description",
   }) as HTMLInputElement;
+  inputLabel.append(input);
 
   input.textContent = description;
 
@@ -22,8 +22,8 @@ export const generateInput = (description: string) => {
     input.scrollLeft = 0;
   });
 
-  div.appendChild(input);
-  return input;
+  div.appendChild(inputLabel);
+  return [div, input, inputLabel];
 };
 
 export const generateProjectPicker = (projectName: string, id: number) => {
