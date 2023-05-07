@@ -1,4 +1,4 @@
-import { createElement, findEntry } from "@utils";
+import { createElement, findEntry, saveToLocalStorage } from "@utils";
 
 import {
   generateBill,
@@ -44,7 +44,7 @@ export const generateTrackerEntry = ({
   const line4 = generateLine();
   const line5 = generateLine();
 
-  const [_input, inputText, inputLabel] = generateInput(description);
+  const [_input, inputText] = generateInput(description);
 
   const [_projects, _projectText] = generateProjectPicker(projectName, id);
 
@@ -69,6 +69,11 @@ export const generateTrackerEntry = ({
   inputText.addEventListener("input", (e) => {
     const target = e.target as HTMLInputElement;
     target.parentElement!.dataset.value = target.value;
+
+    const entry = findEntry(id);
+
+    entry.description = target.value;
+    saveToLocalStorage();
   });
 
   // Event Listeners

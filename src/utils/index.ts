@@ -6,6 +6,7 @@ import { $$, $, findEntry } from "./query";
 import { createCircle, createProjectPlusIcon, createTagIcon } from "./red-circle";
 import { groupByDate, groupByWeek } from "./groupBy";
 import { findFirstDayOfWeek, findLastDayOfWeek } from "./getDates";
+import { saveToLocalStorage } from './localStorage';
 
 export {
   createElement,
@@ -23,4 +24,5 @@ export {
   groupByWeek,
   findFirstDayOfWeek,
   findLastDayOfWeek,
+  saveToLocalStorage
 };

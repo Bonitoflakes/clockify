@@ -1,7 +1,15 @@
 import bulkEdit from "@assets/bulk-edit.svg";
 
 import { Store } from "@store";
-import { $, createElement, groupByDate, groupByWeek, findFirstDayOfWeek, findLastDayOfWeek } from "@utils";
+import {
+  $,
+  createElement,
+  groupByDate,
+  groupByWeek,
+  findFirstDayOfWeek,
+  findLastDayOfWeek,
+  saveToLocalStorage,
+} from "@utils";
 
 import { generateTrackerEntry } from "./trackerEntry";
 import { convertDateToString } from "../recorder/helper_OTHERS";
@@ -78,10 +86,7 @@ export const renderEntries = () => {
     $("main").append(weekCard);
   }
 
-  localStorage.setItem("entries", JSON.stringify(Store.entries));
-  localStorage.setItem("tags", JSON.stringify(Store.allTags));
-  localStorage.setItem("projects", JSON.stringify(Store.allProjects));
-  localStorage.setItem("Store", JSON.stringify(Store));
+  saveToLocalStorage();
 };
 
 function generateCard(entryDate: string) {

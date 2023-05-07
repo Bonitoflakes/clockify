@@ -14,16 +14,17 @@ export const generateInput = (description: string) => {
     contenteditable: true,
     placeholder: "Add Description",
   }) as HTMLInputElement;
+
   inputLabel.append(input);
 
-  input.textContent = description;
+  input.value = description;
 
   input.addEventListener("blur", () => {
     input.scrollLeft = 0;
   });
 
   div.appendChild(inputLabel);
-  return [div, input, inputLabel];
+  return [div, input];
 };
 
 export const generateProjectPicker = (projectName: string, id: number) => {
