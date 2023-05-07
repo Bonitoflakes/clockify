@@ -93,44 +93,6 @@ input.date-time-picker:focus-visible {
   color: rgb(174, 184, 190);
 }
 
-.input-wrapper {
-  max-width: 100%;
-}
-
-.tracker-entry__input {
-  display: inline-block;
-  border: 1px solid transparent;
-  outline: none;
-  padding: 1rem;
-  font-size: 1.4rem;
-  color: rgb(51, 51, 51);
-  transition: border-color 0.3s ease-in-out;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  transition: width 0.3s ease-out;
-
-  /* FIX */
-  min-width: 20rem;
-  max-width: var(--input-width);
-  /* font-family: "Roboto Mono"; */
-}
-
-.tracker-entry__input:focus {
-  text-overflow: initial;
-}
-
-.tracker-entry__input::placeholder {
-  color: rgb(146, 155, 161);
-  font-size: 1.4rem;
-}
-
-.tracker-entry:hover .tracker-entry__input,
-.tracker-entry__input:active,
-.tracker-entry__input:focus {
-  border: 1px solid rgb(198, 210, 217);
-}
-
 .tracker-entry__project-button {
   display: flex;
   align-items: center;
@@ -422,4 +384,53 @@ input.date-time-picker:focus-visible {
   top: 0;
   right: -2px;
   width: 100%;
+}
+
+/* Description Input  */
+.input-wrapper {
+  max-width: 100%;
+}
+
+.tracker-entry__input-sizer {
+  display: inline-grid;
+}
+
+.tracker-entry__input-sizer::after {
+  grid-area: 1/2;
+  content: attr(data-value);
+  font-size: 1.4rem;
+  max-width: var(--input-width);
+  white-space: nowrap;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.tracker-entry__input {
+  grid-area: 1/2;
+  display: inline-block;
+  border: 1px solid transparent;
+  outline: none;
+  padding: 1rem;
+  font-size: 1.4rem;
+  color: rgb(51, 51, 51);
+  transition: border-color 0.3s ease-in-out;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: width 0.3s ease-out;
+}
+
+.tracker-entry__input:focus {
+  text-overflow: initial;
+}
+
+.tracker-entry__input::placeholder {
+  color: rgb(146, 155, 161);
+  font-size: 1.4rem;
+}
+
+.tracker-entry:hover .tracker-entry__input,
+.tracker-entry__input:active,
+.tracker-entry__input:focus {
+  border: 1px solid rgb(198, 210, 217);
 }
