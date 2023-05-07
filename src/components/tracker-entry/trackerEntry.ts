@@ -158,6 +158,7 @@ const initEntry = (
       (endTime as HTMLInputElement).value = `${endHrs}:${endMins}`;
       // debugger
       entry.actualEffort = [hrs, mins, secs];
+      entry.endTime = newEndTimeInMS;
       console.log(entry.actualEffort);
 
       renderEntries();
