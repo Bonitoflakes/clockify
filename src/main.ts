@@ -45,6 +45,8 @@ generateTimeTrackerRecorder()
 // To be done at last.
 app.append(main, toastContainer);
 
+window.store = Store;
+
 // SUBSCRIPTIONS
 subscribePrimitive("isSidebarOpen", () => {
   root.style.setProperty("--tracker-margin-left", Store.isSidebarOpen ? "22rem" : "9rem");

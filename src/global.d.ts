@@ -11,6 +11,10 @@ interface ISidebarLinks {
   };
 }
 
+interface Window {
+  store: IStore;
+}
+
 interface IStore {
   isSidebarOpen: boolean;
   timer: number[];
