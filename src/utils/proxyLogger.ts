@@ -1,4 +1,5 @@
 const customLog = (target: any, prop: any, val: any) => {
+  if (prop === "_nested") return;
   console.log(
     `%cSET ${prop}: %c ${target[prop]} %c --> %c ${val} `,
     "color:#71F409;font-weight:bolder;font-size:.8rem;",

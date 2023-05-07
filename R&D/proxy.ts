@@ -36,7 +36,7 @@ export const createProxy = <T extends ExtendedObject>(initState: T): T => {
       // @ts-ignore
       if (initialised && target[property] === value) return true;
 
-      // initialised ?? customLog(target, property, value);
+      initialised && customLog(target, property, value);
       // customLog(target, property, value);
 
       if (typeof value === "object" && value !== null) {
