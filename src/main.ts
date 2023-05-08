@@ -22,6 +22,10 @@ import { createElement, sidebarLinkData } from "@utils";
 import { Store, subscribePrimitive } from "@store";
 import { renderEntries } from "@components";
 
+// Add analytics
+import LogRocket from "logrocket";
+LogRocket.init("kaaavr/clockify");
+
 const root = document.querySelector(":root") as HTMLElement;
 
 const app = document.getElementById("app")!;
