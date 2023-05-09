@@ -14,6 +14,7 @@ export const initializeProjectPicker = (textElement: HTMLElement, ID?: number) =
   entryToBeModifiedID = ID;
 
   newProjectButton.addEventListener("click", () => {
+    if(Store.projectFilter==='') return generateToast(`Type something first to create a new project`, false);
     __updateProjectStatus(textToBeModified);
     generateToast(`Project ${Store.activeProject} was created successfully.`, true);
   });
