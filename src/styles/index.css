@@ -63,3 +63,12 @@ body {
   width: 100%;
 }
 
+main {
+  margin-top: 3rem;
+}
+
+.line {
+  min-height: 4rem;
+  background-color: rgb(225, 225, 225);
+  width: 1px;
+}

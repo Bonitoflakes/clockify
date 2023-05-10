@@ -76,6 +76,9 @@ export const generateTrackerEntry = ({
     saveToLocalStorage();
   });
 
+  const descriptionInput = inputText as HTMLInputElement;
+  descriptionInput.parentElement!.dataset.value = descriptionInput.value;
+
   // Event Listeners
   initEntry(
     _projects,
