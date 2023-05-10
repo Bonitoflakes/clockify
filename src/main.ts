@@ -5,7 +5,9 @@ import "./styles/timetracker-recorder.css";
 import "./styles/projectPicker.css";
 import "./styles/tagPicker.css";
 import "./styles/trackerEntry.css";
+import "./styles/trackerCard.css";
 import "./styles/toast.css";
+import "./styles/modal.css";
 import "./styles/animation.css";
 import "./styles/mediaQuery.css";
 
@@ -53,6 +55,12 @@ window.store = Store;
 
 // SUBSCRIPTIONS
 subscribePrimitive("isSidebarOpen", () => {
-  root.style.setProperty("--tracker-margin-left", Store.isSidebarOpen ? "22rem" : "9rem");
-  root.style.setProperty("--input-width", Store.isSidebarOpen ? "35rem" : "45rem");
+  root.style.setProperty(
+    "--tracker-margin-left",
+    Store.isSidebarOpen ? "22rem" : "9rem"
+  );
+  root.style.setProperty(
+    "--input-width",
+    Store.isSidebarOpen ? "35rem" : "45rem"
+  );
 });
