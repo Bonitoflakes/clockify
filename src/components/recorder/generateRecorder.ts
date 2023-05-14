@@ -97,6 +97,7 @@ export const generateToggleMode = () => {
   div.append(clockLink, listLink);
   div.style.display = "flex";
   div.style.flexDirection = "column";
+  div.style.gap = "1rem";
 
   return div;
 };

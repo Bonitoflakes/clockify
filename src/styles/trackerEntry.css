@@ -152,7 +152,7 @@ main {
 /*                 */
 .tracker-entry__tags-button {
   padding: 0 2rem;
-  padding-top: 5px;
+  /* padding-top: 5px; */
 }
 
 .tracker-entry__tag-button--blue {
@@ -175,7 +175,7 @@ main {
 
 .timetracker-recorder__tags-button {
   padding: 0 2rem;
-  padding-top: 5px;
+  /* padding-top: 5px; */
   position: relative;
 }
 
@@ -231,7 +231,7 @@ main {
 }
 
 .timetracker-recorder__date-button {
-  padding-top: 5px;
+  /* padding-top: 5px; */
   padding-left: 2rem;
 }
 
@@ -259,7 +259,7 @@ input.date-time-picker:focus-visible {
 
 .timetracker-recorder__tags-button {
   padding: 0 2rem;
-  padding-top: 5px;
+  /* padding-top: 5px; */
   position: relative;
 }
 
