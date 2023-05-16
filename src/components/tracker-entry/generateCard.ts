@@ -24,28 +24,36 @@ const compareDate = (a: IEntry, b: IEntry) => {
 export const renderEntries = () => {
   $("main").replaceChildren();
 
-  Store.entries.sort(compareDate);
+  const entriesCopy = Store.entries;
+  // const entriesCopy = JSON.parse(JSON.stringify(Store.entries));
+  entriesCopy.sort(compareDate);
   // console.table(Store.entries);
   // console.log("=============SORTED================");
 
-  const data = groupByDate(Store.entries);
+  const data = groupByDate(Store.entries); //o(n)
   // console.table(data);
   // console.log("==============GROUP BY DATE==================");
 
-  const test = groupByWeek(data);
-  // console.table(test);
+  const test = groupByWeek(data); //o(n)
+  console.table(test);
   // console.log("===============GROUP BY WEEK=============");
 
+  console.time("Loop");
+  let totalLoop = 0;
   for (const [weekDate, weekEntry] of Object.entries(test)) {
+    //o()n3
+    totalLoop++;
     const [weekCard, totalWeekTime] = generateWeekCard(weekDate);
     const superAdd = [];
 
     //  @ts-ignore
     for (const [cardDate, cardEntry] of weekEntry) {
+      totalLoop++;
       const [entryCard, totalDayTime] = generateCard(cardDate);
 
       const add: string[][] = [];
       for (const iterator of cardEntry) {
+        totalLoop++;
         const [asdf, stopwatch] = generateTrackerEntry(iterator);
         entryCard.append(asdf);
         const stopWatchTextContent = (stopwatch as HTMLInputElement)!.value!.split(":");
@@ -85,7 +93,8 @@ export const renderEntries = () => {
 
     $("main").append(weekCard);
   }
-
+  console.log(`Total Loop:${totalLoop}`);
+  console.timeEnd("Loop");
   saveToLocalStorage();
 };
 
