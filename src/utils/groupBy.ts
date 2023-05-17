@@ -1,4 +1,4 @@
-import { findFirstDayOfWeek } from "./getDates";
+import { findMonday } from "@utils";
 
 export const groupByDate = (data: any[]): { string: IEntry[] } => {
   const dates = data.reduce((acc, curr) => {
@@ -14,7 +14,7 @@ export const groupByWeek = (obj: any) => {
   const dates = Object.entries(obj).reduce((prev: any, curr) => {
     //
     const curDate = new Date(curr[0]);
-    const startDate = findFirstDayOfWeek(curDate.toString());
+    const startDate = findMonday(curDate.toString());
     const startDateStr = startDate.toISOString().slice(0, 10);
 
     if (!prev[startDateStr]) {

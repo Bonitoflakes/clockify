@@ -135,6 +135,7 @@ export const updateEntryTimeStart = (
 
   _stopwatch.textContent = totalTime;
   entry.actualEffort = [hours, minutes, seconds];
+  // FIX: Quick hack, ideally you don't want to re-render everything. On a side note, it seems impossible to avoid re-rendering the entire entries. Reason: Need to sort and group entries.
   renderEntries();
 };
 
@@ -172,6 +173,7 @@ export const updateEntryTimeEnd = (
 
   _stopwatch.textContent = totalTime;
   entry.actualEffort = [hours, minutes, seconds];
+  // FIX: Quick hack, ideally you don't want to re-render everything. On a side note, it seems impossible to avoid re-rendering the entire entries. Reason: Need to sort and group entries.
   renderEntries();
 };
 
@@ -186,6 +188,6 @@ export const handleDateChange = (e: Event, id: number) => {
   let entryDate2String_modifer = value;
   if (value.slice(12) === currentYear) entryDate2String_modifer = value.slice(0, 12);
 
-  // FIX: Quick hack, ideally you don't want to re-render everything. On a side note, it seems impossible to avoid re-rendering the entire entries. Reason: Need to sort and group entries.s
+  // FIX: Quick hack, ideally you don't want to re-render everything. On a side note, it seems impossible to avoid re-rendering the entire entries. Reason: Need to sort and group entries.
   renderEntries();
 };

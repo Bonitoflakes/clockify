@@ -18,3 +18,5 @@ export const createTagIcon = () =>
     alt: "plus-img",
     class: ["newproject-button__img--plus"],
   });
+
+export const generateLine = () => createElement("div", { class: ["line"] });

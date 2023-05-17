@@ -3,9 +3,9 @@ import calendarGray from "@assets/calendar-gray.svg";
 import playButton from "@assets/play.svg";
 import menuDots from "@assets/menu-dots-vertical.svg";
 
-import { createElement } from "@utils";
+import { createElement, generateLine } from "@utils";
 
-export const generateInput = (description: string) => {
+export const generateInput = (description: string):[HTMLDivElement, HTMLInputElement] => {
   const div = createElement("div", { class: ["input-wrapper"] });
 
   const inputLabel = createElement("label", { class: ["tracker-entry__input-sizer"] });
@@ -13,7 +13,7 @@ export const generateInput = (description: string) => {
     class: ["tracker-entry__input"],
     contenteditable: true,
     placeholder: "Add Description",
-  }) as HTMLInputElement;
+  });
 
   inputLabel.append(input);
 
@@ -144,4 +144,3 @@ export const generateStopwatch = (time: number[]) => {
   return stopwatch;
 };
 
-export const generateLine = () => createElement("div", { class: ["line"] });

@@ -14,7 +14,10 @@ export const initializeProjectPicker = (textElement: HTMLElement, ID?: number) =
   entryToBeModifiedID = ID;
 
   newProjectButton.addEventListener("click", () => {
-    if(Store.projectFilter==='') return generateToast(`Type something first to create a new project`, false);
+    if (Store.projectFilter === "") {
+      return generateToast(`Type something first to create a new project`, false);
+    }
+
     __updateProjectStatus(textToBeModified);
     generateToast(`Project ${Store.activeProject} was created successfully.`, true);
   });
@@ -60,7 +63,7 @@ export const renderProjectList = () => {
 
   // Loop through all the projects and attach them to the list.
   if (filteredProjects.length > 0) {
-    filteredProjects.map((name: string) => {
+    filteredProjects.forEach((name: string) => {
       projectList.append(createElement("li", { class: ["project-picker__list--link"] }, name));
     });
   }
@@ -73,6 +76,7 @@ export const renderProjectList = () => {
 
     Store.activeProject = target.textContent ?? "DEV messed up 😬";
     Store.projectFilter = "";
+
     __updateProjectStatus(textToBeModified, false);
     generateToast(`Project ${Store.activeProject} is selected.`, true);
   });

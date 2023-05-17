@@ -34,7 +34,7 @@ export const findTimeElapsed = () => {
   const hrs2secs = Store.timer[0] * 3600;
   const mins2secs = Store.timer[1] * 60;
   const secs = Store.timer[2];
-  return (hrs2secs + mins2secs + secs) * 1000; // ms
+  return (hrs2secs + mins2secs + secs) * 1000; // total ms
 };
 
 const startStopwatch = (start: number) => {
@@ -62,8 +62,6 @@ export const handleStopwatch = () => {
   const start = performance.now();
   const X = $("timetracker-recorder__togglemode");
 
-  // if (Store.isTimerStarted && Store.activeProject === "") return;
-
   Store.isTimerStarted = !Store.isTimerStarted;
 
   // If timer is started and running...
@@ -78,8 +76,7 @@ export const handleStopwatch = () => {
 
   // If timer is stopped...
   if (!Store.isTimerStarted) {
-    // console.log("123456", Store.activeProject);
-
+    //
     if (!Store.activeProject) {
       Store.isTimerStarted = !Store.isTimerStarted;
       generateToast("Project name is empty", false);

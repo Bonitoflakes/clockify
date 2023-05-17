@@ -1,4 +1,4 @@
-import { createElement } from "@utils";
+import { createElement, generateLine } from "@utils";
 import hamburger from "@assets/hamburger.svg";
 import logo from "@assets/logo.svg";
 import clients from "@assets/clients.svg";
@@ -21,15 +21,16 @@ export const generateNavbar = () => {
 
   const rightDiv = createElement("div", { class: ["nav__right"] });
 
-  const workspaceP = createElement("p", { class: ["nav__user-workspace"] }, "19-uca-004's workspace");
+  const workspaceUser = createElement("p", { class: ["nav__user-workspace"] }, "19-uca-004's workspace");
   const upgradeLink = createElement("a", { class: ["nav__btn-upgrade"] }, "upgrade");
 
-  rightDiv.appendChild(workspaceP);
+  rightDiv.appendChild(workspaceUser);
   rightDiv.appendChild(upgradeLink);
 
-  const lineDiv1 = createElement("div", { class: ["nav__line"] });
-  const lineDiv2 = createElement("div", { class: ["nav__line"] });
-  const lineDiv3 = createElement("div", { class: ["nav__line"] });
+  const lineDiv1 = generateLine();
+  const lineDiv2 = generateLine();
+  const lineDiv3 = generateLine();
+
   const helpDiv = createElement("a", { href: "#", class: ["nav__help"] });
   const helpImg = createElement("img", { src: help, alt: "Clockify" });
   const notificationLink = createElement("a", { href: "#", class: ["nav__notification"] });

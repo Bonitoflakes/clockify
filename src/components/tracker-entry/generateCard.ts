@@ -6,8 +6,8 @@ import {
   createElement,
   groupByDate,
   groupByWeek,
-  findFirstDayOfWeek,
-  findLastDayOfWeek,
+  findMonday,
+  findSunday,
   saveToLocalStorage,
 } from "@utils";
 
@@ -30,71 +30,81 @@ export const renderEntries = () => {
   // console.table(Store.entries);
   // console.log("=============SORTED================");
 
-  const data = groupByDate(Store.entries); //o(n)
+  const entriesByDate = groupByDate(Store.entries); //o(n)
   // console.table(data);
   // console.log("==============GROUP BY DATE==================");
 
-  const test = groupByWeek(data); //o(n)
-  console.table(test);
+  const entriesByWeek = groupByWeek(entriesByDate); //o(n)
+  // console.table(test);
   // console.log("===============GROUP BY WEEK=============");
 
-  console.time("Loop");
+  // just for perf calculation sake
   let totalLoop = 0;
-  for (const [weekDate, weekEntry] of Object.entries(test)) {
-    //o()n3
+  console.time("Loop");
+
+  for (const [weekDate, weekEntry] of Object.entries(entriesByWeek)) {
+    //o(n^3)
     totalLoop++;
     const [weekCard, totalWeekTime] = generateWeekCard(weekDate);
-    const superAdd = [];
+    const totalTimeConsumed__WEEK = [];
 
     //  @ts-ignore
     for (const [cardDate, cardEntry] of weekEntry) {
       totalLoop++;
       const [entryCard, totalDayTime] = generateCard(cardDate);
 
-      const add: string[][] = [];
+      const totalTimeConsumed__DAY: number[][] = [];
+
       for (const iterator of cardEntry) {
         totalLoop++;
-        const [asdf, stopwatch] = generateTrackerEntry(iterator);
-        entryCard.append(asdf);
-        const stopWatchTextContent = (stopwatch as HTMLInputElement)!.value!.split(":");
-        // console.log(stopWatchTextContent);
 
-        add.push(stopWatchTextContent);
+        const [entry, stopwatch, _effort] = generateTrackerEntry(iterator);
+        entryCard.append(entry);
+        const stopWatchTextContent = (stopwatch as HTMLInputElement)!.value!.split(":");
+        console.log(stopWatchTextContent);
+
+        totalTimeConsumed__DAY.push(_effort);
       }
       // FIX: Converting string to number, instead we can use actualEffort returned from the entry.
-      const convertedArray = add.map((arr) => arr.map(Number));
+      const convertedArray = totalTimeConsumed__DAY.map((arr) => arr.map(Number));
 
       // Total time for all the entries on a particular date.
-      const a = convertedArray.reduce((prev, curr) => {
+      const totalHours__1DAY = convertedArray.reduce((prev, curr) => {
         prev[0] += curr[0];
         prev[1] += curr[1];
         prev[2] += curr[2];
         return prev;
       });
 
-      roundOffTime(a);
+      roundOffTime(totalHours__1DAY);
 
-      totalDayTime.textContent = a.map((e) => e.toString().padStart(2, "0")).join(":");
-      superAdd.push(a);
+      const totalHours__1DAY__2String = totalHours__1DAY.map((e) => e.toString().padStart(2, "0"));
+
+      totalDayTime.textContent = totalHours__1DAY__2String.join(":");
+      totalTimeConsumed__WEEK.push(totalHours__1DAY);
 
       weekCard.append(entryCard);
     }
 
-    const b = superAdd.reduce((prev, curr) => {
+    const totalHours__7DAYS = totalTimeConsumed__WEEK.reduce((prev, curr) => {
       prev[0] += curr[0];
       prev[1] += curr[1];
       prev[2] += curr[2];
       return prev;
     });
 
-    roundOffTime(b);
+    roundOffTime(totalHours__7DAYS);
 
-    totalWeekTime.textContent = b.map((e) => e.toString().padStart(2, "0")).join(":");
+    const totalHours__7DAYS__2String = totalHours__7DAYS.map((e) => e.toString().padStart(2, "0"));
+
+    totalWeekTime.textContent = totalHours__7DAYS__2String.join(":");
 
     $("main").append(weekCard);
   }
+
   console.log(`Total Loop:${totalLoop}`);
   console.timeEnd("Loop");
+
   saveToLocalStorage();
 };
 
@@ -130,8 +140,8 @@ function generateWeekCard(date: string) {
   const currentYear = new Date().getFullYear();
   const entryYear = new Date(date).getFullYear();
 
-  const firstDate = findFirstDayOfWeek(date).toDateString().slice(4, 10);
-  const lastDate = findLastDayOfWeek(date).toDateString().slice(4, 10);
+  const firstDate = findMonday(date).toDateString().slice(4, 10);
+  const lastDate = findSunday(date).toDateString().slice(4, 10);
 
   let weekString = `${firstDate} - ${lastDate}, ${entryYear}`;
 

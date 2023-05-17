@@ -25,10 +25,11 @@ export const generateToast = (msg: string, success: boolean) => {
 
   const container = $("toast-container")!;
   container.insertBefore(toast, container.firstChild);
-  console.log("toast generated");
 
+  // Fade-in Animation.
   toast.classList.add("fadeInUpBig");
 
+  // Fade-out animation
   setTimeout(() => {
     toast?.classList.add("fadeOutDownBig");
     Promise.all(toast.getAnimations().map((animation) => animation.finished)).then(() => toast?.remove());

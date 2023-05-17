@@ -1,4 +1,4 @@
-export const findFirstDayOfWeek = (date: string) => {
+export const findMonday = (date: string) => {
   const currDate = new Date(date);
   const dayOfWeek = currDate.getDay();
   const daysToAdd = dayOfWeek == 0 ? -6 : 1;
@@ -6,7 +6,7 @@ export const findFirstDayOfWeek = (date: string) => {
   return new Date(currDate.setDate(newDate));
 };
 
-export const findLastDayOfWeek = function (date: string) {
+export const findSunday = function (date: string) {
   const currDate = new Date(date);
   const dayOfWeek = currDate.getDay();
   return new Date(currDate.setDate(currDate.getDate() - dayOfWeek + 7));

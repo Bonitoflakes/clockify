@@ -11,8 +11,11 @@ interface HTMLAttributes {
   pattern?: string;
   contenteditable?: boolean;
 }
-
-export function createElement(tag: string, attributes?: HTMLAttributes, text?: string) {
+export function createElement<K extends keyof HTMLElementTagNameMap>(
+  tag: K,
+  attributes?: HTMLAttributes,
+  text?: string
+): HTMLElementTagNameMap[K] {
   const element = document.createElement(tag);
 
   if (text) element.textContent = text;

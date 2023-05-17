@@ -22,6 +22,7 @@ const generateText = (text: string) => createElement("span", { class: ["sidebar_
 // Generate a new sideBar.
 export const generateSidebar = (data: ISidebarLinks[]) => {
   const sidebar = createElement("div", { class: ["sidebar", "open"] });
+
   data.forEach(({ title, name, img, subLinks }) => {
     if (title) {
       const sidebarlinkTitle = generateTitle(title);

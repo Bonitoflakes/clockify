@@ -1,10 +1,9 @@
-import { createElement, findEntry, saveToLocalStorage } from "@utils";
+import { createElement, findEntry, generateLine, saveToLocalStorage } from "@utils";
 
 import {
   generateBill,
   generateDate,
   generateInput,
-  generateLine,
   generateMenuDots,
   generatePlayButton,
   generateProjectPicker,
@@ -15,6 +14,7 @@ import {
 import { handlePPClick, handlePPBlur } from "../recorder/helper_PROJECT";
 import { handleTPClick } from "../recorder/helper_TAG";
 import { handleTimeArrowKeys } from "./helpers_OTHERS";
+
 import {
   handleMenuBlur,
   handleMenuClick,
@@ -23,7 +23,8 @@ import {
   updateEntryTimeEnd,
   handleDateChange,
 } from "./handlers";
-import { renderEntries } from "./generateCard";
+
+import { renderEntries } from "@components";
 
 export const generateTrackerEntry = ({
   id,
@@ -35,7 +36,7 @@ export const generateTrackerEntry = ({
   startTime: st,
   endTime: et,
   date,
-}: IEntry) => {
+}: IEntry): [HTMLDivElement, HTMLInputElement, number[]] => {
   const projectEntry = createElement("div", { class: ["tracker-entry"] });
 
   const line1 = generateLine();
@@ -76,7 +77,8 @@ export const generateTrackerEntry = ({
     saveToLocalStorage();
   });
 
-  const descriptionInput = inputText as HTMLInputElement;
+  const descriptionInput = inputText;
+  // Auto-resize Input
   descriptionInput.parentElement!.dataset.value = descriptionInput.value;
 
   // Event Listeners
@@ -100,7 +102,7 @@ export const generateTrackerEntry = ({
     _menu
   );
 
-  return [projectEntry, _stopwatch];
+  return [projectEntry, _stopwatch, actualEffort];
 };
 
 const initEntry = (
@@ -141,7 +143,7 @@ const initEntry = (
 
   endTime.addEventListener("blur", () => updateEntryTimeEnd(id, startTime, endTime, _stopwatch));
 
-  // TODO: _stopwatch.addEventListener('keydown',()=>{'Increase on descrease mins.'})
+  // TODO: _stopwatch.addEventListener('keydown',()=>{'Increase or descrease mins.'})
   _stopwatch.addEventListener("blur", () => {
     // exit if the input value is the same
     const newValue = (_stopwatch as HTMLInputElement).value;
@@ -161,19 +163,16 @@ const initEntry = (
       const startTimeMS = Date.parse(startTimeDate.toString());
 
       const newEndTimeInMS = startTimeMS + totalInMS;
-      // console.log(startTimeMS);
-      // console.log(totalInMS);
-      // console.log(newEndTimeInMS);
 
       const newDate = new Date(newEndTimeInMS);
       const endMins = newDate.getMinutes();
       const endHrs = newDate.getHours();
       (endTime as HTMLInputElement).value = `${endHrs}:${endMins}`;
-      // debugger
       entry.actualEffort = [hrs, mins, secs];
       entry.endTime = newEndTimeInMS;
       console.log(entry.actualEffort);
 
+      // FIX: DO NOT RE-RENDER, PARENT CAN BE DIRECTLY UPDATED!!!!!
       renderEntries();
     }
   });

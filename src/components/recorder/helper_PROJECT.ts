@@ -14,9 +14,6 @@ export const removeProjectPicker = (): void => {
 
 export const handlePPClick = (e: MouseEvent, text: HTMLElement, id?: number) => {
   const ex = $("project-picker");
-
-  // if (ex) document.body.style.background = "pink";
-
   const target = e.target as HTMLElement;
 
   if (target.offsetParent?.contains(ex)) return ex.remove();
@@ -55,8 +52,6 @@ export const handlePPClick = (e: MouseEvent, text: HTMLElement, id?: number) => 
 export const handlePPBlur = (e: FocusEvent) => {
   const isChild = (e.currentTarget as HTMLButtonElement).contains(e.relatedTarget as Node);
   if (isChild) return;
-
-  // console.log("Running Blur");
 
   const picker = $("project-picker");
 

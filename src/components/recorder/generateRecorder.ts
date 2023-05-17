@@ -2,7 +2,7 @@ import clockIcon from "@assets/clock-blue.svg";
 import listIcon from "@assets/list-blue.svg";
 import tagGray from "@assets/tag-gray.svg";
 
-import { createElement, createProjectPlusIcon } from "@utils";
+import { createElement, createProjectPlusIcon, generateLine } from "@utils";
 
 export const generateTimeTrackerRecorder = () => {
   const timerTracker = createElement("div", {
@@ -30,12 +30,12 @@ export const generateTimeTrackerRecorder = () => {
   projectBtn.insertBefore(projectBtnText, projectBtn.nextSibling);
   //
   //
-  const line1 = createElement("div", { class: ["line"] });
-  const line2 = createElement("div", { class: ["line"] });
-  const line3 = createElement("div", { class: ["line"] });
+  const line1 = generateLine();
+  const line2 = generateLine();
+  const line3 = generateLine();
   //
   //
-  const tagImg = createElement("img", { src: tagGray, alt: "" });
+  const tagImg = createElement("img", { src: tagGray, alt: "Tag Button" });
   const tagBtn = createElement("button", { class: ["timetracker-recorder__tags-button"] });
   tagBtn.appendChild(tagImg);
   //
@@ -59,7 +59,6 @@ export const generateTimeTrackerRecorder = () => {
   //
   //
   //
-
   const toggleMode = createElement("div", { class: ["timetracker-recorder__togglemode"] });
   toggleMode.append(generateToggleMode());
 

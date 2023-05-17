@@ -5,13 +5,11 @@ import { generateTagPicker, initializeTagFilter, renderTag_BLUE, renderTagList }
 
 export const handleTPClick = (e: MouseEvent, id?: number) => {
   const ex = $("tag__picker");
-
   const target = e.target as HTMLElement;
   const { firstChild } = e.currentTarget as Node;
 
   const entryTags = firstChild?.nodeName === "IMG" ? [] : firstChild?.textContent?.split(", ");
   Store.activeTags = entryTags ?? [];
-  // console.log(Store.activeTags);
 
   if (target.offsetParent?.contains(ex)) return ex.remove();
 
@@ -25,12 +23,15 @@ export const handleTPClick = (e: MouseEvent, id?: number) => {
   (e.currentTarget as HTMLElement).append(picker);
   initializeTagFilter(e.currentTarget as HTMLElement, id);
   renderTagList();
+
   const tagInput = $("tag__picker__input") as HTMLInputElement;
   // FIX:
   // tagInput.focus();
 
   picker.addEventListener("click", stopPropagation);
   picker.addEventListener("keyup", stopSpacePropagation);
+
+  // FIX:
   e.stopPropagation();
   document.addEventListener("click", removeTagPicker);
 };
@@ -38,8 +39,6 @@ export const handleTPClick = (e: MouseEvent, id?: number) => {
 export const handleTPBlur = (e: FocusEvent) => {
   const isChild = (e.currentTarget as HTMLButtonElement).contains(e.relatedTarget as Node);
   if (isChild) return;
-
-  // console.log("TP BLURRRR");
 
   removeTagPicker();
 };

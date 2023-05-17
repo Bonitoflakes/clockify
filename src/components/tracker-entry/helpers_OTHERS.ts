@@ -141,7 +141,6 @@ export function removeModal() {
   document.removeEventListener("keydown", focusModal);
 }
 
-// TODO: Add more logic... Actual deletion requires ID to be passed along.
 const deleteEntry = (id: number) => {
   removeModal();
 
